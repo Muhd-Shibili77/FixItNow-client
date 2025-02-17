@@ -1,9 +1,41 @@
 import React,{useRef,useState,useEffect} from 'react'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from 'react-redux';
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 function OTP() {
+    const navigate = useNavigate()
     const inputRef = useRef([])
-    const [timeLeft,setTimeLeft]=useState(10)
+    const [timeLeft,setTimeLeft]=useState(30)
     const [canResend,setCanResend]=useState(false)
+    const [otp, setOtp] = useState(["", "", "", ""]);
+    const user = useSelector((state) => state.auth.user);
+   
+    const handleSubmition = async (e)=>{
+        e.preventDefault();
+        const enteredOTP = otp.join(""); 
+        console.log(enteredOTP)
+        try {
+            const response = await axios.post("http://localhost:3000/auth/verify-otp", {
+                email:user.Email,
+                otp: enteredOTP,
+              });
+              
+              
+              toast.success("OTP verified");
+              setTimeout(()=>{
+                navigate('/role')
+              },2000)
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Something went wrong");
+        }
+
+        
+    }
+
+
 
     useEffect(()=>{
         if(timeLeft > 0){
@@ -21,6 +53,10 @@ function OTP() {
         const value = e.target.value.replace(/[^0-9]/g, "");
         e.target.value = value
 
+        const newOtp = [...otp];
+        newOtp[index] = value;
+        setOtp(newOtp);
+
         if(value && index < inputRef.current.length - 1 ){
             inputRef.current[index+1].focus();
         }
@@ -34,7 +70,7 @@ function OTP() {
 
     const handleResendOTP = () => {
         
-        setTimeLeft(10)
+        setTimeLeft(30)
         setCanResend(false)
     }
   return (
@@ -59,7 +95,7 @@ function OTP() {
             </div>
             <button className={`w-full  text-white rounded-lg py-3 px-2  transition-colors mb-6
                 ${timeLeft > 0 ? 'bg-indigo-200 hover:bg-indigo-300' : 'bg-gray-400 cursor-not-allowed'}`}
-                disabled={timeLeft === 0}
+                disabled={timeLeft === 0} onClick={handleSubmition}
                 >
                 Submit</button>
 
@@ -81,6 +117,7 @@ function OTP() {
                </div>
             </div>
         </div>
+            <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
     </div>
   )
 }

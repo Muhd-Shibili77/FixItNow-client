@@ -1,15 +1,52 @@
 import React,{useState} from 'react';
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch,useSelector } from 'react-redux';
+import { unSetUser,loginUser } from '../../redux/authSlice';
+import axios from "axios";
+import { useNavigate } from "react-router";
 import './SelectionBox.css'
-function SelectionBox() {
 
+
+function SelectionBox() {
+  const navigate = useNavigate()
     const [selectedRole,setSelectRole]=useState('')
+    const user = useSelector((state) => state.auth.user);
+    const dispatch = useDispatch()
+  
 
     const handleRole =(role)=>{
         setSelectRole(role)
     }
-    const handleSubmition = ()=>{
-        console.log('role is ',selectedRole)
+
+    const handleSubmition = async(e)=>{
+      
+        
+        
+        if(selectedRole === 'user'){
+              try {
+                const response = await axios.post("http://localhost:3000/auth/register", {
+                    username: user.Username,
+                    email: user.Email,
+                    password: user.Password,
+                    conformpassword: user.ConformPassword,
+                  });
+                  
+                  
+                  toast.success("user registration successfull");
+                  dispatch(unSetUser());
+                  dispatch(loginUser({loginUser:user.Email}))
+
+                  setTimeout(()=>{
+                    navigate('/home')
+                  },2000)
+                  
+            } catch (error) {
+                toast.error(error.response?.data?.message || "Something went wrong");
+            }
+        }else{
+          console.log('selected role is worker')
+        }
     }
 
 
@@ -51,6 +88,7 @@ function SelectionBox() {
           </button>
         </div>
       </div>
+          <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
      </div>
   );
 }
