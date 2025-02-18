@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const authSlice =createSlice({
     name:"auth",
-    initialState:{user:null,loginUser:null},
+    initialState:{user:null,loginUser:null,loginWoker:null},
     reducers: {
         setUser: (state, action) => {
           if (action.payload.user) {
@@ -19,10 +19,19 @@ const authSlice =createSlice({
         },
         logoutUser:(state,action)=>{
             state.loginUser = null
-        }
+        },
+        loginWoker:(state,action)=>{
+            if (action.payload.loginWoker) {
+                state.loginWoker = { ...state.loginWoker, ...action.payload.loginWoker }; 
+            }
+        },
+        logoutWoker:(state,action)=>{
+            state.loginWoker = null
+        },
+
      }
 
 })
 
-export const {setUser,unSetUser,loginUser}=authSlice.actions;
+export const {setUser,unSetUser,loginUser,loginWoker}=authSlice.actions;
 export default authSlice.reducer;

@@ -40,12 +40,11 @@ function Authentication() {
         password: LoginFormData.LPassword,
       });
       
-  
-      toast.success("User Login successfull!");
+      const {role } = response.data.response;
+      
+      toast.success("Login successfull!");
 
-      setTimeout(()=>{
-        navigate('/home')
-      },2000)
+      
 
       dispatch(loginUser({loginUser:LoginFormData.LEmail}))
       setLoginFormData({
@@ -53,8 +52,17 @@ function Authentication() {
         LPassword: "",
       });
 
+      const path = role ==='Worker'?'/dashboard':'/home'
+
+      setTimeout(() => navigate(path), 1000);
+
     }catch(error){
-      toast.error(error.response?.data?.message || "Something went wrong");
+      console.error("Login Error:", error);
+      const errorMessage = error.response
+        ? error.response.data.message || "Invalid credentials. Please try again."
+        : "Network error. Please check your internet connection.";
+
+       toast.error(errorMessage);
     }
 
 
@@ -104,12 +112,7 @@ function Authentication() {
 
       dispatch(setUser({ user:RegisterFormData}));
 
-      // const response = await axios.post("http://localhost:3000/auth/register", {
-      //   username: RegisterFormData.Username,
-      //   email: RegisterFormData.Email,
-      //   password: RegisterFormData.Password,
-      //   conformpassword: RegisterFormData.ConformPassword,
-      // });
+     
 
       const response = await axios.post("http://localhost:3000/auth/sent-otp", {
         email: RegisterFormData.Email,

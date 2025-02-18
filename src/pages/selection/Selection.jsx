@@ -12,12 +12,9 @@ import Pagination from '../../components/pagination/Pagination'
 function Selection() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
-        {/* <SelectionBox/> */}
-        {/* <OTP/> */}
-        {/* <WorkerConfig/> */}
+        
         <Navbar/>
-        {/* <Banner/> */}
-        {/* <SecondBanner/> */}
+        
         <HeadBanner text='Services'/>
         <ServiceList/>
         <Pagination/>

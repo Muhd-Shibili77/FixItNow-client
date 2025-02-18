@@ -40,12 +40,12 @@ function SelectionBox() {
                   setTimeout(()=>{
                     navigate('/home')
                   },2000)
-                  
+
             } catch (error) {
                 toast.error(error.response?.data?.message || "Something went wrong");
             }
         }else{
-          console.log('selected role is worker')
+          navigate('/worker')
         }
     }
 
