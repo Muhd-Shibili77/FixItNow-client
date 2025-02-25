@@ -13,25 +13,36 @@ const authSlice =createSlice({
             state.user = null
         },
         loginUser:(state,action)=>{
-            if (action.payload.loginUser) {
-                state.loginUser = { ...state.loginUser, ...action.payload.loginUser }; 
-            }
+          
+                state.loginUser = action.payload;
+            
         },
-        logoutUser:(state,action)=>{
+        logoutUser:(state)=>{
             state.loginUser = null
+            localStorage.removeItem('token');
         },
         loginWoker:(state,action)=>{
-            if (action.payload.loginWoker) {
-                state.loginWoker = { ...state.loginWoker, ...action.payload.loginWoker }; 
-            }
+         
+                state.loginWoker = action.payload;
+            
         },
-        logoutWoker:(state,action)=>{
+        logoutWoker:(state)=>{
             state.loginWoker = null
+            localStorage.removeItem('token');
+        },
+        loginAdmin:(state,action)=>{
+         
+                state.loginAdmin = action.payload;
+            
+        },
+        logoutAdmin:(state)=>{
+            state.loginAdmin = null
+            localStorage.removeItem('token');
         },
 
      }
 
 })
 
-export const {setUser,unSetUser,loginUser,loginWoker}=authSlice.actions;
+export const {setUser,unSetUser,loginUser,loginWoker,logoutUser,logoutWoker,loginAdmin,logoutAdmin}=authSlice.actions;
 export default authSlice.reducer;

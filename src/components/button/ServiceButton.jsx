@@ -1,20 +1,22 @@
 import React from 'react'
-import Electrician from '../../assets/electrician.png'
+import { useNavigate } from 'react-router'
+
+
 function ServiceButtonRight(props) {
+  const navigate = useNavigate()
+  const handleServicePage =()=>{
+
+    navigate(`/service/${props.id}`)
+    
+  }
+
   return (
-        <div className="bg-indigo-300 p-1 rounded-[100px_25px_25px_50px] shadow-sm cursor-pointer flex flex-col items-center justify-center w-55 h-40">
-            <img src={props.image} className="w-14 h-14 mb-2" alt="Electrician" />
+        <div  className="bg-indigo-300 p-1 rounded-[50px_50px_50px_50px] shadow-sm cursor-pointer flex flex-col items-center justify-center w-55 h-40" onClick={handleServicePage}>
+            <img src={`http://localhost:3000/uploads/${props.image}`} className="w-14 h-14 mb-2" alt={props.name} />
             <h3 className="text-lg font-semibold">{props.name}</h3>
         </div>
   )
 }
-function ServiceButtonLeft(props) {
-  return (
-        <div className="bg-indigo-300 p-1 rounded-[25px_100px_50px_25px] shadow-sm cursor-pointer flex flex-col items-center justify-center w-55 h-40">
-             <img src={props.image} className="w-14 h-14 mb-2" alt="Electrician" />
-             <h3 className="text-lg font-semibold">{props.name}</h3>
-        </div>
-  )
-}
 
-export { ServiceButtonRight, ServiceButtonLeft };
+
+export { ServiceButtonRight };

@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setUser,loginUser } from "../../redux/authSlice";
+import { setUser,loginUser,loginWoker } from "../../redux/authSlice";
 
 function Authentication() {
   const navigate = useNavigate()
@@ -40,20 +40,29 @@ function Authentication() {
         password: LoginFormData.LPassword,
       });
       
-      const {role } = response.data.response;
+
+      const {role,email,Token } = response.data.response;
       
+      const path = role ==='Worker'?'/dashboard':'/home'
+
+      localStorage.setItem("token", Token);
+
       toast.success("Login successfull!");
 
-      
+      if(role === 'Worker'){
+        
+         dispatch(loginWoker(email))
+      }else{
+         dispatch(loginUser(email))
+      }
 
-      dispatch(loginUser({loginUser:LoginFormData.LEmail}))
       setLoginFormData({
         LEmail: "",
         LPassword: "",
       });
 
-      const path = role ==='Worker'?'/dashboard':'/home'
-
+      
+      
       setTimeout(() => navigate(path), 1000);
 
     }catch(error){
@@ -96,15 +105,20 @@ function Authentication() {
       return;
     }
 
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
     if (RegisterFormData.Password !== RegisterFormData.ConformPassword) {
       toast.error("Passwords do not match!");
       return;
     }
-
-    if (RegisterFormData.Password.length < 6) {
-      toast.error("Password must be at least 6 characters long!");
+    
+    if (!strongPasswordRegex.test(RegisterFormData.Password)) {
+      toast.error(
+        "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character!"
+      );
       return;
     }
+    
 
 
 
@@ -146,11 +160,11 @@ function Authentication() {
         <form action="#" onSubmit={handleLogin}>
           <h1>Login</h1>
           <div className="input-box">
-            <input type="Email" placeholder="Email" name="LEmail" onChange={handleLoginForm} value={LoginFormData.LEmail} required />
+            <input type="Email" placeholder="Email" name="LEmail" onChange={handleLoginForm} value={LoginFormData.LEmail}  />
             <i className="bx bxs-user"></i>
           </div>
           <div className="input-box">
-            <input type="password" placeholder="Password" name="LPassword" onChange={handleLoginForm} value={LoginFormData.LPassword} required />
+            <input type="password" placeholder="Password" name="LPassword" onChange={handleLoginForm} value={LoginFormData.LPassword}  />
             <i className="bx bxs-lock-alt"></i>
           </div>
           <div className="forgot-link">
@@ -172,19 +186,19 @@ function Authentication() {
         <form action="#" onSubmit={handleRegister}>
           <h1>Registration</h1>
           <div className="input-box">
-            <input type="text" placeholder="Username" name="Username" onChange={handleRegisterForm} value={RegisterFormData.Username} required />
+            <input type="text" placeholder="Username" name="Username" onChange={handleRegisterForm} value={RegisterFormData.Username}  />
             <i className="bx bxs-user"></i>
           </div>
           <div className="input-box">
-            <input type="email" placeholder="Email" name="Email" onChange={handleRegisterForm} value={RegisterFormData.Email} required />
+            <input type="email" placeholder="Email" name="Email" onChange={handleRegisterForm} value={RegisterFormData.Email}  />
             <i className="bx bxs-envelope"></i>
           </div>
           <div className="input-box">
-            <input type="password" placeholder="Password" name="Password" onChange={handleRegisterForm} value={RegisterFormData.Password} required />
+            <input type="password" placeholder="Password" name="Password" onChange={handleRegisterForm} value={RegisterFormData.Password}  />
             <i className="bx bxs-lock-alt"></i>
           </div>
           <div className="input-box">
-            <input type="password" placeholder="Confrom Password" name="ConformPassword" onChange={handleRegisterForm} value={RegisterFormData.ConformPassword} required />
+            <input type="password" placeholder="Confrom Password" name="ConformPassword" onChange={handleRegisterForm} value={RegisterFormData.ConformPassword}  />
             <i className="bx bxs-lock-alt"></i>
           </div>
           <button type="submit" className="btn">

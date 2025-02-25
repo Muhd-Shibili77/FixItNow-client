@@ -1,13 +1,14 @@
 import React,{useEffect} from 'react'
-import { jwtDecode } from "jwt-decode";  // Use named import
+import { jwtDecode } from "jwt-decode"; 
 import Navbar from '../../components/navbar/Navbar'
-import Banner from '../../components/banner/Banner'
-import SecondBanner from '../../components/secondBanner/secondBanner'
+import WorkerConfig from '../../components/workerConfig/workerConfig'
 import Footer from '../../components/Footer/Footer'
-import { useDispatch } from 'react-redux'
-import { loginUser } from '../../redux/authSlice';
+import EditWorkerProfile from '../../components/workerConfig/editWorkerProfile'
+import { loginWoker } from '../../redux/authSlice';
+import { useDispatch } from 'react-redux';
 
-function Home() {
+function EditProfile() {
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,7 +16,7 @@ function Home() {
     if (token) {
       try {
         const decodedUser = jwtDecode(token);
-        dispatch(loginUser(decodedUser));  
+        dispatch(loginWoker(decodedUser));  
       } catch (error) {
         console.error("Invalid token:", error);
         localStorage.removeItem("token");  
@@ -24,13 +25,12 @@ function Home() {
   }, [dispatch]);
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
+    <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>    
          <Navbar/>
-         <Banner/>
-         <SecondBanner/>
+         <EditWorkerProfile/>
          <Footer/>
-    </div>    
+    </div>
   )
 }
 
-export default Home
+export default EditProfile

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Pagination = ({ currentPage=1, totalPages=6, onPageChange }) => {
+const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
     <div className="flex items-center justify-center mt-6">
       <button

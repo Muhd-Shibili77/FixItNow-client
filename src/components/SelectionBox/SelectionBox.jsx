@@ -31,8 +31,10 @@ function SelectionBox() {
                     password: user.Password,
                     conformpassword: user.ConformPassword,
                   });
-                  
-                  
+                  const Token = response?.data?.Token
+                
+                  localStorage.setItem("token", Token);
+
                   toast.success("user registration successfull");
                   dispatch(unSetUser());
                   dispatch(loginUser({loginUser:user.Email}))

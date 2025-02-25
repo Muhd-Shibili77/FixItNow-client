@@ -1,14 +1,17 @@
-import React,{useEffect} from 'react'
-import { jwtDecode } from "jwt-decode";  // Use named import
+import React,{useState,useEffect} from 'react'
+import ServiceList from '../../components/services/ServiceList'
 import Navbar from '../../components/navbar/Navbar'
-import Banner from '../../components/banner/Banner'
-import SecondBanner from '../../components/secondBanner/secondBanner'
 import Footer from '../../components/Footer/Footer'
+import HeadBanner from '../../components/banner/HeadBanner'
 import { useDispatch } from 'react-redux'
-import { loginUser } from '../../redux/authSlice';
+import { loginUser } from '../../redux/authSlice'
+import { jwtDecode } from 'jwt-decode'
 
-function Home() {
-  const dispatch = useDispatch();
+
+function services() {
+  const [searchTerm, setSearchTerm] = useState("");
+
+ const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -26,11 +29,12 @@ function Home() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
          <Navbar/>
-         <Banner/>
-         <SecondBanner/>
+         <HeadBanner onSearch={setSearchTerm} />
+         <ServiceList searchTerm={searchTerm} />
+         
          <Footer/>
-    </div>    
+    </div>
   )
 }
 
-export default Home
+export default services

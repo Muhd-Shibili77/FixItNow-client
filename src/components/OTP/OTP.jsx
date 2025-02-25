@@ -16,7 +16,7 @@ function OTP() {
     const handleSubmition = async (e)=>{
         e.preventDefault();
         const enteredOTP = otp.join(""); 
-        console.log(enteredOTP)
+        
         try {
             const response = await axios.post("http://localhost:3000/auth/verify-otp", {
                 email:user.Email,
@@ -68,11 +68,31 @@ function OTP() {
         }
     }
 
-    const handleResendOTP = () => {
+    const handleResendOTP = async () => {
+        if (!canResend) return;
+       
+        try {
+
+            const response = await axios.post("http://localhost:3000/auth/resend-otp", {
+                email: user.Email,
+            });
+
+
+            toast.success("New OTP sent successfully!");
+
+            setTimeLeft(30)
+            setCanResend(false)
+            setOtp(["", "", "", ""]);
+            inputRef.current[0]?.focus(); 
+        } catch (error) {
+            toast.error(error.response?.data?.message || "Failed to resend OTP");
+        }
         
-        setTimeLeft(30)
-        setCanResend(false)
     }
+    
+
+
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-gray-200 to-indigo-200">
         <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-xl">
@@ -83,6 +103,7 @@ function OTP() {
                  <input 
                  key={index}
                  ref={(el)=>(inputRef.current[index] = el)}
+                 value={otp[index]}
                  type="text"
                  className="w-16 h-16 text-3xl text-center border rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-200"
                  maxLength={1} 

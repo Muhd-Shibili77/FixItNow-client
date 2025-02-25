@@ -1,11 +1,12 @@
 import React from 'react'
-import SearchFilter from '../pagination/SearchFilter'
 
-function HeadBanner({onSearch}) {
+
+function WorkerBanner() {
   return (
     <div className="mt-6 w-full h-50 mb-8">
     <div className="w-full h-60 bg-indigo-200 flex items-center justify-center  font-light mb-8">
-        <SearchFilter onSearch={onSearch}/>
+       
+        <h1 className='font-medium text-2xl'>Worker</h1>
     </div>
 </div>
 
@@ -13,4 +14,4 @@ function HeadBanner({onSearch}) {
   )
 }
 
-export default HeadBanner
+export default WorkerBanner

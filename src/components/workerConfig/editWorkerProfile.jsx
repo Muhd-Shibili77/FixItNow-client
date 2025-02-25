@@ -4,32 +4,69 @@ import "react-toastify/dist/ReactToastify.css";
 import Button from "../button/Button";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { useSelector, useDispatch } from "react-redux";
-import { loginWoker, unSetUser } from "../../redux/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWorkerDetails } from "../../redux/workerSlice";
+import { jwtDecode } from "jwt-decode";
+import { loginWoker } from "../../redux/authSlice";
 import { fetchServiceDetails } from "../../redux/adminSlice";
 
-function workerConfig() {
+function editWorkerProfile() {
   const navigate = useNavigate();
-  const { data, loading, error } = useSelector((state) => state.admin);
-  
-  const worker = useSelector((state) => state.auth.user);
- 
   const dispatch = useDispatch();
-  const searchTerm =''
-  const page =1
+  const userId = useSelector((state) => state.auth.loginWoker?.userId);
+   const { data, Aloading, Aerror } = useSelector((state) => state.admin);
+  const { data: worker, loading, error } = useSelector((state) => state.worker);
+
+   useEffect(() => {
+      dispatch(fetchServiceDetails());
+    }, [dispatch]);
+    
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decodedUser = jwtDecode(token);
+        dispatch(loginWoker(decodedUser));
+      } catch (error) {
+        console.error("Invalid token:", error);
+        localStorage.removeItem("token");
+      }
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (worker) {
+      setFormData({
+        id: worker._id || "",
+        name: worker.name || "",
+        service: worker.service || "",
+        experience: worker.experience || "",
+        phone: worker.phone || "",
+        about: worker.about || "",
+        image: worker.profileImage || "",
+        preview: worker.profileImage
+          ? `http://localhost:3000/uploads/${worker.profileImage}`
+          : "",
+      });
+    }
+  }, [worker]);
+
+  useEffect(() => {
+    if (userId) {
+      dispatch(fetchWorkerDetails(userId));
+    }
+  }, [dispatch, userId]);
+
   const [formData, setFormData] = useState({
+    id: "",
     name: "",
     service: "",
     experience: "",
     phone: "",
     about: "",
-    image: null,
-    preview: null,
+    image: "",
+    preview: "",
   });
-
-  useEffect(() => {
-    dispatch(fetchServiceDetails({searchTerm,page}));
-  }, [dispatch]);
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
@@ -50,48 +87,42 @@ function workerConfig() {
     e.preventDefault();
 
     const formDataToSend = new FormData();
+    formDataToSend.append("_id", formData.id);
     formDataToSend.append("name", formData.name);
     formDataToSend.append("service", formData.service);
     formDataToSend.append("experience", formData.experience);
     formDataToSend.append("phone", formData.phone);
     formDataToSend.append("about", formData.about);
-    formDataToSend.append("image", formData.image);
-    formDataToSend.append("username", worker.Username);
-    formDataToSend.append("email", worker.Email);
-    formDataToSend.append("password", worker.Password);
-    formDataToSend.append("conformpassword", worker.ConformPassword);
+    formDataToSend.append("image", formData.image || worker?.profileImage);
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/worker-register",
+        "http://localhost:3000/worker/edit-profile",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-
-      const Token = response?.data?.Token;
-
-      localStorage.setItem("token", Token);
-
-      toast.success("Worker registered successfully!");
-      dispatch(unSetUser());
-      dispatch(loginWoker({ loginWoker: worker.Email }));
+      toast.success("profile editied successfully!");
 
       setTimeout(() => {
-        navigate("/dashboard");
+        navigate("/profile");
       }, 2000);
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
+  const handleBack = () => {
+    navigate("/profile");
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">Error: {error}</p>;
-  if (!data) return null;
+  if (!worker) return null;
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-gray-200 to-indigo-200 ">
+    <div className="flex justify-center items-center min-h-screen ">
       <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-4xl">
         <form className="space-y-6">
           <div className="flex flex-col items-center gap-4 mb-8">
@@ -141,10 +172,9 @@ function workerConfig() {
                 className="w-full px-4 py-2 border rounded-lg appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
               >
                 <option>Select Role</option>
-                <option value="">Select Role</option>
                 {data?.map((service) => (
-                  <option key={service.id} value={service.id}>
-                    {service.name}
+                  <option key={service._id} value={service.Name}>
+                    {service.Name}
                   </option>
                 ))}
               </select>
@@ -206,6 +236,12 @@ function workerConfig() {
           </div>
           <div className="flex justify-center gap-3">
             <Button
+              text="cancel"
+              color="bg-red-400"
+              hover="bg-red-500"
+              function={handleBack}
+            />
+            <Button
               text="submit"
               color="bg-indigo-400"
               hover="bg-indigo-500"
@@ -219,4 +255,4 @@ function workerConfig() {
   );
 }
 
-export default workerConfig;
+export default editWorkerProfile;
