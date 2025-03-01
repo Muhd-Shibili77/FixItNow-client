@@ -1,12 +1,17 @@
 import React,{useEffect,useState} from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWorkerDetails } from "../../redux/workerSlice";
-
+import { useNavigate } from 'react-router';
 function Workerdetail({workerId}) {
-  
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const { data: worker, loading, error } = useSelector((state) => state.worker);
-    
+   
+    const handleBook =()=>{
+        navigate(`/worker/book/${workerId}`)
+    }
+
+
     useEffect(() => {
             if (workerId) {
                 
@@ -55,7 +60,7 @@ function Workerdetail({workerId}) {
 
         {/* Book Now Button (Bottom Right) */}
         <div className="flex justify-end mt-6">
-          <button className="bg-indigo-400 hover:bg-indigo-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md">
+          <button className="bg-indigo-400 hover:bg-indigo-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md cursor-pointer" onClick={ handleBook }>
             FixItNow
           </button>
         </div>

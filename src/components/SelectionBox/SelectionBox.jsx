@@ -4,52 +4,97 @@ import "react-toastify/dist/ReactToastify.css";
 import { useDispatch,useSelector } from 'react-redux';
 import { unSetUser,loginUser } from '../../redux/authSlice';
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate,useLocation  } from "react-router";
 import './SelectionBox.css'
 
 
 function SelectionBox() {
   const navigate = useNavigate()
+  const { state } = useLocation();
+  const { email, name } = state || {};
+
     const [selectedRole,setSelectRole]=useState('')
     const user = useSelector((state) => state.auth.user);
     const dispatch = useDispatch()
-  
+
+    const isGoogleRegistration = state ? true : false
+
 
     const handleRole =(role)=>{
         setSelectRole(role)
     }
 
-    const handleSubmition = async(e)=>{
-      
-        
-        
-        if(selectedRole === 'user'){
-              try {
-                const response = await axios.post("http://localhost:3000/auth/register", {
-                    username: user.Username,
-                    email: user.Email,
-                    password: user.Password,
-                    conformpassword: user.ConformPassword,
-                  });
-                  const Token = response?.data?.Token
-                
-                  localStorage.setItem("token", Token);
+    const handleSubmition = async () => {
+      if (!selectedRole) {
+        toast.error("Please select a role");
+        return;
+      }
+    
+      if (isGoogleRegistration) {
 
-                  toast.success("user registration successfull");
-                  dispatch(unSetUser());
-                  dispatch(loginUser({loginUser:user.Email}))
-
-                  setTimeout(()=>{
-                    navigate('/home')
-                  },2000)
-
-            } catch (error) {
-                toast.error(error.response?.data?.message || "Something went wrong");
+        if (selectedRole === 'user') {
+          try {
+            const response = await axios.post("http://localhost:3000/auth/google/register-user", {
+              username: name,
+              email: email,
+            });
+    
+            const Token = response?.data?.Token;
+            localStorage.setItem("token", Token);
+    
+            toast.success("User registration successful");
+            dispatch(unSetUser());
+            dispatch(loginUser({ loginUser: email }));
+    
+            setTimeout(() => {
+              navigate('/home');
+            }, 2000);
+    
+          } catch (error) {
+            toast.error(error.response?.data?.message || "Something went wrong");
+          }
+        } else {
+          navigate('/worker',{
+            state:{
+              email:email,
+              name:name
             }
-        }else{
-          navigate('/worker')
+          });
         }
-    }
+        
+        return; 
+      }
+    
+
+
+      if (selectedRole === 'user') {
+        try {
+          const response = await axios.post("http://localhost:3000/auth/register", {
+            username: user.Username,
+            email: user.Email,
+            password: user.Password,
+            conformpassword: user.ConformPassword,
+          });
+    
+          const Token = response?.data?.Token;
+          localStorage.setItem("token", Token);
+    
+          toast.success("User registration successful");
+          dispatch(unSetUser());
+          dispatch(loginUser({ loginUser: user.Email }));
+    
+          setTimeout(() => {
+            navigate('/home');
+          }, 2000);
+    
+        } catch (error) {
+          toast.error(error.response?.data?.message || "Something went wrong");
+        }
+      } else {
+        navigate('/worker');
+      }
+    };
+    
 
 
   return (

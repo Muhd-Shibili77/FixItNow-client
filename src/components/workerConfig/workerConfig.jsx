@@ -3,13 +3,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Button from "../button/Button";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate,useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { loginWoker, unSetUser } from "../../redux/authSlice";
 import { fetchServiceDetails } from "../../redux/adminSlice";
 
 function workerConfig() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { email, name } = state || {};
+  const isGoogleRegistration = state ? true : false
   const { data, loading, error } = useSelector((state) => state.admin);
   
   const worker = useSelector((state) => state.auth.user);
@@ -56,6 +59,38 @@ function workerConfig() {
     formDataToSend.append("phone", formData.phone);
     formDataToSend.append("about", formData.about);
     formDataToSend.append("image", formData.image);
+   
+
+    if(isGoogleRegistration){
+
+      formDataToSend.append("username", name);
+      formDataToSend.append("email", email);
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/auth/google/register-worker",
+          formDataToSend,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        );
+
+        const Token = response?.data?.Token;
+
+      localStorage.setItem("token", Token);
+
+      toast.success("Worker registered with google  successfully!");
+      dispatch(unSetUser());
+      dispatch(loginWoker({ loginWoker: email }));
+
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 2000);
+      } catch (error) {
+          toast.error(error.response?.data?.message || "Something went wrong"); 
+      }
+      return;
+    }
+
     formDataToSend.append("username", worker.Username);
     formDataToSend.append("email", worker.Email);
     formDataToSend.append("password", worker.Password);
@@ -86,9 +121,18 @@ function workerConfig() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">Error: {error}</p>;
-  if (!data) return null;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-40">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+        <p className="ml-2 text-blue-500 font-semibold">Loading...</p>
+      </div>
+    );
+  
+  if (error)
+    return <p className="text-red-500">Error: {error}</p>;
+  
+  if (!worker) return null;
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-gray-200 to-indigo-200 ">

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "./Authentication.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -6,8 +6,10 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser,loginUser,loginWoker } from "../../redux/authSlice";
+import SocialIcons from "../../components/button/socialIcons";
 
 function Authentication() {
+  
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const [isActive, setIsActive] = useState(false);
@@ -151,6 +153,15 @@ function Authentication() {
     }
   };
 
+  const handleGoogleSuccess = (message) => {
+    toast.success(message);
+  };
+
+  // Function to handle Google login failure
+  const handleGoogleError = (message) => {
+    toast.error(message);
+  };
+
 
   return (
     <div className="body-login">
@@ -174,10 +185,8 @@ function Authentication() {
             Login
           </button>
           <p>or login with social platforms</p>
-          <div className="social-icons">
-            <a href="#"><i className="bx bxl-google"></i></a>
-            <a href="#"><i className="bx bxl-facebook"></i></a>
-          </div>
+           
+          <SocialIcons handleGoogleSuccess={handleGoogleSuccess} handleGoogleError={handleGoogleError}/>
         </form>
       </div>
 
@@ -205,10 +214,10 @@ function Authentication() {
             Register
           </button>
           <p>or register with social platforms</p>
-          <div className="social-icons">
-            <a href="#"><i className="bx bxl-google"></i></a>
-            <a href="#"><i className="bx bxl-facebook"></i></a>
-          </div>
+          
+          <SocialIcons handleGoogleSuccess={handleGoogleSuccess} handleGoogleError={handleGoogleError}/>
+          
+          
         </form>
       </div>
 

@@ -66,7 +66,7 @@ const Navbar = () => {
       <div className="hidden md:flex space-x-4">
         <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/home')}`} onClick={()=>handleNavigation('/home')}>Home</a>
         <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/services')}`} onClick={()=>handleNavigation('/services')}>Services</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/booking')}`}>Bookings</a>
+        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/booking')}`} onClick={()=>handleNavigation('/booking')}>Bookings</a>
         <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/about')}`}>About Us</a>
         <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/contact')}`}>Contact Us</a>
       </div>

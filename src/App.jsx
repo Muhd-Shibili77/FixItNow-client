@@ -17,6 +17,8 @@ import AdminDashboard from './pages/Admin/adminDashboard.jsx'
 import AdminUsers from './pages/Admin/adminUsers.jsx'
 import ServicePage from './pages/Home/ServicePage.jsx'
 import WorkerDetails from './pages/Home/WorkerDetail.jsx'
+import WorkerBooking from './pages/Home/WorkerBooking.jsx'
+import Bookings from './pages/Home/Booking.jsx'
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path='/services'  element={<ProtectedRoutes element={<Services/>} requiredRole={'User'}/>}/>
         <Route path='/service/:id'  element={<ProtectedRoutes element={<ServicePage/>} requiredRole={'User'}/>}/>
         <Route path='/worker/:id'  element={<ProtectedRoutes element={<WorkerDetails/>} requiredRole={'User'}/>}/>
+        <Route path='/worker/book/:id'  element={<ProtectedRoutes element={<WorkerBooking/>} requiredRole={'User'}/>}/>
+        <Route path='/booking'  element={<ProtectedRoutes element={<Bookings/>} requiredRole={'User'}/>}/>
         <Route path='/otp' element={<OTP />} />
         <Route path='/role' element={<SelectionBox />}/>
         <Route path='/worker' element={<WorkerConfig />}/>
@@ -36,9 +40,9 @@ function App() {
         <Route path='/edit-profile'  element={<ProtectedRoutes element={<EditProfile/>} requiredRole={'Worker'}/>}/>
 
         <Route path='/serviceAdding'  element={<ServiceAdding />}/>
-        <Route path='/admin/login'  element={<AdminLogin />}/>
-        <Route path='/admin/dashboard'  element={<AdminDashboard />}/>
-        <Route path='/admin/users'  element={<AdminUsers />}/>
+        <Route path='/admin/login'  element={<ProtectedAuthRoutes element={<AdminLogin/>}/>}/>
+        <Route path='/admin/dashboard'  element={<ProtectedRoutes element={<AdminDashboard/>} requiredRole={'Admin'}/>}/>
+        <Route path='/admin/users'  element={<ProtectedRoutes element={<AdminUsers/>} requiredRole={'Admin'}/>}/>
 
       </Routes>
      

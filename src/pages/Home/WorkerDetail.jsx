@@ -29,7 +29,7 @@ const WorkerDetails = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200">
       <Navbar />
-      <WorkerBanner />
+      <WorkerBanner name={'worker'} />
       <WorkerDetail workerId={id}/>
       <Footer />
     </div>

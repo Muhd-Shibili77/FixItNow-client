@@ -16,6 +16,9 @@ const ProtectedAuthRoutes =({element}) =>{
         if(userRole === 'User'){
             return <Navigate to={"/home"}/>
         }
+        if(userRole === 'Admin'){
+            return <Navigate to={"/admin/dashboard"}/>
+        }
     }
     return element;
 }
