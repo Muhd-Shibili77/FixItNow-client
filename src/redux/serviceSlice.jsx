@@ -8,8 +8,9 @@ export const fetchWorkerDetails = createAsyncThunk(
        
         
       const response = await axios.get(
-        `http://localhost:3000/worker/getworker?id=${serviceId}&search=${searchTerm}&page=${page}&limit=12`
-      );
+        `http://localhost:3000/worker/getworker?id=${serviceId}&search=${searchTerm}&page=${page}&limit=12`,{
+          headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+        });
       
       return {
         data: response.data.response,

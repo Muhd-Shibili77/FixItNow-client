@@ -11,7 +11,7 @@ const BookingModal = ({ booking, onClose }) => {
   }, []);
  
   return (
-    <div className="fixed inset-0 bg-black flex justify-center items-center z-50 p-4">
+    <div className="fixed inset-0  flex justify-center items-center z-50 p-4 bg-transparent backdrop-blur-sm " onClick={onClose}>
       <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative animate-fadeIn">
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
@@ -40,7 +40,7 @@ const BookingModal = ({ booking, onClose }) => {
         <div className="mt-6 text-center">
           <button
             onClick={onClose}
-            className="bg-indigo-400 hover:bg-indigo-500 text-white px-6 py-2 rounded-md transition-all"
+            className="bg-indigo-400 hover:bg-indigo-500 text-white px-6 py-2 rounded-md transition-all cursor-pointer"
           >
             Close
           </button>

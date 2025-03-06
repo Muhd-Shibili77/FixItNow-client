@@ -6,8 +6,9 @@ export const fetchWorkerDetails = createAsyncThunk(
   async (workerId, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/worker/data?id=${workerId}`
-      );
+        `http://localhost:3000/worker/data?id=${workerId}`,{
+          headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+        });
 
       return response.data.response;
     } catch (error) {
@@ -21,8 +22,9 @@ export const fetchWorkerJob = createAsyncThunk(
   async (workerId, { rejectWithValue }) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/worker/getJob?id=${workerId}`
-      );
+        `http://localhost:3000/worker/getJob?id=${workerId}`,{
+          headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+        });
 
       return response.data.response;
     } catch (error) {
@@ -39,7 +41,9 @@ export const updateJobStatus = createAsyncThunk(
       try {
         await axios.put(
           `http://localhost:3000/worker/updateJob?id=${jobId}`,
-          { isAccepted }
+          { isAccepted },{
+            headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+          }
         );
         return { jobId, isAccepted };
       } catch (error) {

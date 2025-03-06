@@ -16,10 +16,10 @@ function editWorkerProfile() {
   const userId = useSelector((state) => state.auth.loginWoker?.userId);
    const { data, Aloading, Aerror } = useSelector((state) => state.admin);
   const { data: worker, loading, error } = useSelector((state) => state.worker);
-
    useEffect(() => {
-      dispatch(fetchServiceDetails());
+      dispatch(fetchServiceDetails({searchTerm:'',page:1}));
     }, [dispatch]);
+  
     
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -39,11 +39,11 @@ function editWorkerProfile() {
       setFormData({
         id: worker._id || "",
         name: worker.name || "",
-        service: worker.service || "",
+        service: worker.service?._id || "",
         experience: worker.experience || "",
         phone: worker.phone || "",
         about: worker.about || "",
-        image: worker.profileImage || "",
+        image: worker.profileImage || undefined,
         preview: worker.profileImage
           ? `http://localhost:3000/uploads/${worker.profileImage}`
           : "",
@@ -68,6 +68,7 @@ function editWorkerProfile() {
     preview: "",
   });
 
+
   const handleChange = (e) => {
     if (e.target.name === "image") {
       const file = e.target.files[0];
@@ -85,7 +86,7 @@ function editWorkerProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const formDataToSend = new FormData();
     formDataToSend.append("_id", formData.id);
     formDataToSend.append("name", formData.name);
@@ -93,14 +94,21 @@ function editWorkerProfile() {
     formDataToSend.append("experience", formData.experience);
     formDataToSend.append("phone", formData.phone);
     formDataToSend.append("about", formData.about);
-    formDataToSend.append("image", formData.image || worker?.profileImage);
-
+    if (formData.image instanceof File) {
+      formDataToSend.append("image", formData.image);
+    } else if (worker?.profileImage) {
+      formDataToSend.append("image", worker.profileImage);
+    }
+    
+   
     try {
+      
       const response = await axios.post(
         "http://localhost:3000/worker/edit-profile",
         formDataToSend,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: { "Content-Type": "multipart/form-data" ,
+          Authorization:`Bearer ${localStorage.getItem('token')}`}
         }
       );
       toast.success("profile editied successfully!");
@@ -117,8 +125,17 @@ function editWorkerProfile() {
     navigate("/profile");
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-500">Error: {error}</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+        <p className="ml-2 text-blue-500 font-semibold">Loading...</p>
+      </div>
+    );
+  
+  if (error)
+    return <p className="text-red-500">Error: {error}</p>;
+  
   if (!worker) return null;
 
   return (
@@ -173,8 +190,8 @@ function editWorkerProfile() {
               >
                 <option>Select Role</option>
                 {data?.map((service) => (
-                  <option key={service._id} value={service.Name}>
-                    {service.Name}
+                  <option key={service.id} value={service.id}>
+                    {service.name}
                   </option>
                 ))}
               </select>

@@ -3,7 +3,7 @@ import image from '../../assets/repairmen-electricians.webp'
 
 const BookingCard = ({name,role,Phone,work,status,onClick}) => {
   return (
-    <div className="p-4 rounded-xl shadow-md w-90 md:w-75  bg-white cursor-pointer flex flex-col gap-4" onClick={onClick}>
+    <div className="p-4 rounded-xl shadow-md w-70 md:w-75 bg-white cursor-pointer flex flex-col gap-4" onClick={onClick}>
   {/* Worker Info Section */}
   <div className="flex items-center gap-4">
     {/* Worker Image */}

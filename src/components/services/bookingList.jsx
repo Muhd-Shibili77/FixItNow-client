@@ -22,12 +22,27 @@ const bookingList = () => {
         }
     },[dispatch,userId])
 
+
+    if (loading)
+      return (
+        <div className="flex justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+          <p className="ml-2 text-blue-500 font-semibold">Loading...</p>
+        </div>
+      );
+    
+    if (error)
+      return <p className="text-red-500">Error: {error}</p>;
+    
+   
+
+
   return (
     <section className="py-12 bg-transparent">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 bg-gray-200  rounded-xl shadow-md p-10">
-                      {bookings && bookings.length >0 ?(
+                      {bookings ?(
                             bookings?.map((data)=>(
                                 
                                 <BookingCard key={data.id} name={data.workerId.name} role={data.serviceId.name} Phone={data.workerId.phone} work={data.workStatus} status={data.reachingStatus} onClick={() => setSelectedWorker(data)}/>

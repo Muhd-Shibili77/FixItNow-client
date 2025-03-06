@@ -4,7 +4,8 @@ import logo from '../../assets/maintenance.png'
 import { useSelector,useDispatch } from 'react-redux';
 import { useNavigate,useLocation } from "react-router";
 import { logoutUser,logoutWoker } from "../../redux/authSlice";
-
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const Navbar = () => {
   const dispatch = useDispatch()
@@ -17,6 +18,7 @@ const Navbar = () => {
   const isActiveDesktop =(path)=>location.pathname === path ? 'rounded-[30px_20px_12px_20px] bg-indigo-300' : '';
   const isActiveMobile =(path)=>location.pathname === path ? 'text-indigo-600' : '';
 
+  
   const handleNavigation=(path)=>{
    
     navigate(path)
@@ -26,17 +28,44 @@ const Navbar = () => {
   };
 
   const handleLogout =()=>{
-    if(user){
-      dispatch(logoutUser())
-    }
 
-    if(worker){
-      dispatch(logoutWoker())
-    }
-
-    navigate('/')
-      
+    confirmAlert({
+          customUI: ({ onClose }) => {
+            return (
+              <div className="fixed inset-0 flex items-center justify-center  z-50">
+                <div className="bg-white rounded-lg shadow-lg p-6 w-96 text-center">
+                  <h2 className="text-xl font-semibold text-gray-800">Logout Confirmation</h2>
+                  <p className="text-gray-600 mt-2">Are you sure you want to logout?</p>
+                  <div className="flex justify-center mt-5 gap-4">
+                    <button
+                      onClick={() => {
+                        if(user){
+                          dispatch(logoutUser())
+                        }else{
+                          dispatch(logoutWoker())
+                        }
+                        navigate("/");
+                        onClose();
+                        
+                      }}
+                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                    >
+                      Yes, Logout
+                    </button>
+                    <button
+                      onClick={onClose}
+                      className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          },
+        });   
   }
+  
   const handleProfile = ()=>{
     
     
@@ -63,42 +92,43 @@ const Navbar = () => {
       
       {/* Desktop Navigation */} 
       {user ?(
-      <div className="hidden md:flex space-x-4">
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/home')}`} onClick={()=>handleNavigation('/home')}>Home</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/services')}`} onClick={()=>handleNavigation('/services')}>Services</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/booking')}`} onClick={()=>handleNavigation('/booking')}>Bookings</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/about')}`}>About Us</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/contact')}`}>Contact Us</a>
+      <div className="hidden lg:flex space-x-4">
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 cursor-pointer ${isActiveDesktop('/home')}`} onClick={()=>handleNavigation('/home')}>Home</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 cursor-pointer ${isActiveDesktop('/services')}`} onClick={()=>handleNavigation('/services')}>Services</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 cursor-pointer ${isActiveDesktop('/booking')}`} onClick={()=>handleNavigation('/booking')}>Bookings</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 cursor-pointer ${isActiveDesktop('/about')}`} onClick={()=>handleNavigation('/about')}>About Us</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 cursor-pointer ${isActiveDesktop('/contact')}`} onClick={()=>handleNavigation('/contact')}>Contact Us</a>
       </div>
 
       ): worker ?(
-        <div className="hidden md:flex space-x-4">
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/dashboard')}`}>Home</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/history')}`}>History</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/about')}`}>About Us</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 ${isActiveDesktop('/contact')}`}>Contact Us</a>
+        <div className="hidden lg:flex space-x-4">
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/dashboard')}`} onClick={()=>handleNavigation('/dashboard')}>Home</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/history')}`} onClick={()=>handleNavigation('/history')}>History</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/about')}`} onClick={()=>handleNavigation('/about')}>About Us</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/contact')}`} onClick={()=>handleNavigation('/contact')}>Contact Us</a>
        </div>
       ):(
-        <div className="hidden md:flex space-x-4">
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 rounded-[30px_20px_12px_20px] bg-indigo-300`}>Home</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700`}>Services</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 `}>Bookings</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 `}>About Us</a>
-        <a href="#" className={`text-dark px-4 py-2 transition-colors duration-300 hover:text-gray-700 `}>Contact Us</a>
+        <div className="hidden lg:flex space-x-4">
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 rounded-[30px_20px_12px_20px] bg-indigo-300`} onClick={handleLoginBtn}>Home</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700`} onClick={handleLoginBtn}>Services</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 `} onClick={handleLoginBtn}>Bookings</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 `} onClick={handleLoginBtn}>About Us</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 `} onClick={handleLoginBtn}>Contact Us</a>
        </div>
       )}
 
       {user || worker ? ( 
                  <>
-                    <button className="hidden px-4 py-2 md:flex bg-red-900 text-white rounded-[30px_20px_12px_20px] cursor-pointer" onClick={handleLogout}>
                     
-                    <span>Logout</span>
-                </button>
 
 
 
-
-                    <button className="hidden px-4 py-2 md:flex bg-gray-900 text-white rounded-[30px_20px_12px_20px] cursor-pointer" onClick={handleProfile}>
+              {location.pathname ==='/profile'?(
+                <button className="hidden px-4 py-2 lg:flex bg-red-900 text-white rounded-[30px_20px_12px_20px] cursor-pointer" onClick={handleLogout}>
+                     <span>Logout</span>
+                 </button>
+              ):(
+                <button className="hidden px-4 py-2 lg:flex bg-gray-900 text-white rounded-[30px_20px_12px_20px] cursor-pointer" onClick={handleProfile}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -115,6 +145,8 @@ const Navbar = () => {
                     </svg>
                     <span>Profile</span>
                 </button>
+              )}
+                 
                     
                  </>
                
@@ -122,7 +154,7 @@ const Navbar = () => {
             ) : ( 
                 <button
                     
-                    className="hidden px-4 py-2 md:flex bg-gray-900 text-white rounded-[30px_20px_12px_20px] cursor-pointer"
+                    className="hidden px-4 py-2 lg:flex bg-gray-900 text-white rounded-[30px_20px_12px_20px] cursor-pointer"
                     onClick={handleLoginBtn}
                 >
                  
@@ -132,7 +164,7 @@ const Navbar = () => {
             )}
      
       {/* Mobile Menu Button */}
-      <button className="md:hidden flex flex-col justify-center items-center w-10 h-10 relative group" onClick={toggleMenu}>
+      <button className="lg:hidden flex flex-col justify-center items-center w-10 h-10  relative group" onClick={toggleMenu}>
       <span className={`absolute w-8 h-1 bg-gray-900 rounded transition-all duration-300 ease-in-out  ${isMenuOpen ? 'rotate-45 translate-y-2.5' : 'translate-y-[-8px]'}`}></span>
       <span className={`absolute w-8 h-1 bg-gray-900 rounded transition-all duration-300 ease-in-out   ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} ></span>
       <span className={`absolute w-8 h-1 bg-gray-900 rounded transition-all duration-300 ease-in-out   ${isMenuOpen ? '-rotate-45 -translate-y-2.5' : 'translate-y-[8px]'}`} ></span>
@@ -140,31 +172,31 @@ const Navbar = () => {
   
       {/* Mobile Menu */}
       
-      <div className={`fixed z-50 inset-0 bg-gray-100 flex flex-col items-center justify-center space-y-6 transition-transform transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden`} onClick={toggleMenu}>   
+      <div className={`fixed z-50 inset-0 bg-gray-100 flex flex-col items-center justify-center space-y-6 transition-transform transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'} lg:hidden`} onClick={toggleMenu}>   
       {user ? (
         <>
-            <a href="#" className={`text-lg font-semibold ${isActiveMobile('/home')}`} onClick={()=>handleNavigation('/home')}>Home</a>
-            <a href="#" className={`text-lg font-semibold ${isActiveMobile('/services')}`} onClick={()=>handleNavigation('/services')}>Services</a>
-            <a href="#" className={`text-lg font-semibold ${isActiveMobile('/booking')}`}>Bookings</a>
-            <a href="#" className={`text-lg font-semibold ${isActiveMobile('/about')}`}>About Us</a>
-            <a href="#" className={`text-lg font-semibold ${isActiveMobile('/contact')}`}>Contact Us</a>
+            <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/home')}`} onClick={()=>handleNavigation('/home')}>Home</a>
+            <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/services')}`} onClick={()=>handleNavigation('/services')}>Services</a>
+            <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/booking')}`} onClick={()=>handleNavigation('/booking')}>Bookings</a>
+            <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/about')}`} onClick={()=>handleNavigation('/about')}>About Us</a>
+            <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/contact')}`} onClick={()=>handleNavigation('/contact')}>Contact Us</a>
         </>
       ):worker? (
         <>
-          <a href="#" className={`text-lg font-semibold ${isActiveMobile('/dashboard')}`}>Home</a>
-          <a href="#" className={`text-lg font-semibold ${isActiveMobile('/history')}`}>History</a>
-          <a href="#" className={`text-lg font-semibold ${isActiveMobile('/about')}`}>About Us</a>
-          <a href="#" className={`text-lg font-semibold ${isActiveMobile('/contact')}`}>Contact Us</a>
+          <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/dashboard')}`} onClick={()=>handleNavigation('/dashboard')}>Home</a>
+          <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/history')}`} onClick={()=>handleNavigation('/history')}>History</a>
+          <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/about')}`} onClick={()=>handleNavigation('/about')}>About Us</a>
+          <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/contact')}`} onClick={()=>handleNavigation('/contact')}>Contact Us</a>
         
         </>
 
       ):(
         <>
-            <a href="#" className={`text-lg font-semibold text-indigo-600`}>Home</a>
-            <a href="#" className={`text-lg font-semibold `}>Services</a>
-            <a href="#" className={`text-lg font-semibold `}>Bookings</a>
-            <a href="#" className={`text-lg font-semibold `}>About Us</a>
-            <a href="#" className={`text-lg font-semibold `}>Contact Us</a>
+            <a  className={`text-lg font-semibold cursor-pointer text-indigo-600`} onClick={handleLoginBtn}>Home</a>
+            <a  className={`text-lg font-semibold cursor-pointer `} onClick={handleLoginBtn}>Services</a>
+            <a  className={`text-lg font-semibold cursor-pointer `} onClick={handleLoginBtn}>Bookings</a>
+            <a  className={`text-lg font-semibold cursor-pointer `} onClick={handleLoginBtn}>About Us</a>
+            <a  className={`text-lg font-semibold cursor-pointer `} onClick={handleLoginBtn}>Contact Us</a>
         </>
       )}
         

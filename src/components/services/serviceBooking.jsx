@@ -79,7 +79,9 @@ const serviceBooking = ({ workerId }) => {
     try {
       const response = await axios.post(
         "http://localhost:3000/user/addAddress",
-        updatedAddress
+        updatedAddress,{
+          headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+        }
       );
       toast.success("address added successfully!");
       setAddress({
@@ -130,7 +132,7 @@ const serviceBooking = ({ workerId }) => {
     try {
       const response = await axios.post(
         "http://localhost:3000/user/book-worker",
-        { bookingType, workerId, userId, bookAddress }
+        { bookingType, workerId, userId, bookAddress },{ headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
       );
 
       toast.success("worker booked successfully!");

@@ -10,7 +10,7 @@ function Workerdetail({workerId}) {
     const handleBook =()=>{
         navigate(`/worker/book/${workerId}`)
     }
-
+    
 
     useEffect(() => {
             if (workerId) {
@@ -35,7 +35,7 @@ function Workerdetail({workerId}) {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl text-center relative">
+      <div className="bg-white shadow-lg rounded-lg p-6 md:w-full w-90 max-w-2xl text-center relative">
         
         {/* Rating Box (Top Right) */}
         <div className="absolute top-4 right-4 bg-yellow-400 text-black font-semibold px-3 py-1 rounded-lg shadow-md text-sm">

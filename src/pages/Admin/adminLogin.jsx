@@ -2,8 +2,13 @@
  import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginAdmin } from '../../redux/authSlice';
- function adminLogin() {
+import { useDispatch } from 'react-redux';
+import axiosInstance from '../../services/AxiosInstance';
+import { useNavigate } from 'react-router';
 
+ function adminLogin() {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [LoginFormData,setLoginFormData]=useState({
         Email:"",
         Password:""
@@ -30,16 +35,14 @@ import { loginAdmin } from '../../redux/authSlice';
 
     try{
 
-      const response = await axios.post("http://localhost:3000/admin/login", {
-        email: LoginFormData.Email,
-        password: LoginFormData.Password,
-      });
-      
+      const response = await axiosInstance.post('/admin/login',{
+        email:LoginFormData.Email,
+        password: LoginFormData.Password
+      })
 
       const {email,Token } = response.data.response;
       
       
-
       localStorage.setItem("token", Token);
 
       toast.success("Login successfull!");

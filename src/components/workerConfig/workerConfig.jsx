@@ -42,7 +42,7 @@ function workerConfig() {
           ...formData,
           image: file,
           preview: URL.createObjectURL(file),
-        }); // Store the file
+        }); 
       }
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -132,7 +132,7 @@ function workerConfig() {
   if (error)
     return <p className="text-red-500">Error: {error}</p>;
   
-  if (!worker) return null;
+  // if (!worker) return null;
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-gray-200 to-indigo-200 ">

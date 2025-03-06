@@ -11,14 +11,19 @@ import EditProfile from './pages/worker/editProfile.jsx'
 import ProtectedAuthRoutes from './components/protectedRoute/protectedAuthRoute.jsx'
 import ProtectedRoutes from './components/protectedRoute/protectedRoute.jsx'
 import Services from './pages/Home/services.jsx'
-import ServiceAdding from './pages/temporay/ServiceAdding.jsx'
 import AdminLogin from './pages/Admin/adminLogin.jsx'
 import AdminDashboard from './pages/Admin/adminDashboard.jsx'
 import AdminUsers from './pages/Admin/adminUsers.jsx'
+import AdminWorkers from './pages/Admin/adminWorkers.jsx'
+import AdminBookings from './pages/Admin/adminBookings.jsx'
+import AdminServices from './pages/Admin/adminServices.jsx'
 import ServicePage from './pages/Home/ServicePage.jsx'
 import WorkerDetails from './pages/Home/WorkerDetail.jsx'
 import WorkerBooking from './pages/Home/WorkerBooking.jsx'
 import Bookings from './pages/Home/Booking.jsx'
+import About from './pages/About & Contact/About.jsx'
+import Contact from './pages/About & Contact/Contact.jsx'
+import History from './pages/worker/history.jsx'
 
 function App() {
   return (
@@ -32,17 +37,23 @@ function App() {
         <Route path='/worker/:id'  element={<ProtectedRoutes element={<WorkerDetails/>} requiredRole={'User'}/>}/>
         <Route path='/worker/book/:id'  element={<ProtectedRoutes element={<WorkerBooking/>} requiredRole={'User'}/>}/>
         <Route path='/booking'  element={<ProtectedRoutes element={<Bookings/>} requiredRole={'User'}/>}/>
+        <Route path='/about' element={<About />} />
+        <Route path='/contact' element={<Contact />} />
         <Route path='/otp' element={<OTP />} />
         <Route path='/role' element={<SelectionBox />}/>
         <Route path='/worker' element={<WorkerConfig />}/>
         <Route path='/dashboard' element={<ProtectedRoutes element={<Dashboard/>} requiredRole={'Worker'}/>}/>
         <Route path='/profile'  element={<ProtectedRoutes element={<Profile/>} requiredRole={'Worker'}/>}/>
         <Route path='/edit-profile'  element={<ProtectedRoutes element={<EditProfile/>} requiredRole={'Worker'}/>}/>
+        <Route path='/history'  element={<ProtectedRoutes element={<History/>} requiredRole={'Worker'}/>}/>
 
-        <Route path='/serviceAdding'  element={<ServiceAdding />}/>
+        
         <Route path='/admin/login'  element={<ProtectedAuthRoutes element={<AdminLogin/>}/>}/>
         <Route path='/admin/dashboard'  element={<ProtectedRoutes element={<AdminDashboard/>} requiredRole={'Admin'}/>}/>
         <Route path='/admin/users'  element={<ProtectedRoutes element={<AdminUsers/>} requiredRole={'Admin'}/>}/>
+        <Route path='/admin/workers'  element={<ProtectedRoutes element={<AdminWorkers/>} requiredRole={'Admin'}/>}/>
+        <Route path='/admin/bookings'  element={<ProtectedRoutes element={<AdminBookings/>} requiredRole={'Admin'}/>}/>
+        <Route path='/admin/services'  element={<ProtectedRoutes element={<AdminServices/>} requiredRole={'Admin'}/>}/>
 
       </Routes>
      

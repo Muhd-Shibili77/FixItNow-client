@@ -11,7 +11,7 @@ function workerProfile() {
   const workerId = useSelector((state) => state.auth.loginWoker?.userId);
   
   const { data: worker, loading, error } = useSelector((state) => state.worker);
-
+  
   
     useEffect(() => {
       const token = localStorage.getItem("token");
@@ -42,7 +42,7 @@ function workerProfile() {
 
     if (loading)
       return (
-        <div className="flex justify-center items-center h-40">
+        <div className="flex justify-center items-center h-screen">
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
           <p className="ml-2 text-blue-500 font-semibold">Loading...</p>
         </div>
@@ -51,10 +51,10 @@ function workerProfile() {
     if (error)
       return <p className="text-red-500">Error: {error}</p>;
     
-    if (!worker) return null;
+    
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center h-screen">
       <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl  text-center relative">
         {/* Edit Icon */}
         <button className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 cursor-pointer z-10" onClick={handleEditProfile}>
@@ -82,7 +82,7 @@ function workerProfile() {
         <div className="relative">
           <img
             className="w-35 h-35 mx-auto rounded-full border-3 border-white -mt-20 shadow-md"
-            src={`http://localhost:3000/uploads/${worker.profileImage}`}
+            src={`http://localhost:3000/uploads/${worker?.profileImage}`}
             alt="Profile"
           />
         </div>

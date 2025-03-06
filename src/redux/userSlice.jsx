@@ -7,10 +7,13 @@ export const fetchAddress = createAsyncThunk(
        
         try {
             
-            const response = await axios.get(`http://localhost:3000/user/getAddress?id=${userId}`)
+            const response = await axios.get(`http://localhost:3000/user/getAddress?id=${userId}`,{
+                headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+            })
             
             return response.data.response;
         } catch (error) {
+            
             return rejectWithValue(error.response.data);
         }
         
@@ -22,7 +25,9 @@ export const fetchUserBookings = createAsyncThunk(
     async (userId, { rejectWithValue }) => {
       
         try {
-            const response = await axios.get(`http://localhost:3000/user/getBookings?id=${userId}`);
+            const response = await axios.get(`http://localhost:3000/user/getBookings?id=${userId}`,{
+                headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+            });
             
             return response.data.response;
         } catch (error) {
@@ -47,7 +52,7 @@ const userSlice =createSlice({
         })
         .addCase(fetchAddress.rejected,(state,action)=>{
             state.loading = false
-            state.error = action.error.message;
+            state.error = action.payload; 
         })
       
         .addCase(fetchUserBookings.pending, (state) => {
@@ -59,7 +64,7 @@ const userSlice =createSlice({
         })
         .addCase(fetchUserBookings.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.error.message;
+            state.error = action.payload;
         });
     }
 })
