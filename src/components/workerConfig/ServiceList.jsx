@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import image from "../../assets/boy.png";
-import { fetchWorkerJob } from "../../redux/workerSlice";
-import { updateJobStatus } from "../../redux/workerSlice";
+import { fetchWorkerJob,updateJobStatus,toggleReachStatus,toggleWorkStatus,updateAmount } from "../../redux/workerSlice";
+import { TbBrandCashapp } from "react-icons/tb";
+import { IoLocationOutline } from "react-icons/io5";
+
 const JobList = () => {
   const dispatch = useDispatch();
+  const [isWorkDropDown,setIsWorkDropDown] = useState(false)
+  const [isReachDropDown,setIsReachDropDown] = useState(false)
+  const [isAmountModal,setIsAmountModal] = useState(false)
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [amount,setAmount] =useState(0)
   const { job: works, loading, error } = useSelector((state) => state.worker);
-
+  
   const worker = useSelector((state) => state.auth.loginWoker);
 
   const userId = worker?.userId;
@@ -19,8 +26,41 @@ const JobList = () => {
 
   const handleJobAction = (jobId, isAccepted) => {
     dispatch(updateJobStatus({ jobId, isAccepted }));
-    dispatch(fetchWorkerJob(userId));
   };
+  const handleReachStatus = (bookingId,reachStatus)=>{
+    dispatch(toggleReachStatus({bookingId,reachStatus}))
+    setTimeout(() => {
+      setIsReachDropDown(false)
+    }, 1000);
+  }
+  const handleWorkStatus = (bookingId,workStatus)=>{
+    dispatch(toggleWorkStatus({bookingId,workStatus}))
+    setTimeout(() => {
+      setIsWorkDropDown(false)
+    }, 1000); 
+  }
+
+  const handleOpenModal =(booking)=>{
+    setSelectedBooking(booking)
+    setIsAmountModal(true)
+    
+  }
+  const handleCloseModal = ()=>{
+    setSelectedBooking(null)
+    setAmount(0)
+    setIsAmountModal(false)
+  }
+
+  const handleSetAmount = (bookingId)=>{
+    if(amount === 0){
+      return
+    }
+    console.log(amount)
+    dispatch(updateAmount({bookingId,amount}))
+    setTimeout(() => {
+      handleCloseModal()
+    }, 1000);
+  }
 
   if (loading)
     return (
@@ -32,20 +72,55 @@ const JobList = () => {
 
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
-  if (!worker) return null;
+  
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Requested":
+        return "bg-orange-500 text-white";
+      case "Pending":
+        return "bg-amber-400 text-white";
+      case "In Progress":
+        return "bg-blue-500 text-white";
+      case "Completed":
+        return "bg-green-500 text-white";
+      case "Rejected":
+        return "bg-red-600 text-white";
+      case "Cancelled":
+        return "bg-red-400 text-white";
+      default:
+        return "bg-gray-500 text-white";
+    }
+  };
+
+  const getReachingStatusColor = (status) => {
+    switch (status) {
+      case "notStarted":
+        return "bg-gray-400 text-white"; 
+      case "onTheWay":
+        return "bg-yellow-500 text-black"; 
+      case "arrived":
+        return "bg-green-600 text-white"; 
+      default:
+        return "bg-gray-500 text-white"; 
+    }
+  };
+  
+const workerStatus =['Pending','In Progress','Completed','Cancelled']
+const reachingStatus = ['notStarted','onTheWay','arrived']
+
 
   return (
     <section className="py-12 bg-transparent">
       <div className="max-w-6xl mx-auto h-screen  px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 bg-gray-200 h-120 mt-25 rounded-xl shadow-md p-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 bg-gray-200  mt-25 rounded-xl shadow-md p-10">
           {works && works.length > 0 ? (
             works?.map((data) => (
               <div
-                className={`p-4 rounded-xl shadow-md w-90 md:w-75  flex flex-col gap-4 
+                className={`p-4 rounded-xl shadow-md w-90 md:w-79  flex flex-col gap-4 
                 ${
                   data.workStatus === "Rejected"
                     ? "bg-red-300 text-white"
-                    : "bg-white"
+                    : data.workStatus === 'Completed'?'bg-green-200 text-white':"bg-white"
                 }`}
                 key={data.id}
               >
@@ -62,41 +137,109 @@ const JobList = () => {
                     <p className="text-sm text-gray-600">
                       <span className="font-semibold">Name:</span>{" "}
                       {data.userId.username}
+                      
                     </p>
                     <p className="text-sm text-gray-600">
                       <span className="font-semibold">Phone:</span>{" "}
                       {data.address.phone}
                     </p>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-semibold">bookingNo:</span>{" "}
+                      {data.bookingNo}
+                    </p>
+                    {data.bookingType === 'schedule' &&(
+                        <p className="text-sm text-gray-600">
+                          <span className="font-semibold">Scheduled:</span>{" "}
+                          {new Date(data.date).toLocaleDateString()}
+                        </p>
+                    )}
                   </div>
                 </div>
                 {data.workStatus === "Rejected" ? (
-                  <h1 className="text-2xl font-bold text-black">Rejected</h1>
+                  <h1 className="text-2xl font-medium text-black bg-red-500 rounded-4xl w-45 ml-10   flex items-center justify-center mt-9">
+                    <span className={`text-sm px-3 py-1 rounded-lg cursor-default bg-red-500}`}>
+                         Rejected
+                    </span>          
+                  </h1>
                 ) : data.isAccepted ? (
                   <div className="grid grid-cols-2 gap-3">
                     <div className="p-2 bg-gray-100 rounded-md text-center">
                       <p className="text-xs font-bold text-gray-700">
-                        Estimate Time
+                        Set Estimate Time
                       </p>
                       <p className="text-sm text-gray-400">00:00</p>
                     </div>
-                    <div className="p-2 bg-gray-100 rounded-md text-center">
-                      <p className="text-xs font-semibold text-gray-700">
-                        Work
-                      </p>
-                      <p className="text-sm">{data.workStatus}</p>
-                    </div>
-                    <div className="p-2 bg-gray-100 rounded-md text-center">
-                      <p className="text-xs font-semibold text-gray-700">
-                        Status
-                      </p>
-                      <p className="text-sm">{data.reachingStatus}</p>
-                    </div>
+
+                    <div className="relative inline-block text-center">
+                        <div className="p-2 bg-gray-100 rounded-md">
+                          <p className="text-xs font-semibold text-gray-700">Work</p>
+                          <span className={`text-sm px-3 py-1 rounded-lg cursor-pointer ${getStatusColor(data.workStatus)}`} onClick={()=>setIsWorkDropDown(!isWorkDropDown)}>
+                          {data.workStatus}
+                          </span>
+                        </div>
+
+                       {isWorkDropDown && (
+                        <div className="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg w-32 z-10">
+                          {workerStatus.filter((status)=>status !== data.workStatus)
+                          .map((status,index)=>(
+                            <div key={index} className={`px-3 py-2 text-sm hover:bg-gray-200  cursor-pointer`}>
+                              <span className={`text-sm px-3 py-1 rounded-lg  ${getStatusColor(status)}`} onClick={()=>handleWorkStatus(data.id,status)}>
+                                  {status}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                       ) }
+                      </div>
+
+                    <div className="relative inline-block text-center">
+                        <div className="p-2 bg-gray-100 rounded-md">
+                          <p className="text-xs font-semibold text-gray-700">Status</p>
+                          <span className={`text-sm px-3 py-1 rounded-lg cursor-pointer ${getReachingStatusColor(data.reachingStatus)}`} onClick={()=>setIsReachDropDown(!isReachDropDown)}>
+                             {data.reachingStatus} 
+                          </span>
+                        </div>
+
+                       {isReachDropDown && (
+                        <div className="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg w-32 z-10">
+                        {reachingStatus.filter((status)=>status !== data.reachingStatus)
+                          .map((status,index)=>(
+                            <div key={index} className={`px-3 py-2 text-sm hover:bg-gray-200  cursor-pointer`}>
+                              <span className={`text-sm px-3 py-1 rounded-lg  ${getReachingStatusColor(status)}`} onClick={()=>handleReachStatus(data.id,status)}>
+                                  {status}
+                              </span>
+                            </div>
+                           ))}
+                        </div>
+                       ) }
+                      </div>
+
+
                     <div className="p-2 bg-gray-100 rounded-md text-center">
                       <p className="text-xs font-semibold text-gray-700">
                         Amount
                       </p>
-                      <p className="text-sm text-gray-400">INR 0.00</p>
+                      <p className="text-sm text-gray-400">INR {data.amount == null ? "0.00" : data.amount}</p>
                     </div>
+
+                     {data.workStatus === 'Completed' && data.reachingStatus === 'arrived' && data.amount == null ? (
+                        <button
+                            className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-20 w-25 flex justify-center py-1"
+                            onClick={()=>handleOpenModal(data)}
+                          >
+                            <TbBrandCashapp size={22} />
+                            Amount
+                          </button>
+                     ):data.reachingStatus !=='arrived' && data.workStatus !=='Cancelled' ? (
+                      <button
+                          className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-20 w-25 flex justify-center py-1"
+                        >
+                          <IoLocationOutline size={22} />
+                          Track
+                      </button>
+                     ):(null)}  
+
+
                   </div>
                 ) : (
                   <div className="flex gap-2 mt-2">
@@ -121,7 +264,76 @@ const JobList = () => {
               No job requests available at the moment.
             </h2>
           )}
+        
+        
+        
         </div>
+
+
+        {isAmountModal && selectedBooking && (
+                      <div
+                        className={`fixed inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur-sm transition-all duration-300 ${
+                          isAmountModal ? "opacity-100 scale-100" : "opacity-0 scale-80 pointer-events-none"
+                        }`}
+                      >
+                        <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-xl">
+                          {/* Close Button (X) in the top-right corner */}
+                          <button
+                            className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-lg cursor-pointer"
+                            onClick={handleCloseModal}
+                          >
+                            ✖
+                          </button>
+
+                          {/* Modal Title */}
+                          <h2 className="text-xl font-semibold text-center">Amount Details</h2>
+                          
+                          {selectedBooking && (
+                                <div className="mt-4 space-y-4">
+                                  
+                                  
+                                  <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                      <p className="font-medium">Work Status:</p>
+                                      <p>{selectedBooking.workStatus}</p>
+                                    </div>
+                                    <div>
+                                      <p className="font-medium">Reaching Status:</p>
+                                      <p>{selectedBooking.reachingStatus}</p>
+                                    </div>
+                                  </div>
+
+                                  <div className="mt-4">
+                                    <label className="block font-medium mb-2">
+                                      Enter Amount (INR):
+                                      <input
+                                        type="number"
+                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                                        placeholder="Enter amount"
+                                        value={amount}
+                                        onChange={(e)=>setAmount(e.target.value)}
+                                      />
+                                    </label>
+                                  </div>
+
+                                  <button
+                                    className="w-full bg-indigo-400 text-white py-2 rounded-md hover:bg-indigo-500"
+                                    onClick={() => handleSetAmount(selectedBooking.id)}
+                                  >
+                                    Submit Amount
+                                  </button>
+                                </div>
+                              )}
+
+
+                          
+                        </div>
+                      </div>
+        )}
+
+
+
+
       </div>
     </section>
   );

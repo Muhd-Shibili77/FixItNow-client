@@ -4,6 +4,7 @@ import workerReducer from './workerSlice.jsx'
 import adminReducer from './adminSlice.jsx'
 import serviceReducer from './serviceSlice.jsx'
 import userReducer from './userSlice.jsx'
+import messageReducer from './messageSlice.jsx'
 const store = configureStore({
     reducer:{
         auth:authReducer,
@@ -11,6 +12,7 @@ const store = configureStore({
         admin:adminReducer,
         service:serviceReducer,
         user:userReducer,
+        message:messageReducer
     }
 })
 

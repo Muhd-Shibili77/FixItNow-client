@@ -6,6 +6,7 @@ import Footer from '../../components/Footer/Footer'
 import { useDispatch } from 'react-redux'
 import { jwtDecode } from "jwt-decode";  // Use named import
 import { loginWoker,loginUser } from '../../redux/authSlice'
+import ChatButton from '../../components/button/ChatButton'
 
 const Contact = () => {
 
@@ -35,6 +36,7 @@ const Contact = () => {
     <WorkerBanner name={'Contact Us'}/>
     <ContactForm/>
     <Footer/>
+    <ChatButton/>
     
     </div>
   )

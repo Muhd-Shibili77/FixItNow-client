@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/authSlice";
 import { jwtDecode } from "jwt-decode";
+import ChatButton from "../../components/button/ChatButton";
 
 const WorkerDetails = () => {
   const { id } = useParams();
@@ -32,6 +33,7 @@ const WorkerDetails = () => {
       <WorkerBanner name={'worker'} />
       <WorkerDetail workerId={id}/>
       <Footer />
+      <ChatButton/>
     </div>
   );
 };

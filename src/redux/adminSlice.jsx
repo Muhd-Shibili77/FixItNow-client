@@ -1,6 +1,7 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import AxiosInstance from '../services/AxiosInstance'
+
 export const fetchServiceDetails = createAsyncThunk(
     'admin/fetchServiceDetails',
     async ({searchTerm ='',page=1},thunkAPI) => {
@@ -41,9 +42,6 @@ export const fetchServiceDetails = createAsyncThunk(
   export const toggleBlockUser = createAsyncThunk(
     'admin/toggleBlockUser',
     async ({userId,isBlocked})=>{
-      
-
-
       await AxiosInstance.patch(`/admin/users?actions=${!isBlocked}&id=${userId}`,{
         headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
       })
@@ -56,11 +54,15 @@ export const fetchServiceDetails = createAsyncThunk(
     'admin/fetchFullWorkers',
     async ({searchTerm,page})=>{
       
-      const response = await AxiosInstance.get(`/admin/workers?search=${searchTerm}&page=${page}&limit=10`,{
+      const url = page 
+      ? `/admin/workers?search=${searchTerm}&page=${page}&limit=10`
+      : `/admin/workers`;  // No pagination when page is not provided
+      
+      const response = await AxiosInstance.get(url,{
         headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
       })
       return {
-        users: response.data.response,
+        workers: response.data.response,
         currentPage: response.data.currentPage,
         totalPages: response.data.totalPages
       };
@@ -154,7 +156,7 @@ const adminSlice =createSlice({
         
         .addCase(fetchFullWorkers.fulfilled,(state,action)=>{
             state.loading = false
-            state.workers = action.payload.users;
+            state.workers = action.payload.workers;
             state.currentPage = action.payload.currentPage;
             state.totalPages = action.payload.totalPages;
           

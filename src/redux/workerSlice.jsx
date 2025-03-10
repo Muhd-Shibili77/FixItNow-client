@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import axiosInstance from "../services/AxiosInstance";
 
 export const fetchWorkerDetails = createAsyncThunk(
   "worker/fetchWorkerDetails",
@@ -51,6 +52,37 @@ export const updateJobStatus = createAsyncThunk(
       }
     }
   );
+
+export const toggleWorkStatus = createAsyncThunk(
+  'worker/toggleWorkStatus',
+  async ({bookingId,workStatus})=>{
+   
+    await axiosInstance.patch(`/worker/updateWork?bookingId=${bookingId}&workStatus=${workStatus}`,{},{
+      headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+    })
+    return {bookingId,workStatus:workStatus}
+  }
+)  
+export const toggleReachStatus = createAsyncThunk(
+  'worker/toggleReachStatus',
+  async ({bookingId,reachStatus})=>{
+    
+    await axiosInstance.patch(`/worker/updateReach?bookingId=${bookingId}&reachStatus=${reachStatus}`,{},{
+      headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+    })
+    return {bookingId,reachingStatus:reachStatus}
+  }
+)  
+export const updateAmount = createAsyncThunk(
+  'worker/updateAmount',
+  async ({bookingId,amount})=>{
+    
+    await axiosInstance.patch(`/worker/updateAmount?bookingId=${bookingId}&amount=${amount}`,{},{
+      headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+    })
+    return {bookingId,amount:amount}
+  }
+)  
   
 
 const workSlice = createSlice({
@@ -82,13 +114,28 @@ const workSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
       .addCase(updateJobStatus.fulfilled, (state, action) => {
-        state.job = state.job.map((job) => 
-          job.id === action.payload.jobId 
-            ? { ...job, isAccepted: action.payload.isAccepted } 
+       
+        state.job = state.job.map((job) =>
+          job.id === action.payload.jobId
+            ? { ...job, isAccepted: action.payload.isAccepted }
             : job
         );
-      });
-      
+      })
+      .addCase(toggleWorkStatus.fulfilled, (state, action) => {
+        state.job = state.job.map((job) =>
+          job.id === action.payload.bookingId ? { ...job, workStatus: action.payload.workStatus }: job
+        );
+      })
+      .addCase(toggleReachStatus.fulfilled, (state, action) => {
+        state.job = state.job.map((job) =>
+          job.id === action.payload.bookingId ? { ...job, reachingStatus: action.payload.reachingStatus }: job
+        );
+      }) 
+      .addCase(updateAmount.fulfilled, (state, action) => {
+        state.job = state.job.map((job) =>
+          job.id === action.payload.bookingId ? { ...job, amount: action.payload.amount }: job
+        );
+      });  
   },
 });
 

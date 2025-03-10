@@ -1,7 +1,20 @@
 import React from 'react';
 import BannerImage from '../../assets/BannerImage.png';
+import { logoutUser,logoutWoker } from "../../redux/authSlice";
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
 function Banner() {
+
+  const navigate = useNavigate()
+  const user = useSelector((state) => state.auth.loginUser);
+  
+  const handleBtnclick =()=>{
+    if(user){
+      navigate('/services')
+    }
+  }
+
   return (
     <main className="flex flex-col gap-12 p-8 md:flex-row md:items-center md:gap-0 md:p-6 max-w-7xl mx-auto">
   <div className="flex flex-col gap-8  md:flex-1">
@@ -11,7 +24,7 @@ function Banner() {
     </h1>
     
     <div className="relative inline-block">
-      <button className=" bg-indigo-400 px-8 py-3 rounded-full text-lg font-medium hover:bg-indigo-500 transition-colors">
+      <button className=" bg-indigo-400 px-8 py-3 rounded-full text-lg font-medium hover:bg-indigo-500 transition-colors cursor-pointer" onClick={handleBtnclick}>
         Get It Fixed
       </button>
      

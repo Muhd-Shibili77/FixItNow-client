@@ -6,6 +6,7 @@ import BookingList from '../../components/services/bookingList'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../redux/authSlice';
 import { jwtDecode } from "jwt-decode"; 
+import ChatButton from '../../components/button/ChatButton'
 
 const Booking = () => {
     const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Booking = () => {
         <WorkerBanner name={'bookings'}/>
         <BookingList/>
         <Footer/>
+        <ChatButton/>
     </div>
    
   )

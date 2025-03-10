@@ -5,6 +5,7 @@ import WorkerProfile from '../../components/workerConfig/workerProfile'
 import Footer from '../../components/Footer/Footer'
 import { loginWoker } from '../../redux/authSlice';
 import { useDispatch } from 'react-redux';
+import ChatButton from '../../components/button/ChatButton';
 
 function profile() {
 
@@ -28,6 +29,7 @@ function profile() {
     <Navbar/>
     <WorkerProfile/>
     <Footer/>
+    <ChatButton/>
     </div>
   )
 }

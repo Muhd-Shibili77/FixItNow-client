@@ -1,18 +1,14 @@
-import React,{useState,useEffect} from 'react'
-import ServiceList from '../../components/services/ServiceList'
+import React,{useEffect} from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
-import HeadBanner from '../../components/banner/HeadBanner'
+import ChatApp from '../../components/chat/Chat'
 import { useDispatch } from 'react-redux'
-import { loginUser } from '../../redux/authSlice'
+import { loginUser } from '../../redux/authSlice';
 import { jwtDecode } from 'jwt-decode'
-import ChatButton from '../../components/button/ChatButton'
 
+const Chat = () => {
 
-function services() {
-  const [searchTerm, setSearchTerm] = useState("");
-
- const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -30,13 +26,12 @@ function services() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
          <Navbar/>
-         <HeadBanner onSearch={setSearchTerm} />
-         <ServiceList searchTerm={searchTerm} />
+         <ChatApp/>
          
          <Footer/>
-         <ChatButton/>
-    </div>
+         
+    </div>  
   )
 }
 
-export default services
+export default Chat

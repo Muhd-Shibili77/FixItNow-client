@@ -6,6 +6,7 @@ import ServiceBooking from '../../components/services/serviceBooking'
 import { useDispatch,useSelector } from "react-redux";
 import { loginUser } from "../../redux/authSlice";
 import { jwtDecode } from "jwt-decode";
+import ChatButton from '../../components/button/ChatButton'
 
 
 const WorkerBooking = () => {
@@ -34,6 +35,7 @@ const WorkerBooking = () => {
         <ServiceBooking workerId={id} />
        
         <Footer />
+        <ChatButton/>
    </div>
     
   )

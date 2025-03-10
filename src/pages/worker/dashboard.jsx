@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { loginWoker } from '../../redux/authSlice';
 import Footer from '../../components/Footer/Footer';
 import JobList from '../../components/workerConfig/ServiceList';
+import ChatButton from '../../components/button/ChatButton';
 
 function dashboard() {
 
@@ -30,6 +31,7 @@ function dashboard() {
 
         <JobList/>
         <Footer/>
+        <ChatButton/>
     </div>
   )
 }

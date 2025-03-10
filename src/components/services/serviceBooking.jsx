@@ -22,7 +22,7 @@ const serviceBooking = ({ workerId }) => {
     }
   }, [dispatch, workerId]);
 
-  const [date, setDate] = useState("08/17/2025");
+  const [date, setDate] = useState("");
   const [bookingType, setBookingType] = useState("instant");
   const user = useSelector((state) => state.auth.loginUser);
   const userId = user?.userId;
@@ -116,6 +116,10 @@ const serviceBooking = ({ workerId }) => {
       toast.error("must select bookingtype.");
       return;
     }
+    if(bookingType==='schedule' && !date){
+      toast.error('must select a date')
+      return
+    }
     if (!workerId) {
       toast.error("workerId required");
       return;
@@ -132,7 +136,7 @@ const serviceBooking = ({ workerId }) => {
     try {
       const response = await axios.post(
         "http://localhost:3000/user/book-worker",
-        { bookingType, workerId, userId, bookAddress },{ headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
+        { bookingType,date, workerId, userId, bookAddress },{ headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
       );
 
       toast.success("worker booked successfully!");
@@ -266,25 +270,26 @@ const serviceBooking = ({ workerId }) => {
           <label className="flex items-center gap-2 mt-3">
             <input
               type="radio"
-              disabled
+              
               name="booking"
               checked={bookingType === "schedule"}
               onChange={() => setBookingType("schedule")}
             />
-            <p className="text-gray-400">Schedule (currently unavailable)</p>
+           Schedule 
           </label>
         </div>
+        {bookingType === 'schedule' &&(
+          <div className="relative mt-6 border p-3 rounded-md flex items-center gap-2">
+            <CalendarIcon className="w-5 h-5" />
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              className="w-full bg-transparent text-gray-600"
+            />
+          </div>
 
-        <div className="relative mt-6 border p-3 rounded-md flex items-center gap-2">
-          <CalendarIcon className="w-5 h-5" />
-          <input
-            type="text"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            className="w-full bg-transparent text-gray-400"
-            disabled
-          />
-        </div>
+        )}
         <div className="flex gap-4 mt-10">
           <button
             className="w-1/2 bg-red-400 hover:bg-red-500 text-white py-3 rounded-md cursor-pointer"

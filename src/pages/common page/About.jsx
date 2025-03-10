@@ -6,7 +6,7 @@ import AboutUs from '../../components/about&contact/AboutUs'
 import { useDispatch } from 'react-redux'
 import { jwtDecode } from "jwt-decode";  // Use named import
 import { loginWoker,loginUser } from '../../redux/authSlice'
-
+import ChatButton from '../../components/button/ChatButton'
 
 const About = () => {
   const dispatch = useDispatch();
@@ -35,6 +35,7 @@ const About = () => {
         <WorkerBanner name={'About Our Company'}/>
         <AboutUs/>
         <Footer/>
+        <ChatButton/>
         
     </div>
   )

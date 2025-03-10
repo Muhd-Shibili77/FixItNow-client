@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode"; 
 
-const ProtectedRoutes =({ element, requiredRole })=>{
+const ProtectedRoutes =({ element, requiredRoles })=>{
     const token = localStorage.getItem('token')
 
     if (!token) {
@@ -18,9 +18,9 @@ const ProtectedRoutes =({ element, requiredRole })=>{
             return <Navigate to="/" />;
           }
 
-          if (requiredRole && userRole !== requiredRole) {
+          if (requiredRoles && !requiredRoles.includes(userRole)) {
             return <Navigate to="/" />;
-          }
+        }
 
 
     } catch (error) {

@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { loginUser } from '../../redux/authSlice'
 import { jwtDecode } from 'jwt-decode'
 import WorkerList from '../../components/services/workerList'
+import ChatButton from '../../components/button/ChatButton'
 
 const ServicePage = () => {
     const {id} = useParams();
@@ -35,6 +36,7 @@ const ServicePage = () => {
          
          
          <Footer/>
+         <ChatButton/>
     </div>
   )
 }

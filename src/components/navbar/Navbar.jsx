@@ -65,7 +65,7 @@ const Navbar = () => {
           },
         });   
   }
-  
+
   const handleProfile = ()=>{
     
     
@@ -200,8 +200,10 @@ const Navbar = () => {
         </>
       )}
         
-        
+       
         {user || worker ? ( 
+                <>
+                
                  <button className="px-6 py-2 bg-gray-900 text-white rounded-[30px_20px_12px_20px] flex items-center space-x-2 cursor-pointer" onClick={handleProfile} >
                  <svg
                    xmlns="http://www.w3.org/2000/svg"
@@ -218,7 +220,9 @@ const Navbar = () => {
                  />
                  </svg>
                   <span>Profile</span>
+                  
                 </button>
+                </>
             ) : ( 
                 <button
                     

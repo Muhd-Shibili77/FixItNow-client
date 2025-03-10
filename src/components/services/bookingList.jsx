@@ -45,7 +45,7 @@ const bookingList = () => {
                       {bookings ?(
                             bookings?.map((data)=>(
                                 
-                                <BookingCard key={data.id} name={data.workerId.name} role={data.serviceId.name} Phone={data.workerId.phone} work={data.workStatus} status={data.reachingStatus} onClick={() => setSelectedWorker(data)}/>
+                                <BookingCard key={data.id} name={data.workerId.name} role={data.serviceId.name} Phone={data.workerId.phone} work={data.workStatus} status={data.reachingStatus} amount={data.amount} bookingType={data.bookingType} date={data.date} onClick={() => setSelectedWorker(data)}/>
                             ))
                       ):(
                         <h2 className="text-3xl font-bold text-center col-span-full text-red-500">No bookings available</h2>

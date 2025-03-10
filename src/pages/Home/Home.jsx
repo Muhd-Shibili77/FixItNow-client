@@ -6,9 +6,11 @@ import SecondBanner from '../../components/secondBanner/secondBanner'
 import Footer from '../../components/Footer/Footer'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../redux/authSlice';
+import ChatButton from '../../components/button/ChatButton';
 
 function Home() {
   const dispatch = useDispatch();
+  
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,6 +31,8 @@ function Home() {
          <Banner/>
          <SecondBanner/>
          <Footer/>
+         
+         <ChatButton/>
     </div>    
   )
 }
