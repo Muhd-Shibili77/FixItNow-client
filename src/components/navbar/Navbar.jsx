@@ -104,6 +104,7 @@ const Navbar = () => {
         <div className="hidden lg:flex space-x-4">
         <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/dashboard')}`} onClick={()=>handleNavigation('/dashboard')}>Home</a>
         <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/history')}`} onClick={()=>handleNavigation('/history')}>History</a>
+        <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/wallet')}`} onClick={()=>handleNavigation('/wallet')}>Wallet</a>
         <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/about')}`} onClick={()=>handleNavigation('/about')}>About Us</a>
         <a  className={`text-dark px-4 py-2 transition-colors duration-300 cursor-pointer hover:text-gray-700 ${isActiveDesktop('/contact')}`} onClick={()=>handleNavigation('/contact')}>Contact Us</a>
        </div>
@@ -185,6 +186,7 @@ const Navbar = () => {
         <>
           <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/dashboard')}`} onClick={()=>handleNavigation('/dashboard')}>Home</a>
           <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/history')}`} onClick={()=>handleNavigation('/history')}>History</a>
+          <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/wallet')}`} onClick={()=>handleNavigation('/wallet')}>Wallet</a>
           <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/about')}`} onClick={()=>handleNavigation('/about')}>About Us</a>
           <a  className={`text-lg font-semibold cursor-pointer ${isActiveMobile('/contact')}`} onClick={()=>handleNavigation('/contact')}>Contact Us</a>
         

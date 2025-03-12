@@ -83,11 +83,21 @@ export const updateAmount = createAsyncThunk(
     return {bookingId,amount:amount}
   }
 )  
+export const getWallet = createAsyncThunk(
+  'worker/getWallet',
+  async ({userId})=>{
+ 
+    const response = await axiosInstance.get(`/worker/wallet?workerId=${userId}`,{
+      headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+    })
+    return {wallet: response.data.response}
+  }
+)  
   
 
 const workSlice = createSlice({
   name: "worker",
-  initialState: { data: null, job: [], loading: false, error: null },
+  initialState: { data: null,wallet:null, job: [], loading: false, error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -99,6 +109,17 @@ const workSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(fetchWorkerDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getWallet.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getWallet.fulfilled, (state, action) => {
+        state.loading = false;
+        state.wallet = action.payload.wallet;
+      })
+      .addCase(getWallet.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })

@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import image from "../../assets/repairmen-electricians.webp";
 import { TbBrandCashapp } from "react-icons/tb";
 
-const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date, onClick }) => {
+import { IoIosInformationCircleOutline } from "react-icons/io";
+
+
+const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,paymentStatus,bookingNo, onClick,bookingInfo }) => {
+  
+
   const getStatusColor = (status) => {
     switch (status) {
       case "Requested":
@@ -37,17 +42,24 @@ const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,
 
   return (
     <div
-      className={`p-4 rounded-xl shadow-md w-70 md:w-79  cursor-pointer flex flex-col gap-4 
+      className={` relative p-4 rounded-xl shadow-md w-70 md:w-79  cursor-pointer flex flex-col gap-4 
       ${
         work === "Rejected"
           ? "bg-red-300 text-white"
-          : work === "Completed"
+          : paymentStatus == true
           ? "bg-green-200 text-white"
           : "bg-white"
       }
     `}
-      onClick={onClick}
+      
     >
+      <button
+          className="absolute top-2 right-2  text-gray-700 p-1 rounded-full cursor-pointer"
+          onClick={bookingInfo}
+        >
+        <IoIosInformationCircleOutline size={23} />
+
+  </button>
       <div className="flex items-center gap-4">
         <div className="w-26 h-26 overflow-hidden rounded-lg">
           <img
@@ -80,8 +92,8 @@ const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,
       {work !== "Rejected" ? (
         <div className="grid grid-cols-2 gap-3">
           <div className="p-2 bg-gray-100 rounded-md text-center">
-            <p className="text-xs font-bold text-gray-700">Estimate Time</p>
-            <p className="text-sm text-gray-400">00:00</p>
+            <p className="text-xs font-bold text-gray-700">Booking No</p>
+            <p className="text-sm text-gray-400">{bookingNo}</p>
           </div>
           <div className="p-2 bg-gray-100 rounded-md text-center">
             <p className="text-xs font-semibold text-gray-700">Work</p>
@@ -110,13 +122,13 @@ const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,
             </p>
           </div>
 
-        {work ==='Completed' && status === 'arrived' && amount !== null ?(
+        {work ==='Completed' && status === 'arrived' && amount != null && paymentStatus==false ?(
           <button
             className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-20 w-25 flex justify-center py-1"
-           
+            onClick={onClick}
           >
             <TbBrandCashapp size={22} />
-            Pay
+            Pay Now
           </button>
         ):(null)}
         </div>
@@ -129,6 +141,8 @@ const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,
           </span>
         </h1>
       )}
+
+     
     </div>
   );
 };

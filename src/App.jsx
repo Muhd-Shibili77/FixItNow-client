@@ -25,7 +25,7 @@ import About from './pages/common page/About.jsx'
 import Contact from './pages/common page/Contact.jsx'
 import History from './pages/worker/history.jsx'
 import Chat from './pages/common page/Chat.jsx'
-
+import Wallet from './pages/worker/wallet.jsx'
 function App() {
   return (
     <div>
@@ -49,6 +49,7 @@ function App() {
         <Route path='/profile'  element={<ProtectedRoutes element={<Profile/>} requiredRole={['Worker']}/>}/>
         <Route path='/edit-profile'  element={<ProtectedRoutes element={<EditProfile/>} requiredRole={['Worker']}/>}/>
         <Route path='/history'  element={<ProtectedRoutes element={<History/>} requiredRole={['Worker']}/>}/>
+        <Route path='/wallet'  element={<ProtectedRoutes element={<Wallet/>} requiredRole={['Worker']}/>}/>
 
         
         <Route path='/admin/login'  element={<ProtectedAuthRoutes element={<AdminLogin/>}/>}/>
