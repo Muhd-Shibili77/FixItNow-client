@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from 'react-router'
 
-const WorkerCard = ({ name,image,experience,id }) => {
+const WorkerCard = ({ name,image,experience,id,rating }) => {
 
   const navigate = useNavigate()
     const handleServicePage =()=>{
@@ -22,7 +22,7 @@ const WorkerCard = ({ name,image,experience,id }) => {
         <h3 className="text-xl font-semibold">{name}</h3>
         <div className="flex items-center justify-center gap-1 mt-1">
           <span className="bg-yellow-400 text-black text-xs px-2 py-1 rounded-md font-semibold">
-            ⭐ rating/5
+            ⭐ {rating}/5
           </span>
         </div>
         <p className="text-sm text-gray-700 mt-1">{experience} yrs exp</p>

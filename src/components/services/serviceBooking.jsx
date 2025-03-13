@@ -251,7 +251,7 @@ const serviceBooking = ({ workerId }) => {
              <img src={`http://localhost:3000/uploads/${worker.profileImage}`} className="rounded-xl w-31" alt="Worker" />
           <div className="ml-4">
             <h3 className="font-semibold">{worker.name}</h3>
-            <p className="text-sm text-gray-600">⭐ 4.5/5 | {worker?.service?.name}</p>
+            <p className="text-sm text-gray-600">⭐ {worker.averageRating}/5 | {worker?.service?.name}</p>
           </div>
         </div>
         ):(

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import image from "../../assets/repairmen-electricians.webp";
 import { TbBrandCashapp } from "react-icons/tb";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
 import { IoIosInformationCircleOutline } from "react-icons/io";
+import { FaStar } from "react-icons/fa";
 
 
-const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,paymentStatus,bookingNo, onClick,bookingInfo }) => {
+const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,paymentStatus,bookingNo,isFeedback, onClick,bookingInfo,review }) => {
   
 
   const getStatusColor = (status) => {
@@ -42,15 +44,7 @@ const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,
 
   return (
     <div
-      className={` relative p-4 rounded-xl shadow-md w-70 md:w-79  cursor-pointer flex flex-col gap-4 
-      ${
-        work === "Rejected"
-          ? "bg-red-300 text-white"
-          : paymentStatus == true
-          ? "bg-green-200 text-white"
-          : "bg-white"
-      }
-    `}
+      className={` relative p-4 rounded-xl shadow-md w-70 md:w-79  cursor-pointer flex flex-col gap-4 bg-white`}
       
     >
       <button
@@ -117,23 +111,41 @@ const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,
           </div>
           <div className="p-2 bg-gray-100 rounded-md text-center">
             <p className="text-xs font-semibold text-gray-700">Amount</p>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm flex justify-center text-gray-400">
               INR {amount == null ? "0.00" : amount}
+              {paymentStatus==true ? <IoCheckmarkDoneCircle size={20} className="text-green-700" /> : null}
             </p>
           </div>
 
         {work ==='Completed' && status === 'arrived' && amount != null && paymentStatus==false ?(
           <button
-            className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-20 w-25 flex justify-center py-1"
+            className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-23 w-25 flex justify-center py-1"
             onClick={onClick}
           >
             <TbBrandCashapp size={22} />
             Pay Now
           </button>
+        ): work ==='Completed' && status === 'arrived' && amount != null && paymentStatus==true && isFeedback == false ?(
+              <button
+              className="bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 cursor-pointer ml-23 w-25 flex justify-center py-1"
+              onClick={review}
+            >
+              <FaStar size={20} />
+
+              rate
+            </button>
+
+
+        ):work ==='Completed' && status === 'arrived' && amount != null && paymentStatus==true && isFeedback == true ? (
+          <button className=" text-indigo-400 rounded-lg  ml-6 w-60 px-1 py-2 flex justify-center items-center">
+            Thank you for your feedback!
+          </button>
+
+
         ):(null)}
         </div>
       ) : (
-        <h1 className="text-2xl font-medium text-black bg-red-500 rounded-4xl w-45 ml-10   flex items-center justify-center mt-9">
+        <h1 className="text-2xl font-medium text-black bg-red-500 rounded-4xl w-45 ml-13   flex items-center justify-center mt-9">
           <span
             className={`text-sm px-3 py-1 rounded-lg cursor-default bg-red-500}`}
           >

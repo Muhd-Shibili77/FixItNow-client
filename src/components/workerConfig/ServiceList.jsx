@@ -10,6 +10,8 @@ import {
 } from "../../redux/workerSlice";
 import { TbBrandCashapp } from "react-icons/tb";
 import { IoLocationOutline } from "react-icons/io5";
+import { IoCheckmarkDoneCircle } from "react-icons/io5";
+
 
 const JobList = () => {
   const dispatch = useDispatch();
@@ -114,19 +116,12 @@ const JobList = () => {
 
   return (
     <section className="py-12 bg-transparent">
-      <div className="max-w-6xl mx-auto h-screen  px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto h-screen  px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 bg-gray-200  mt-25 rounded-xl shadow-md p-10">
           {works && works.length > 0 ? (
             works?.map((data) => (
               <div
-                className={`p-4 rounded-xl shadow-md w-90 md:w-79  flex flex-col gap-4 
-                ${
-                  data.workStatus === "Rejected"
-                    ? "bg-red-300 text-white"
-                    : data.paymentStatus === true
-                    ? "bg-green-200 text-white"
-                    : "bg-white"
-                }`}
+                className={`p-4 rounded-xl shadow-md w-90 md:w-85  flex flex-col gap-4 bg-white`}
                 key={data.id}
               >
                 <div className="flex items-center gap-4">
@@ -148,8 +143,8 @@ const JobList = () => {
                       {data.address.phone}
                     </p>
                     <p className="text-sm text-gray-600">
-                      <span className="font-semibold">bookingNo:</span>{" "}
-                      {data.bookingNo}
+                      <span className="font-semibold">Place:</span>{" "}
+                      {data.address.city},{data.address.state}
                     </p>
                     {data.bookingType === "schedule" && (
                       <p className="text-sm text-gray-600">
@@ -171,9 +166,9 @@ const JobList = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <div className="p-2 bg-gray-100 rounded-md text-center">
                       <p className="text-xs font-bold text-gray-700">
-                        Set Estimate Time
+                        Booking No
                       </p>
-                      <p className="text-sm text-gray-400">00:00</p>
+                      <p className="text-sm text-gray-400">{data.bookingNo}</p>
                     </div>
 
                     <div className="relative inline-block text-center">
@@ -196,7 +191,7 @@ const JobList = () => {
                         </span>
                       </div>
 
-                      {openedWorkDropdownId == data.id && (
+                      {openedWorkDropdownId == data.id && !data.paymentStatus ? (
                         <div className="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg w-32 z-10">
                           {workerStatus
                             .filter((status) => status !== data.workStatus)
@@ -218,7 +213,7 @@ const JobList = () => {
                               </div>
                             ))}
                         </div>
-                      )}
+                      ):(null)}
                     </div>
 
                     <div className="relative inline-block text-center">
@@ -241,7 +236,7 @@ const JobList = () => {
                         </span>
                       </div>
 
-                    {openedReachDropdownId === data.id && (
+                    {openedReachDropdownId === data.id && !data.paymentStatus ? (
                         <div className="absolute left-1/2 transform -translate-x-1/2 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg w-32 z-10">
                           {reachingStatus
                             .filter((status) => status !== data.reachingStatus)
@@ -263,15 +258,16 @@ const JobList = () => {
                               </div>
                             ))}
                         </div>
-                      )}
+                      ):(null)}
                     </div>
 
                     <div className="p-2 bg-gray-100 rounded-md text-center">
                       <p className="text-xs font-semibold text-gray-700">
                         Amount
                       </p>
-                      <p className="text-sm text-gray-400">
+                      <p className="text-sm flex justify-center text-gray-400">
                         INR {data.amount == null ? "0.00" : data.amount}
+                        {data.paymentStatus==true ? <IoCheckmarkDoneCircle size={20} className="text-green-700" /> : null}
                       </p>
                     </div>
 
