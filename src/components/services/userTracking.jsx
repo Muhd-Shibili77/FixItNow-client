@@ -1,20 +1,42 @@
 import React, { useEffect, useState } from 'react';
+import { renderToString } from 'react-dom/server';
 import axiosInstance from '../../services/AxiosInstance';
-import { GoogleMap, Marker, DirectionsRenderer, useJsApiLoader } from '@react-google-maps/api';
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L,{divIcon } from 'leaflet';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { FaPlay, FaMapMarkerAlt } from 'react-icons/fa';
 
-const libraries = ["places", "directions"];
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow
+});
+
+const workerIcon = divIcon({
+    className: 'custom-marker',
+    html: renderToString(<FaPlay style={{ color: 'blue', fontSize: '24px' }} />),
+    iconSize: [30, 30]
+  });
+  
+  
+  const userIcon = divIcon({
+    className: 'custom-marker',
+    html: renderToString(<FaMapMarkerAlt style={{ color: 'red', fontSize: '24px' }} />),
+    iconSize: [30, 30]
+  });
+
 
 const UserTracking = ({ bookingId }) => {
     const [userLocation, setUserLocation] = useState(null);
     const [workerLocation, setWorkerLocation] = useState(null);
-    const [directions, setDirections] = useState(null);
-    const [directionsError, setDirectionsError] = useState(null);
+    const [routeData, setRouteData] = useState(null);
     
-    // Load Google Maps API
-    const { isLoaded, loadError } = useJsApiLoader({
-        googleMapsApiKey: "AIzaSyAuvEolnkHLcfRMZhIdFyGKYZ2J-1_-rGo",
-        libraries
-    });
+
+    
     
     // Fetch user location from API
     useEffect(() => {
@@ -56,125 +78,51 @@ const UserTracking = ({ bookingId }) => {
         return () => navigator.geolocation.clearWatch(watchId);
     }, []);
     
-    // Calculate directions when both locations are available
-    useEffect(() => {
-        if (!isLoaded || !userLocation || !workerLocation) return;
-        
-        try {
-            // Make sure the DirectionsService is created after the API is loaded
-            const directionsService = new window.google.maps.DirectionsService();
-            
-            directionsService.route(
-                {
-                    origin: new window.google.maps.LatLng(workerLocation.lat, workerLocation.lng),
-                    destination: new window.google.maps.LatLng(userLocation.lat, userLocation.lng),
-                    travelMode: window.google.maps.TravelMode.DRIVING
-                },
-                (result, status) => {
-                    if (status === window.google.maps.DirectionsStatus.OK) {
-                        setDirections(result);
-                        setDirectionsError(null);
-                    } else {
-                        console.error("Directions request failed due to", status);
-                        setDirectionsError(`Directions request failed: ${status}`);
-                    }
-                }
-            );
-        } catch (error) {
-            console.error("Error creating directions:", error);
-            setDirectionsError(`Error creating directions: ${error.message}`);
+    useEffect(()=>{
+        if (!userLocation || !workerLocation) return;
+        const fetchRoute = async ()=>{
+            try {
+             
+                const response = await fetch(
+                  `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248b117f7b469ad43dbb02b4dad888038f3&start=${workerLocation.lng},${workerLocation.lat}&end=${userLocation.lng},${userLocation.lat}`
+                );
+                const data = await response.json();
+                setRouteData(data);
+              } catch (error) {
+                console.error("Error fetching route:", error);
+              }
         }
-    }, [isLoaded, userLocation, workerLocation]);
-    
-    if (loadError) {
-        return <div>Error loading maps: {loadError.message}</div>;
-    }
-    
-    if (!isLoaded) {
-        return <div>Loading maps...</div>;
-    }
+
+    fetchRoute();
+    },[userLocation,workerLocation])
+
+    if (!userLocation || !workerLocation) {
+        return <div>Loading location data...</div>;
+      }
+   
     
     return (
-        <div className="relative">
-            {userLocation && workerLocation ? (
-                <GoogleMap 
-                    center={workerLocation} 
-                    zoom={15} 
-                    mapContainerStyle={{ width: "100%", height: "729px" }}
-                    options={{
-                        zoomControl: true,
-                        streetViewControl: false,
-                        mapTypeControl: false,
-                        fullscreenControl: true
-                    }}
-                >
-                    {/* User marker */}
-                    <Marker 
-                        position={userLocation} 
-                        label={{
-                            text: "User",
-                            color: "white",
-                            fontWeight: "bold"
-                        }}
-                        icon={{
-                            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png"
-                        }}
-                    />
-                    
-                    {/* Worker marker */}
-                    <Marker 
-                        position={workerLocation} 
-                        label={{
-                            text: "Worker",
-                            color: "white",
-                            fontWeight: "bold"
-                        }}
-                        icon={{
-                            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-                        }}
-                    />
-                    
-                    {/* Directions */}
-                    {directions && (
-                        <DirectionsRenderer 
-                            directions={directions}
-                            options={{
-                                polylineOptions: {
-                                    strokeColor: "#1a73e8",
-                                    strokeWeight: 5
-                                }
-                            }}
-                        />
-                    )}
-                </GoogleMap>
-            ) : (
-                <div className="flex items-center justify-center h-729px">
-                    <p className="text-lg font-medium">Loading location data...</p>
-                </div>
-            )}
-            
-            {directionsError && (
-                <div className="absolute bottom-4 left-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-                    <p>{directionsError}</p>
-                </div>
-            )}
-            
-            {userLocation && workerLocation && (
-                <div className="absolute top-4 left-4 right-4 bg-white p-4 rounded-lg shadow-md">
-                    <h3 className="font-bold text-lg mb-2">Live Tracking</h3>
-                    {directions?.routes[0]?.legs[0]?.distance && (
-                        <p className="mt-1">
-                            <span className="font-semibold">Distance:</span> {directions.routes[0].legs[0].distance.text}
-                        </p>
-                    )}
-                    {directions?.routes[0]?.legs[0]?.duration && (
-                        <p className="mt-1">
-                            <span className="font-semibold">ETA:</span> {directions.routes[0].legs[0].duration.text}
-                        </p>
-                    )}
-                </div>
-            )}
-        </div>
+       <MapContainer center={workerLocation} zoom={13} style={{ height: '729px', width: '100%' }}>
+        <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        <Marker position={userLocation} icon={userIcon}> 
+            <Popup>user location</Popup>
+        </Marker>
+        <Marker position={workerLocation} icon={workerIcon}> 
+            <Popup>worker location</Popup>
+        </Marker>
+        {routeData && routeData.features  && routeData.features[0] && (
+            <Polyline 
+                positions={routeData.features[0].geometry.coordinates.map(coord => [coord[1],coord[0]])}
+                color="blue"
+                weight={5}
+                opacity={0.7}
+            />
+        )}
+
+       </MapContainer>
     );
 };
 
