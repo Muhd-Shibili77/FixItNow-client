@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { fetchWorkerDetails } from "../../redux/workerSlice";
 
 const serviceBooking = ({ workerId }) => {
+  const [location, setLocation] = useState(null);
+  const [userLocation,setUserLocation] = useState(null)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data, loading, error } = useSelector((state) => state.user);
@@ -112,6 +114,10 @@ const serviceBooking = ({ workerId }) => {
   };
 
   const handleBook = async () => {
+    if(!userLocation){
+      toast.error('current location needed')
+      return
+    }
     if (!bookingType) {
       toast.error("must select bookingtype.");
       return;
@@ -132,11 +138,12 @@ const serviceBooking = ({ workerId }) => {
       toast.error("booking Address required");
       return;
     }
+   
 
     try {
       const response = await axios.post(
         "http://localhost:3000/user/book-worker",
-        { bookingType,date, workerId, userId, bookAddress },{ headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
+        { bookingType,date, workerId, userId, bookAddress,userLocation },{ headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
       );
 
       toast.success("worker booked successfully!");
@@ -147,6 +154,23 @@ const serviceBooking = ({ workerId }) => {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
+
+  const getCurrentLocation = ()=>{
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(
+        (position)=>{
+          setUserLocation({latitude:position.coords.latitude,longitude:position.coords.longitude})
+          setLocation(`Location retrieved`);
+        },
+        (error)=>{
+          console.error("Error getting location:", error);
+          setLocation("Location access denied");
+        }
+      )
+    }else{
+      setLocation('geolocation is not supporting')
+    }
+  }
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-6 min-h-screen">
@@ -242,10 +266,15 @@ const serviceBooking = ({ workerId }) => {
         <h2 className="text-lg font-semibold mb-8 ">Your Location</h2>
         <div className="relative w-full p-3 border rounded-md flex items-center gap-2 mt-9">
           <MapPinIcon className="w-5 h-5" />
-          <select className="w-full bg-transparent z-10 border-0 focus:outline-none">
-            <option>Location</option>
-          </select>
+          <button 
+            onClick={getCurrentLocation} 
+            className="w-full bg-transparent z-10 border-0 focus:outline-none text-left"
+          >
+            {location ? location : "Get Current Location"}
+           
+          </button>
         </div>
+
           {worker ?(
         <div className="flex items-center bg-blue-100 p-4 rounded-lg mt-15">
              <img src={`http://localhost:3000/uploads/${worker.profileImage}`} className="rounded-xl w-31" alt="Worker" />

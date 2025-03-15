@@ -11,10 +11,12 @@ import {
 import { TbBrandCashapp } from "react-icons/tb";
 import { IoLocationOutline } from "react-icons/io5";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
+import { useNavigate } from "react-router";
 
 
 const JobList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [openedWorkDropdownId, setOpenedWorkDropdownId] = useState(null);
   const [openedReachDropdownId, setOpenedReachDropdownId] = useState(null);
   const [isAmountModal, setIsAmountModal] = useState(false);
@@ -71,7 +73,7 @@ const JobList = () => {
 
   if (loading)
     return (
-      <div className="flex justify-center items-center h-40">
+      <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
         <p className="ml-2 text-blue-500 font-semibold">Loading...</p>
       </div>
@@ -114,14 +116,19 @@ const JobList = () => {
   const workerStatus = ["Pending", "In Progress", "Completed", "Cancelled"];
   const reachingStatus = ["notStarted", "onTheWay", "arrived"];
 
+
+
+  const handleTrack = (bookingId)=>{
+      navigate(`/track/${bookingId}`)
+  }
   return (
     <section className="py-12 bg-transparent">
-      <div className="max-w-7xl mx-auto h-screen  px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 bg-gray-200  mt-25 rounded-xl shadow-md p-10">
+      <div className="max-w-7xl mx-auto   px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 bg-gray-200  mt-25 rounded-xl shadow-md p-10 ">
           {works && works.length > 0 ? (
             works?.map((data) => (
               <div
-                className={`p-4 rounded-xl shadow-md w-90 md:w-85  flex flex-col gap-4 bg-white`}
+                className={`p-4 rounded-xl shadow-md w-90 md:w-85  flex flex-col gap-4 bg-white transition-all duration-300 hover:shadow-lg hover:scale-102`}
                 key={data.id}
               >
                 <div className="flex items-center gap-4">
@@ -283,7 +290,9 @@ const JobList = () => {
                       </button>
                     ) : data.reachingStatus !== "arrived" &&
                       data.workStatus !== "Cancelled" ? (
-                      <button className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-20 w-25 flex justify-center py-1">
+                      <button className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-25 w-25 flex justify-center py-1"
+                      onClick={()=>handleTrack(data.id)}
+                      >
                         <IoLocationOutline size={22} />
                         Track
                       </button>

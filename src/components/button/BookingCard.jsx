@@ -44,9 +44,9 @@ const BookingCard = ({ name, role, Phone, work, status, amount,bookingType,date,
 
   return (
     <div
-      className={` relative p-4 rounded-xl shadow-md w-70 md:w-79  cursor-pointer flex flex-col gap-4 bg-white`}
-      
+  className="relative p-4 rounded-xl shadow-md w-70 md:w-79  flex flex-col gap-4 bg-white transition-all duration-300 hover:shadow-lg hover:scale-102"
     >
+
       <button
           className="absolute top-2 right-2  text-gray-700 p-1 rounded-full cursor-pointer"
           onClick={bookingInfo}
