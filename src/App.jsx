@@ -26,25 +26,34 @@ import Contact from './pages/common page/Contact.jsx'
 import History from './pages/worker/history.jsx'
 import Chat from './pages/common page/Chat.jsx'
 import Wallet from './pages/worker/wallet.jsx'
+import UserInfo from './pages/Home/UserInfo.jsx'
+import NotFound from './pages/common page/404.jsx'
 function App() {
   return (
     <div>
       <Routes>
         <Route path='/' element={<ProtectedAuthRoutes element={<Home/>}/>}/>
         <Route path='/auth' element={<ProtectedAuthRoutes element={<Authentication/>}/>}/>
+
+        
         <Route path='/home'  element={<ProtectedRoutes element={<Home/>} requiredRole={['User']}/>}/>
         <Route path='/services'  element={<ProtectedRoutes element={<Services/>} requiredRole={['User']}/>}/>
         <Route path='/service/:id'  element={<ProtectedRoutes element={<ServicePage/>} requiredRole={['User']}/>}/>
         <Route path='/worker/:id'  element={<ProtectedRoutes element={<WorkerDetails/>} requiredRole={['User']}/>}/>
         <Route path='/worker/book/:id'  element={<ProtectedRoutes element={<WorkerBooking/>} requiredRole={['User']}/>}/>
         <Route path='/booking' element={<ProtectedRoutes element={<Bookings />} requiredRoles={['User']} />} />
+        <Route path='/personal-info' element={<ProtectedRoutes element={<UserInfo />} requiredRoles={['User']} />} />
+        <Route path='/chat' element={<ProtectedRoutes element={<Chat />} requiredRoles={['User','Worker']} />} />
+        
+
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
-        
-        <Route path='/chat' element={<ProtectedRoutes element={<Chat />} requiredRoles={['User','Worker']} />} />
+        <Route path='*' element={<NotFound />} />
         <Route path='/otp' element={<OTP />} />
         <Route path='/role' element={<SelectionBox />}/>
         <Route path='/worker' element={<WorkerConfig />}/>
+
+
         <Route path='/dashboard' element={<ProtectedRoutes element={<Dashboard/>} requiredRole={['Worker']}/>}/>
         <Route path='/profile'  element={<ProtectedRoutes element={<Profile/>} requiredRole={['Worker']}/>}/>
         <Route path='/edit-profile'  element={<ProtectedRoutes element={<EditProfile/>} requiredRole={['Worker']}/>}/>

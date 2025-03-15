@@ -48,7 +48,7 @@ const Navbar = () => {
                         onClose();
                         
                       }}
-                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition cursor-pointer"
                     >
                       Yes, Logout
                     </button>
@@ -70,7 +70,7 @@ const Navbar = () => {
     
     
     if(user){
-      // navigate('/home')
+      navigate('/personal-info')
     }
     if(worker){
       navigate('/profile')
@@ -124,7 +124,7 @@ const Navbar = () => {
 
 
 
-              {location.pathname ==='/profile'?(
+              {location.pathname ==='/profile' || location.pathname === '/personal-info'?(
                 <button className="hidden px-4 py-2 lg:flex bg-red-900 text-white rounded-[30px_20px_12px_20px] cursor-pointer" onClick={handleLogout}>
                      <span>Logout</span>
                  </button>

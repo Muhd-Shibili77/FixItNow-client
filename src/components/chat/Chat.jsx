@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaVideo, FaPhone, FaArrowLeft } from "react-icons/fa";
 import { FiVideo } from "react-icons/fi";
 import { CiImageOn } from "react-icons/ci";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineCloseCircle,AiOutlineAudio } from "react-icons/ai";
 import { GrEmoji } from "react-icons/gr";
 import { socket } from "../../services/socket";
 import { fetchFullWorkers } from "../../redux/adminSlice";
@@ -545,12 +545,16 @@ const ChatApp = () => {
                   onChange={(e) => setNewMessage(e.target.value)}
                   className="flex-1 border rounded-full px-4 py-2 focus:outline-none"
                 />
+              <div className="flex items-center space-x-2">
+                <AiOutlineAudio size={28} className="text-gray-600" />
                 <button
-                  className="bg-indigo-400 text-white px-6 py-2 rounded-full hover:bg-indigo-600 cursor-pointer"
                   type="submit"
+                  className="bg-indigo-400 text-white px-6 py-2 rounded-full hover:bg-indigo-600 transition duration-300"
                 >
                   Send
                 </button>
+              </div>
+
               </div>
             </form>
           </>
