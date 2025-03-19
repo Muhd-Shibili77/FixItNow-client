@@ -29,6 +29,7 @@ import Wallet from './pages/worker/wallet.jsx'
 import UserInfo from './pages/Home/UserInfo.jsx'
 import NotFound from './pages/common page/404.jsx'
 import Track from './pages/worker/track.jsx'
+import Call from './pages/common page/Call.jsx'
 function App() {
   return (
     <div>
@@ -45,6 +46,7 @@ function App() {
         <Route path='/booking' element={<ProtectedRoutes element={<Bookings />} requiredRoles={['User']} />} />
         <Route path='/personal-info' element={<ProtectedRoutes element={<UserInfo />} requiredRoles={['User']} />} />
         <Route path='/chat' element={<ProtectedRoutes element={<Chat />} requiredRoles={['User','Worker']} />} />
+        <Route path='/call/:callerId' element={<ProtectedRoutes element={<Call />} requiredRoles={['User','Worker']} />} />
         
 
         <Route path='/about' element={<About />} />

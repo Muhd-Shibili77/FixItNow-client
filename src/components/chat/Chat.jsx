@@ -13,8 +13,10 @@ import { fetchChatMessages,fetchChatList } from "../../redux/messageSlice";
 import { jwtDecode } from "jwt-decode";
 import { FaPaperclip } from "react-icons/fa";
 import axiosInstance from "../../services/AxiosInstance";
+import { useNavigate } from "react-router";
 
 const ChatApp = () => {
+  const navigate = useNavigate()
   const scrollBottomRef = useRef()
   const messagesContainerRef = useRef(null);
   const dispatch = useDispatch();
@@ -207,7 +209,9 @@ const ChatApp = () => {
       );
     }
 
-    
+    const initiateCall = (callType)=>{
+       
+    }
   
   return (
     <div className="flex h-[calc(100vh-4rem)] w-full max-w-7xl  p-3 mx-auto">
@@ -245,7 +249,7 @@ const ChatApp = () => {
                       <img
                       src={
                         chat.contact?.profileImage
-                          ? `http://localhost:3000/uploads/${chat.contact.profileImage}`
+                          ?  chat.contact?.profileImage.startsWith("http") ? `${chat.contact?.profileImage}` : `http://localhost:3000/uploads/${chat.contact?.profileImage}`
                           : "https://randomuser.me/api/portraits/men/1.jpg"
                       }
                         alt="User"
@@ -253,7 +257,7 @@ const ChatApp = () => {
                       />
                       <div>
                         <p className="font-semibold">{chat.contact?.name ?chat.contact.name : chat.contact.username}</p>
-                        <p className="text-sm text-indigo-600">
+                        <p className="text-sm text-indigo-600"></p>
                           
                         {chat.lastMessage.startsWith('http')?(
                       chat.lastMessage.match(/\.(jpeg|jpg|png)$/)?(
@@ -271,15 +275,7 @@ const ChatApp = () => {
                       ):null
                     ):(
                       chat.lastMessage
-                    )}
-
-
-
-
-
-                          
-                          
-                          </p>
+                    )}                      
                       </div>
                       <span className="text-xs text-gray-400 ml-auto">{getTimeAgo(chat.timestamp)}</span>
                     </div>
@@ -345,12 +341,13 @@ const ChatApp = () => {
                   onClick={() => setActiveChat(null)}
                 />
                 <img
-               
+              
                   src={
                     activeChat?.profileImage
-                      ? `http://localhost:3000/uploads/${activeChat?.profileImage}`
+                      ? activeChat?.profileImage.startsWith("http") ? `${activeChat?.profileImage}` : `http://localhost:3000/uploads/${activeChat?.profileImage}`
                       : "https://randomuser.me/api/portraits/men/1.jpg"
                   }
+              
                   alt="User"
                   className="w-10 h-10 rounded-full"
                 />
@@ -358,8 +355,8 @@ const ChatApp = () => {
                 
               </div>
               <div className="flex gap-4 text-gray-500">
-                <FaVideo className="text-xl cursor-pointer hover:text-gray-700" />
-                <FaPhone className="text-xl cursor-pointer hover:text-gray-700" />
+                <FaVideo className="text-xl cursor-pointer hover:text-gray-700" onClick={()=>initiateCall('video')} />
+                <FaPhone className="text-xl cursor-pointer hover:text-gray-700" onClick={()=>initiateCall('audio')} />
               </div>
             </div>
 

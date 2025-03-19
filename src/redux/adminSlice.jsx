@@ -103,11 +103,25 @@ export const fetchServiceDetails = createAsyncThunk(
       return { bookingId, workStatus: "Cancelled" };
     }
   )
+  export const fetchDashBoardDetails = createAsyncThunk(
+    'admin/fetchDashBoardDetails',
+    async ()=>{
+      
+      const response = await AxiosInstance.get(`/admin/dashboard`,{
+        headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
+      })
+      return {
+        dash:response.data.response
+      }
+    }
+  )
+
+
   
 
 const adminSlice =createSlice({
     name:"admin",
-    initialState:{data: [],users:[],workers:[],bookings:[],loading:false,error:null, totalPages:1, currentPage:1},
+    initialState:{data: [],users:[],workers:[],bookings:[],dash:[],loading:false,error:null, totalPages:1, currentPage:1},
     reducers: {},
     extraReducers:(builder)=>{
         builder
@@ -176,6 +190,17 @@ const adminSlice =createSlice({
           
         })
         .addCase(fetchFullBookings.rejected,(state,action)=>{
+            state.loading = false
+            state.error = action.error.message;
+        })
+        .addCase(fetchDashBoardDetails.pending,(state)=>{
+            state.loading = true
+        })
+        .addCase(fetchDashBoardDetails.fulfilled,(state,action)=>{
+            state.loading = false
+            state.dash = action.payload.dash;      
+        })
+        .addCase(fetchDashBoardDetails.rejected,(state,action)=>{
             state.loading = false
             state.error = action.error.message;
         })

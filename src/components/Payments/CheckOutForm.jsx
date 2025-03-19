@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { CardElement,useStripe,useElements } from '@stripe/react-stripe-js'
+import { PaymentElement,CardElement,useStripe,useElements } from '@stripe/react-stripe-js'
 import axios from 'axios'
 import { FaCreditCard, FaLock, FaSpinner } from 'react-icons/fa'
 
@@ -25,7 +25,10 @@ const CheckOutForm = ({bookingId,bookingNO,amount,user,address,onSuccess}) => {
           address
         })
         const {clientSecret} = data
-
+        if (!stripe || !elements) {
+            setError("Stripe has not loaded properly. Please try again.");
+            return;
+          }
         const result = await stripe.confirmCardPayment(clientSecret,{
           payment_method:{
             card:elements.getElement(CardElement),
@@ -40,7 +43,7 @@ const CheckOutForm = ({bookingId,bookingNO,amount,user,address,onSuccess}) => {
             }
           },
         });
-        console.log(result)
+       
 
         if(result.error){
           setError(result.error.message)
@@ -99,6 +102,7 @@ const CheckOutForm = ({bookingId,bookingNO,amount,user,address,onSuccess}) => {
                             }}
                             className="p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                         />
+                       
                         
                     </div>
                 </div>
