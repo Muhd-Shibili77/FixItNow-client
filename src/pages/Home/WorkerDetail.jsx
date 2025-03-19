@@ -8,7 +8,8 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/authSlice";
 import { jwtDecode } from "jwt-decode";
 import ChatButton from "../../components/button/ChatButton";
-
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 const WorkerDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -32,7 +33,9 @@ const WorkerDetails = () => {
       <Navbar />
       <WorkerBanner name={'worker'} />
       <WorkerDetail workerId={id}/>
+      <ToastContainer/>
       <Footer />
+
       <ChatButton/>
     </div>
   );

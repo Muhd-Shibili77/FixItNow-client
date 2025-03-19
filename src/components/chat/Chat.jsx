@@ -256,7 +256,7 @@ const ChatApp = () => {
                         className="w-10 h-10 rounded-full"
                       />
                       <div>
-                        <p className="font-semibold">{chat.contact?.name ?chat.contact.name : chat.contact.username}</p>
+                        <p className="font-semibold">{chat.contact?.name ?chat.contact.name : chat.contact?.username}</p>
                         <p className="text-sm text-indigo-600"></p>
                           
                         {chat.lastMessage.startsWith('http')?(
@@ -351,7 +351,7 @@ const ChatApp = () => {
                   alt="User"
                   className="w-10 h-10 rounded-full"
                 />
-                <span className="font-semibold">{activeChat.name ? activeChat.name : activeChat.username}</span>
+                <span className="font-semibold">{activeChat.name ? activeChat.name : activeChat?.username}</span>
                 
               </div>
               <div className="flex gap-4 text-gray-500">

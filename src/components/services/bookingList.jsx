@@ -25,7 +25,7 @@ const bookingList = () => {
   const { bookings, loading, error } = useSelector((state) => state.user);
   const user = useSelector((state) => state.auth.loginUser);
   const userId = user?.userId;
-  console.log(bookings)
+  
   
   const handleSuccess =async (amount)=>{
     if (!selectedWorker) return;

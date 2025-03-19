@@ -7,6 +7,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser,loginUser,loginWoker } from "../../redux/authSlice";
 import SocialIcons from "../../components/button/socialIcons";
+import axiosInstance from "../../services/AxiosInstance";
 
 function Authentication() {
   
@@ -37,7 +38,7 @@ function Authentication() {
 
     try{
 
-      const response = await axios.post("http://localhost:3000/auth/login", {
+      const response = await axiosInstance.post("/auth/login", {
         email: LoginFormData.LEmail,
         password: LoginFormData.LPassword,
       });
@@ -130,7 +131,7 @@ function Authentication() {
 
      
 
-      const response = await axios.post("http://localhost:3000/auth/sent-otp", {
+      const response = await axiosInstance.post("/auth/sent-otp", {
         email: RegisterFormData.Email,
       });
       

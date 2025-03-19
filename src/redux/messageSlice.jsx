@@ -22,9 +22,7 @@ export const fetchChatList = createAsyncThunk(
   'msg/fetchChatList',
   async({userId})=>{
     
-    const response = await axiosInstance.get(`/msg/chatlist?userId=${userId}`,{
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
+    const response = await axiosInstance.get(`/msg/chatlist?userId=${userId}`)
    
     return{
       chatlist : response.data.chatlist

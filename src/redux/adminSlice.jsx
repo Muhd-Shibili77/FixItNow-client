@@ -7,7 +7,7 @@ export const fetchServiceDetails = createAsyncThunk(
     async ({searchTerm ='',page=1},thunkAPI) => {
       try {
        
-        const response = await axios.get(`http://localhost:3000/service/getService?search=${searchTerm}&page=${page}&limit=8`,{
+        const response = await AxiosInstance.get(`/service/getService?search=${searchTerm}&page=${page}&limit=8`,{
           headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
         });
   

@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import axiosInstance from "../services/AxiosInstance";
 export const fetchWorkerDetails = createAsyncThunk(
   "admin/fetchWorker",
   async ({ searchTerm = "", page = 1,serviceId }, thunkAPI) => {
     try {
        
         
-      const response = await axios.get(
-        `http://localhost:3000/worker/getworker?id=${serviceId}&search=${searchTerm}&page=${page}&limit=12`,{
+      const response = await axiosInstance.get(
+        `/worker/getworker?id=${serviceId}&search=${searchTerm}&page=${page}&limit=12`,{
           headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
         });
       

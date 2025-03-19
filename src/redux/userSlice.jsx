@@ -8,7 +8,7 @@ export const fetchAddress = createAsyncThunk(
        
         try {
             
-            const response = await axios.get(`http://localhost:3000/user/getAddress?id=${userId}`,{
+            const response = await axiosInstance.get(`/user/getAddress?id=${userId}`,{
                 headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
             })
             
@@ -26,10 +26,7 @@ export const fetchUserBookings = createAsyncThunk(
     async (userId, { rejectWithValue }) => {
       
         try {
-            const response = await axios.get(`http://localhost:3000/user/getBookings?id=${userId}`,{
-                headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
-            });
-            
+            const response = await axiosInstance.get(`/user/getBookings?id=${userId}`);  
             return response.data.response;
         } catch (error) {
             return rejectWithValue(error.response.data);

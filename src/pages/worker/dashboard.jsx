@@ -6,6 +6,8 @@ import { loginWoker } from '../../redux/authSlice';
 import Footer from '../../components/Footer/Footer';
 import JobList from '../../components/workerConfig/ServiceList';
 import ChatButton from '../../components/button/ChatButton';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function dashboard() {
 
@@ -30,6 +32,7 @@ function dashboard() {
         <Navbar/>
 
         <JobList/>
+        <ToastContainer/>
         <Footer/>
         <ChatButton/>
     </div>

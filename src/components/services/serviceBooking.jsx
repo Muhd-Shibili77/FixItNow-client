@@ -9,6 +9,7 @@ import axios from "axios";
 import { fetchAddress } from "../../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import { fetchWorkerDetails } from "../../redux/workerSlice";
+import axiosInstance from "../../services/AxiosInstance";
 
 const serviceBooking = ({ workerId }) => {
   const [location, setLocation] = useState(null);
@@ -79,8 +80,8 @@ const serviceBooking = ({ workerId }) => {
     const updatedAddress = { ...address, userId: user?.userId };
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/user/addAddress",
+      const response = await axiosInstance.post(
+        "/user/addAddress",
         updatedAddress,{
           headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
         }
@@ -141,8 +142,8 @@ const serviceBooking = ({ workerId }) => {
    
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/user/book-worker",
+      const response = await axiosInstance.post(
+        "/user/book-worker",
         { bookingType,date, workerId, userId, bookAddress,userLocation },{ headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}}
       );
 

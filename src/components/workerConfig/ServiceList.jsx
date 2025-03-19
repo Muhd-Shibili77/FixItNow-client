@@ -143,15 +143,15 @@ const JobList = () => {
                   <div className="flex flex-col flex-grow">
                     <p className="text-sm text-gray-600">
                       <span className="font-semibold">Name:</span>{" "}
-                      {data.userId.username}
+                      {data?.userId?.username}
                     </p>
                     <p className="text-sm text-gray-600">
                       <span className="font-semibold">Phone:</span>{" "}
-                      {data.address.phone}
+                      {data?.address?.phone}
                     </p>
                     <p className="text-sm text-gray-600">
                       <span className="font-semibold">Place:</span>{" "}
-                      {data.address.city},{data.address.state}
+                      {data?.address?.city},{data?.address?.state}
                     </p>
                     {data.bookingType === "schedule" && (
                       <p className="text-sm text-gray-600">

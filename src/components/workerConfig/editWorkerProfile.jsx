@@ -9,6 +9,7 @@ import { fetchWorkerDetails } from "../../redux/workerSlice";
 import { jwtDecode } from "jwt-decode";
 import { loginWoker } from "../../redux/authSlice";
 import { fetchServiceDetails } from "../../redux/adminSlice";
+import axiosInstance from "../../services/AxiosInstance";
 
 function editWorkerProfile() {
   const navigate = useNavigate();
@@ -103,8 +104,8 @@ function editWorkerProfile() {
    
     try {
       
-      const response = await axios.post(
-        "http://localhost:3000/worker/edit-profile",
+      const response = await axiosInstance.post(
+        "/worker/edit-profile",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" ,

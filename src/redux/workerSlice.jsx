@@ -6,8 +6,8 @@ export const fetchWorkerDetails = createAsyncThunk(
   "worker/fetchWorkerDetails",
   async (workerId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/worker/data?id=${workerId}`,{
+      const response = await axiosInstance.get(
+        `/worker/data?id=${workerId}`,{
           headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
         });
 
@@ -22,8 +22,8 @@ export const fetchWorkerJob = createAsyncThunk(
   "worker/fetchWorkerJob",
   async (workerId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/worker/getJob?id=${workerId}`,{
+      const response = await axiosInstance.get(
+        `/worker/getJob?id=${workerId}`,{
           headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
         });
 
@@ -40,8 +40,8 @@ export const updateJobStatus = createAsyncThunk(
     "worker/updateJobStatus",
     async ({ jobId, isAccepted }, { rejectWithValue }) => {
       try {
-        await axios.put(
-          `http://localhost:3000/worker/updateJob?id=${jobId}`,
+        await axiosInstance.put(
+          `/worker/updateJob?id=${jobId}`,
           { isAccepted },{
             headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
           }
@@ -87,9 +87,7 @@ export const getWallet = createAsyncThunk(
   'worker/getWallet',
   async ({userId})=>{
  
-    const response = await axiosInstance.get(`/worker/wallet?workerId=${userId}`,{
-      headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
-    })
+    const response = await axiosInstance.get(`/worker/wallet?workerId=${userId}`)
     return {wallet: response.data.response}
   }
 )  

@@ -7,7 +7,8 @@ import { useDispatch } from 'react-redux'
 import { loginUser } from '../../redux/authSlice'
 import { jwtDecode } from 'jwt-decode'
 import ChatButton from '../../components/button/ChatButton'
-
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function services() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,6 +34,7 @@ function services() {
          <HeadBanner onSearch={setSearchTerm} />
          <ServiceList searchTerm={searchTerm} />
          
+         <ToastContainer/>
          <Footer/>
          <ChatButton/>
     </div>

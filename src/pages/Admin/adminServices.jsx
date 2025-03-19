@@ -9,6 +9,7 @@ import Pagination from "../../components/pagination/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchServiceDetails } from "../../redux/adminSlice";
 import Button from "../../components/button/Button";
+import axiosInstance from "../../services/AxiosInstance";
 
 const AdminServices = () => {
   const dispatch = useDispatch();
@@ -61,8 +62,8 @@ const AdminServices = () => {
     formDataToSend.append("image", formData.image);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/service/addService",
+      const response = await axiosInstance.post(
+        "/service/addService",
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },

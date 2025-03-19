@@ -30,9 +30,16 @@ import UserInfo from './pages/Home/UserInfo.jsx'
 import NotFound from './pages/common page/404.jsx'
 import Track from './pages/worker/track.jsx'
 import Call from './pages/common page/Call.jsx'
+
+import { NotificationProvider } from './context/notificationContext.jsx'
+
 function App() {
   return (
+
     <div>
+      <NotificationProvider>
+         
+      
       <Routes>
         <Route path='/' element={<ProtectedAuthRoutes element={<Home/>}/>}/>
         <Route path='/auth' element={<ProtectedAuthRoutes element={<Authentication/>}/>}/>
@@ -60,7 +67,7 @@ function App() {
         <Route path='/dashboard' element={<ProtectedRoutes element={<Dashboard/>} requiredRole={['Worker']}/>}/>
         <Route path='/profile'  element={<ProtectedRoutes element={<Profile/>} requiredRole={['Worker']}/>}/>
         <Route path='/edit-profile'  element={<ProtectedRoutes element={<EditProfile/>} requiredRole={['Worker']}/>}/>
-        <Route path='/history'  element={<ProtectedRoutes element={<History/>} requiredRole={['Worker']}/>}/>
+        {/* <Route path='/history'  element={<ProtectedRoutes element={<History/>} requiredRole={['Worker']}/>}/> */}
         <Route path='/wallet'  element={<ProtectedRoutes element={<Wallet/>} requiredRole={['Worker']}/>}/>
         <Route path='/track/:id'  element={<ProtectedRoutes element={<Track/>} requiredRole={['Worker']}/>}/>
 
@@ -73,7 +80,8 @@ function App() {
         <Route path='/admin/services'  element={<ProtectedRoutes element={<AdminServices/>} requiredRole={['Admin']}/>}/>
 
       </Routes>
-     
+      </NotificationProvider>
+   
     </div>
   )
 }

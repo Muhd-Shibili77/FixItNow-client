@@ -8,6 +8,8 @@ import { loginUser } from '../../redux/authSlice'
 import { jwtDecode } from 'jwt-decode'
 import WorkerList from '../../components/services/workerList'
 import ChatButton from '../../components/button/ChatButton'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const ServicePage = () => {
     const {id} = useParams();
@@ -34,7 +36,7 @@ const ServicePage = () => {
          <HeadBanner onSearch={setSearchTerm} />
          <WorkerList serviceId={id} searchTerm={searchTerm}/>
          
-         
+         <ToastContainer/>
          <Footer/>
          <ChatButton/>
     </div>

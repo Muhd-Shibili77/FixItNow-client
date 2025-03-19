@@ -7,6 +7,8 @@ import { useDispatch } from 'react-redux'
 import { jwtDecode } from "jwt-decode";  // Use named import
 import { loginWoker,loginUser } from '../../redux/authSlice'
 import ChatButton from '../../components/button/ChatButton'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 const About = () => {
   const dispatch = useDispatch();
@@ -34,6 +36,7 @@ const About = () => {
         <Navbar/>
         <WorkerBanner name={'About Our Company'}/>
         <AboutUs/>
+        <ToastContainer/>
         <Footer/>
         <ChatButton/>
         

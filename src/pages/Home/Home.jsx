@@ -7,6 +7,8 @@ import Footer from '../../components/Footer/Footer'
 import { useDispatch } from 'react-redux'
 import { loginUser } from '../../redux/authSlice';
 import ChatButton from '../../components/button/ChatButton';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
   const dispatch = useDispatch();
@@ -30,6 +32,8 @@ function Home() {
          <Navbar/>
          <Banner/>
          <SecondBanner/>
+         
+         <ToastContainer/>
          <Footer/>
          
          <ChatButton/>
