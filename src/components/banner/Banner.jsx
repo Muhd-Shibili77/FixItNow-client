@@ -1,5 +1,5 @@
 import React from 'react';
-import BannerImage from '../../assets/BannerImage.png';
+import BannerImage from '../../assets/bannerImage.webp';
 import { logoutUser,logoutWoker } from "../../redux/authSlice";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
