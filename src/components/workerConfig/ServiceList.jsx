@@ -64,7 +64,7 @@ const JobList = () => {
     if (amount === 0) {
       return;
     }
-    console.log(amount);
+  
     dispatch(updateAmount({ bookingId, amount }));
     setTimeout(() => {
       handleCloseModal();
@@ -128,13 +128,13 @@ const JobList = () => {
           {works && works.length > 0 ? (
             works?.map((data) => (
               <div
-                className={`p-4 rounded-xl shadow-md w-90 md:w-85  flex flex-col gap-4 bg-white transition-all duration-300 hover:shadow-lg hover:scale-102`}
+                className={`p-4 rounded-xl shadow-md w-70 md:w-85  flex flex-col gap-4 bg-white transition-all duration-300 hover:shadow-lg hover:scale-102`}
                 key={data.id}
               >
                 <div className="flex items-center gap-4">
                   <div className="w-26 h-26 overflow-hidden rounded-lg">
                     <img
-                      src={image}
+                      src={ data?.userId?.profileImage || image}
                       alt="sample"
                       className="w-full h-full object-cover"
                     />
@@ -282,7 +282,7 @@ const JobList = () => {
                     data.reachingStatus === "arrived" &&
                     data.amount == null ? (
                       <button
-                        className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-20 w-25 flex justify-center py-1"
+                        className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-18 md:ml-25 w-25 flex justify-center py-1"
                         onClick={() => handleOpenModal(data)}
                       >
                         <TbBrandCashapp size={22} />
@@ -290,7 +290,7 @@ const JobList = () => {
                       </button>
                     ) : data.reachingStatus !== "arrived" &&
                       data.workStatus !== "Cancelled" ? (
-                      <button className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-25 w-25 flex justify-center py-1"
+                      <button className="bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer ml-18 md:ml-25 w-25 flex justify-center py-1"
                       onClick={()=>handleTrack(data.id)}
                       >
                         <IoLocationOutline size={22} />

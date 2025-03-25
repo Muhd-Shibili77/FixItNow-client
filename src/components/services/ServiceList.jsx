@@ -8,7 +8,7 @@ function ServiceList({searchTerm}) {
    const dispatch = useDispatch();
    const { data, loading, error,totalPages } = useSelector((state) => state.admin);
    const [page, setPage] = useState(1);
-   
+  
   
    useEffect(() => {   
         dispatch(fetchServiceDetails({searchTerm,page}));
@@ -39,12 +39,17 @@ function ServiceList({searchTerm}) {
             
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
               {data && data.length > 0 ?(
-                    data?.map((service)=>(
-                      
-                        <ServiceButtonRight key={service.id} image={service.icon} name={service.name} id={service.id}/>
-                        
-                       
-                    ))
+                   data?.filter(service => !service.isDelete)
+                   .map(service => (
+                       <ServiceButtonRight 
+                           key={service.id} 
+                           image={service.icon} 
+                           name={service.name} 
+                           id={service.id} 
+                           userType="User"
+                       />
+                   ))
+               
               ):(
                   <h2 className="text-3xl font-bold text-center col-span-full text-red-500">No services available</h2>
               )} 

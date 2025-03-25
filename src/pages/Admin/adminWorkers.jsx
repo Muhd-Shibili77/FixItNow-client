@@ -3,6 +3,8 @@ import SideBar from "../../components/sidebar/SideBar";
 import Table from "../../components/table/Table";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchFullWorkers,toggleBlockWorker } from "../../redux/adminSlice";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const AdminWorkers = () => {
   const dispatch = useDispatch();
@@ -22,7 +24,7 @@ const AdminWorkers = () => {
     { header: "Service", key: "service" , render:(item)=>item.service?.name || "N/A" },
     { header: "Experience", key: "experience" },
     { header: "Phone", key: "phone" },
-    { header: "Profit", key: "profit" },
+    { header: "Rating", key: "averageRating" },
   ];
 
   const actions = (item)=>{
@@ -30,7 +32,21 @@ const AdminWorkers = () => {
       return[
         {
           label:"Unblock",
-          onClick:()=>dispatch(toggleBlockWorker({workerId:item.id,isBlocked:item.isBlock})),
+          onClick:()=>{
+            confirmAlert({
+              title:'Confrim unblocking',
+              message:'Are you sure you want to unblock this user?',
+              buttons:[
+                {
+                  label:'Yes',
+                  onClick:()=>dispatch(toggleBlockWorker({workerId:item.id,isBlocked:item.isBlock}))
+                },
+                {
+                  label:'No'
+                }
+              ]
+            })
+          },
           bgColor:'bg-green-600',
         }
       ]
@@ -38,7 +54,21 @@ const AdminWorkers = () => {
       return[
         {
           label:"Block",
-          onClick:()=>dispatch(toggleBlockWorker({workerId:item.id,isBlocked:item.isBlock})),
+          onClick:()=>{
+            confirmAlert({
+              title:'Confrim block',
+              message:'Are you sure you want to block this user?',
+              buttons:[
+                {
+                  label:'Yes',
+                  onClick:()=>dispatch(toggleBlockWorker({workerId:item.id,isBlocked:item.isBlock}))
+                },
+                {
+                  label:'No'
+                }
+              ]
+            })
+          },
           bgColor:'bg-red-600'
         }
       ]

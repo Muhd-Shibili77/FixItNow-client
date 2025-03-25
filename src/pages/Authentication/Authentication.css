@@ -101,6 +101,7 @@ form {
 
 .forgot-link {
   margin: -15px 0 15px;
+  cursor: pointer;
 }
 .forgot-link a {
   font-size: 14.5px;

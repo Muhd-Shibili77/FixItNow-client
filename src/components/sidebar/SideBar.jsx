@@ -69,7 +69,7 @@ function SideBar(props) {
 
       {/* Sidebar */}
       <div
-        className={`h-screen w-64 bg-white shadow-md p-5 flex flex-col fixed top-0 left-0 z-50 transform ${
+        className={`h-auto w-64 bg-white shadow-md p-5 flex flex-col fixed top-0 left-0 z-50 transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:relative md:translate-x-0 transition-transform duration-300 ease-in-out`}
       >

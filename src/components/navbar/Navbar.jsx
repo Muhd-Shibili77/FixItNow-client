@@ -6,7 +6,7 @@ import { useNavigate,useLocation } from "react-router";
 import { logoutUser,logoutWoker } from "../../redux/authSlice";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-
+import { logout } from "../../redux/authSlice";
 const Navbar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -40,12 +40,14 @@ const Navbar = () => {
                     <button
                       onClick={() => {
                         if(user){
-                          dispatch(logoutUser())
+                          dispatch(logout())
                         }else{
-                          dispatch(logoutWoker())
+                          dispatch(logout())
                         }
-                        navigate("/");
-                        onClose();
+                        setTimeout(()=>{
+                          navigate("/");
+                          onClose();
+                        },1000)
                         
                       }}
                       className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition cursor-pointer"

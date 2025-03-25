@@ -6,6 +6,7 @@ const Table = ({colums,data,actions,totalPages, searchTerm, setSearchTerm, page,
   
   const [inputValue,setInputValue] = useState(searchTerm)
   
+  
 
   return (
     <div className="flex-1 p-4 sm:p-6">

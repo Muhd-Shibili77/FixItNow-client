@@ -6,22 +6,19 @@ import axios from "axios";
 import { useNavigate,useLocation } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { loginWoker, unSetUser } from "../../redux/authSlice";
-import { fetchServiceDetails } from "../../redux/adminSlice";
+import { fetchFullService } from "../../redux/workerSlice";
+import axiosInstance from "../../services/AxiosInstance";
 
 function workerConfig() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { email, name } = state || {};
   const isGoogleRegistration = state ? true : false
-  const { data, loading, error } = useSelector((state) => state.admin);
-  
-  const worker = useSelector((state) => state.auth.user);
- 
+  const { services:data, loading, error } = useSelector((state) => state.worker);
+  const worker = useSelector((state) => state.auth.user || {});
   const dispatch = useDispatch();
-  const searchTerm =''
-  const page =1
   const [formData, setFormData] = useState({
-    name: "",
+    name:  worker.Username || name || '',
     service: "",
     experience: "",
     phone: "",
@@ -31,7 +28,8 @@ function workerConfig() {
   });
 
   useEffect(() => {
-    dispatch(fetchServiceDetails({searchTerm,page}));
+   
+    dispatch(fetchFullService());
   }, [dispatch]);
 
   const handleChange = (e) => {
@@ -53,12 +51,30 @@ function workerConfig() {
     e.preventDefault();
 
     const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.name);
     formDataToSend.append("service", formData.service);
     formDataToSend.append("experience", formData.experience);
     formDataToSend.append("phone", formData.phone);
     formDataToSend.append("about", formData.about);
-    formDataToSend.append("image", formData.image);
+
+   
+    if(formData.image){
+      const imageFormData = new FormData();
+      imageFormData.append("file", formData.image)
+      try {
+        const response = await axiosInstance.post('/user/upload',imageFormData,{
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        
+        formDataToSend.append("image", response.data.url);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        toast.error( "Error uploading file:",error);
+        return;
+     }
+    }
+
+    
+    
    
 
     if(isGoogleRegistration){
@@ -67,12 +83,10 @@ function workerConfig() {
       formDataToSend.append("email", email);
       try {
         const response = await axios.post(
-          "http://localhost:3000/auth/google/register-worker",
-          formDataToSend,
+          "http://localhost:3000/auth/google/register-worker",formDataToSend,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          }
-        );
+          });
 
         const Token = response?.data?.Token;
 
@@ -97,13 +111,12 @@ function workerConfig() {
     formDataToSend.append("conformpassword", worker.ConformPassword);
 
     try {
+     
+
       const response = await axios.post(
-        "http://localhost:3000/auth/worker-register",
-        formDataToSend,
-        {
+        "http://localhost:3000/auth/worker-register",formDataToSend,{
           headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
+        });
 
       const Token = response?.data?.Token;
 
@@ -130,9 +143,9 @@ function workerConfig() {
     );
   
   if (error)
-    return <p className="text-red-500">Error: {error}</p>;
+    return <p className="text-red-500">Errorrr: {error}</p>;
   
-  // if (!worker) return null;
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-gray-200 to-indigo-200 ">

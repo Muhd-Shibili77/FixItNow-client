@@ -38,7 +38,7 @@ export const setupInterceptor = (axiosInstance)=>{
 
                     if(newAccessToken){
                         localStorage.setItem('token',newAccessToken)
-                        originalRequest.headers.Authorization = newAccessToken;
+                        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
                         return axiosInstance(originalRequest)
                     }
                     
@@ -47,6 +47,13 @@ export const setupInterceptor = (axiosInstance)=>{
                     localStorage.removeItem("token");
                     window.location.href = "/";
                 }
+            }
+
+
+            if(error.response.status === 403 && error.response.data.message === 'Access denied. Your account has been blocked.'){
+                alert("Your account has been blocked. Please contact support.");
+                    localStorage.removeItem("token"); 
+                    window.location.href = "/"; 
             }
             return Promise.reject(error);
         }

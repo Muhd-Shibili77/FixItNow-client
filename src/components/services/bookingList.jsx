@@ -143,7 +143,7 @@ const bookingList = () => {
             bookings?.map((data) => (
               <BookingCard
                 key={data.id}
-                name={data.workerId.name}
+                name={data.workerId.username}
                 role={data.serviceId.name}
                 Phone={data.workerId.phone}
                 work={data.workStatus}

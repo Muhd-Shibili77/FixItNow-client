@@ -20,7 +20,18 @@ function editWorkerProfile() {
    useEffect(() => {
       dispatch(fetchServiceDetails({searchTerm:'',page:1}));
     }, [dispatch]);
-  
+
+    const [formData, setFormData] = useState({
+      id: "",
+      username: "",
+      service: "",
+      experience: "",
+      phone: "",
+      about: "",
+      profileImage:'',
+      image: "",
+      preview: "",
+    });
     
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -39,14 +50,14 @@ function editWorkerProfile() {
     if (worker) {
       setFormData({
         id: worker._id || "",
-        name: worker.name || "",
+        username: worker.username || "",
         service: worker.service?._id || "",
         experience: worker.experience || "",
         phone: worker.phone || "",
         about: worker.about || "",
-        image: worker.profileImage || undefined,
+        profileImage: worker.profileImage,
         preview: worker.profileImage
-          ? `http://localhost:3000/uploads/${worker.profileImage}`
+          ? worker.profileImage
           : "",
       });
     }
@@ -58,16 +69,7 @@ function editWorkerProfile() {
     }
   }, [dispatch, userId]);
 
-  const [formData, setFormData] = useState({
-    id: "",
-    name: "",
-    service: "",
-    experience: "",
-    phone: "",
-    about: "",
-    image: "",
-    preview: "",
-  });
+  
 
 
   const handleChange = (e) => {
@@ -78,7 +80,7 @@ function editWorkerProfile() {
           ...formData,
           image: file,
           preview: URL.createObjectURL(file),
-        }); // Store the file
+        }); 
       }
     } else {
       setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -87,21 +89,34 @@ function editWorkerProfile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    let updatedProfileImage = formData?.profileImage;
+
     const formDataToSend = new FormData();
     formDataToSend.append("_id", formData.id);
-    formDataToSend.append("name", formData.name);
+    formDataToSend.append("username", formData.username);
     formDataToSend.append("service", formData.service);
     formDataToSend.append("experience", formData.experience);
     formDataToSend.append("phone", formData.phone);
     formDataToSend.append("about", formData.about);
-    if (formData.image instanceof File) {
-      formDataToSend.append("image", formData.image);
-    } else if (worker?.profileImage) {
-      formDataToSend.append("image", worker.profileImage);
+
+    if(formData.image){
+      const imageFormData = new FormData();
+      imageFormData.append('file',formData.image)
+      try {
+        const response = await axiosInstance.post('/user/upload',imageFormData,{
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        updatedProfileImage = response.data.url
+        
+      } catch (error) {
+        console.error("Error uploading file:", error);
+        toast.error( "Error uploading file:",error);
+        return;
+     }
     }
-    
-   
+
+    formDataToSend.append("image", updatedProfileImage);
+ 
     try {
       
       const response = await axiosInstance.post(
@@ -172,8 +187,8 @@ function editWorkerProfile() {
               </label>
               <input
                 type="text"
-                name="name"
-                value={formData.name}
+                name="username"
+                value={formData.username}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
               />

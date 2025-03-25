@@ -21,7 +21,7 @@ const BookingModal = ({ booking, onClose }) => {
         </button>
         <h3 className="text-2xl font-semibold text-center mb-4 text-indigo-600">Booking Details</h3>
         <div className="space-y-3 text-gray-700">
-          <p><strong>Worker Name:</strong> {booking.workerId.name}</p>
+          <p><strong>Worker Name:</strong> {booking.workerId.username}</p>
           <p><strong>Phone:</strong> {booking.workerId.phone}</p>
           <p><strong>Service:</strong> {booking.serviceId.name}</p>
           <p><strong>Booking Type:</strong> {booking.bookingType}</p>

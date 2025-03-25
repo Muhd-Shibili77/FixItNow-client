@@ -278,9 +278,9 @@ const serviceBooking = ({ workerId }) => {
 
           {worker ?(
         <div className="flex items-center bg-blue-100 p-4 rounded-lg mt-15">
-             <img src={`http://localhost:3000/uploads/${worker.profileImage}`} className="rounded-xl w-31" alt="Worker" />
+             <img src={worker.profileImage} className="rounded-xl w-31" alt="Worker" />
           <div className="ml-4">
-            <h3 className="font-semibold">{worker.name}</h3>
+            <h3 className="font-semibold">{worker.username}</h3>
             <p className="text-sm text-gray-600">⭐ {worker.averageRating}/5 | {worker?.service?.name}</p>
           </div>
         </div>

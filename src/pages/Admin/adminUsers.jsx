@@ -3,6 +3,8 @@ import SideBar from "../../components/sidebar/SideBar";
 import Table from "../../components/table/Table";
 import { fetchFullUsers,toggleBlockUser } from "../../redux/adminSlice";
 import { useDispatch,useSelector } from "react-redux";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 const adminUsers = () => {
   const dispatch = useDispatch()
@@ -28,7 +30,21 @@ const adminUsers = () => {
       return[
         {
           label:"Unblock",
-          onClick:()=>dispatch(toggleBlockUser({ userId: item.id, isBlocked: item.isBlock })),
+          onClick:()=>{
+            confirmAlert({
+              title:'Confrim unblock',
+              message:'Are you sure you want to unblock this user?',
+              buttons:[
+                {
+                  label:'Yes',
+                  onClick:()=>dispatch(toggleBlockUser({ userId: item.id, isBlocked: item.isBlock }))
+                },
+                {
+                  label:'No'
+                }
+              ]
+            })
+          },
           bgColor:'bg-green-600',
         }
       ]
@@ -36,7 +52,21 @@ const adminUsers = () => {
       return[
         {
           label:"Block",
-          onClick:()=>dispatch(toggleBlockUser({ userId: item.id, isBlocked: item.isBlock })),
+          onClick:()=>{
+            confirmAlert({
+              title:'Confrim block',
+              message:'Are you sure you want to block this user?',
+              buttons:[
+                {
+                  label:'Yes',
+                  onClick:()=>dispatch(toggleBlockUser({ userId: item.id, isBlocked: item.isBlock }))
+                },
+                {
+                  label:'No'
+                }
+              ]
+            })
+          },
           bgColor:'bg-red-600'
         }
       ]

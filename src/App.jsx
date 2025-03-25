@@ -32,6 +32,7 @@ import Track from './pages/worker/track.jsx'
 import Call from './pages/common page/Call.jsx'
 
 import { NotificationProvider } from './context/notificationContext.jsx'
+import ForgetPassword from './pages/Authentication/ForgetPassword.jsx'
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
       <Routes>
         <Route path='/' element={<ProtectedAuthRoutes element={<Home/>}/>}/>
         <Route path='/auth' element={<ProtectedAuthRoutes element={<Authentication/>}/>}/>
+        <Route path='/forgetPassword' element={<ProtectedAuthRoutes element={<ForgetPassword/>}/>}/>
 
         
         <Route path='/home'  element={<ProtectedRoutes element={<Home/>} requiredRole={['User']}/>}/>
@@ -53,13 +55,13 @@ function App() {
         <Route path='/booking' element={<ProtectedRoutes element={<Bookings />} requiredRoles={['User']} />} />
         <Route path='/personal-info' element={<ProtectedRoutes element={<UserInfo />} requiredRoles={['User']} />} />
         <Route path='/chat' element={<ProtectedRoutes element={<Chat />} requiredRoles={['User','Worker']} />} />
-        <Route path='/call/:callerId' element={<ProtectedRoutes element={<Call />} requiredRoles={['User','Worker']} />} />
+        <Route path='/call' element={<ProtectedRoutes element={<Call />} requiredRoles={['User','Worker']} />} />
         
 
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='*' element={<NotFound />} />
-        <Route path='/otp' element={<OTP />} />
+        <Route path='/otp' element={<OTP forgetPassword={false} />} />
         <Route path='/role' element={<SelectionBox />}/>
         <Route path='/worker' element={<WorkerConfig />}/>
 

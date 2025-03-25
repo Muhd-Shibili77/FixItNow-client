@@ -2,6 +2,7 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import AxiosInstance from '../services/AxiosInstance'
 
+
 export const fetchServiceDetails = createAsyncThunk(
     'admin/fetchServiceDetails',
     async ({searchTerm ='',page=1},thunkAPI) => {
@@ -15,22 +16,26 @@ export const fetchServiceDetails = createAsyncThunk(
           data: response.data.response,
           currentPage: response.data.currentPage,
           totalPages: response.data.totalPages
-      };
+        };
       } catch (error) {
         return thunkAPI.rejectWithValue(error.response?.data || error.message);
       }
     }
   );
 
+export const deleteService = createAsyncThunk(
+  'admin/deleteService',
+  async({serviceId,isDelete})=>{
+      await AxiosInstance.patch(`/service/delService?serviceId=${serviceId}&action=${!isDelete}`)
+      return { serviceId, isDelete: !isDelete };
+  }
+)
+
   export const fetchFullUsers = createAsyncThunk(
     'admin/fetchFullUsers',
     async ({searchTerm,page})=>{
       
-      const response = await AxiosInstance.get(`/admin/users?search=${searchTerm}&page=${page}&limit=10`,{
-        headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
-      })
-     
-      
+      const response = await AxiosInstance.get(`/admin/users?search=${searchTerm}&page=${page}&limit=10`)
       return {
         users: response.data.response,
         currentPage: response.data.currentPage,
@@ -138,7 +143,11 @@ const adminSlice =createSlice({
             state.loading = false
             state.error = action.error.message;
         })
-
+        .addCase(deleteService.fulfilled,(state,action)=>{
+          state.data = state.data.map((service) =>
+            service.id === action.payload.serviceId ? { ...service, isDelete: action.payload.isDelete } : service
+          );
+        })
         .addCase(fetchFullUsers.pending,(state)=>{
             state.loading = true
         })

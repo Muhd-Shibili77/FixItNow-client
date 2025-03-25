@@ -4,30 +4,73 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ServiceButtonRight } from "../../components/button/ServiceButton";
 import { FaSearch } from "react-icons/fa";
-import axios from "axios";
 import Pagination from "../../components/pagination/Pagination";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchServiceDetails } from "../../redux/adminSlice";
 import Button from "../../components/button/Button";
 import axiosInstance from "../../services/AxiosInstance";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { deleteService } from "../../redux/adminSlice";
 
 const AdminServices = () => {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
-  const [isModalOpen, SetIsModalOpen] = useState(false);
-  const [isEdit,setIsEdit] =useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [page, setPage] = useState(1);
   const [secondSearchTerm, setSecondSearchTerm] = useState(searchTerm);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [formData, setFormData] = useState({
     name: "",
     image: null,
     preview: null,
+    id: null,
+    currentIcon: null
   });
+  
+  const { data, loading, error, totalPages } = useSelector(
+    (state) => state.admin
+  );
 
-  const handleEdit =(service)=>{
-    
-     SetIsModalOpen(true)
-     setIsEdit(true)
-  }
+  useEffect(() => {
+    dispatch(fetchServiceDetails({ searchTerm, page }));
+  }, [dispatch, searchTerm, page]);
+
+  // Refresh service list after updates
+  const refreshServices = () => {
+    dispatch(fetchServiceDetails({ searchTerm, page }));
+  };
+
+  const handleEdit = (service) => {
+    setIsModalOpen(true);
+    setIsEdit(true);
+    setFormData({
+      name: service.name,
+      image: null,
+      preview: service.icon, 
+      id: service.id,
+      currentIcon: service.icon
+    });
+  };
+  
+  const handleDelete = (service) => {
+    confirmAlert({
+      title: `Confirm ${service.isDelete ? "Restore" : "Delete"}`,
+      message: `Are you sure you want to ${service.isDelete ? "Restore" : "Delete"} this service?`,
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () =>
+            dispatch(deleteService({serviceId: service.id, isDelete: service.isDelete}))
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  };
 
   const handleChange = (e) => {
     if (e.target.name === "image") {
@@ -44,55 +87,69 @@ const AdminServices = () => {
     }
   };
 
-  const { data, loading, error, totalPages } = useSelector(
-    (state) => state.admin
-  );
-
-  const [page, setPage] = useState(1);
-
-  useEffect(() => {
-    dispatch(fetchServiceDetails({ searchTerm, page }));
-  }, [dispatch, searchTerm, page]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.name);
-    formDataToSend.append("image", formData.image);
-
+    setIsSubmitting(true);
+  
     try {
-      const response = await axiosInstance.post(
-        "/service/addService",
-        formDataToSend,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
-      );
-
-      toast.success("service added successfully!");
+      // Only upload to Cloudinary if there's a new image
+      let iconUrl = formData.currentIcon;
       
+      if (formData.image) {
+        const uploadData = new FormData();
+        uploadData.append("file", formData.image);
+        
+        try {
+          const response = await axiosInstance.post("/service/upload", uploadData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+          
+          iconUrl = response.data.url;
+        } catch (error) {
+          console.error("Error uploading to Cloudinary:", error);
+          toast.error("Error uploading image");
+          setIsSubmitting(false);
+          return;
+        }
+      }
+      
+      // Prepare data for service creation/update
+      const serviceData = {
+        name: formData.name,
+        icon: iconUrl
+      };
+      
+      // Determine endpoint based on whether we're editing or adding
+      const endpoint = isEdit
+        ? `/service/updateService?serviceId=${formData.id}`
+        : "/service/addService";
+      
+      // Send the service data
+      await axiosInstance.post(endpoint, serviceData);
+      
+      toast.success(isEdit ? "Service updated successfully!" : "Service added successfully!");
+      
+      // Reset form and close modal after a short delay
       setTimeout(() => {
-        setFormData({
-          name: "",
-          image: null,
-          preview: null,
-        });
-        SetIsModalOpen(false);
+        setFormData({ name: "", image: null, preview: null, id: null, currentIcon: null });
+        setIsModalOpen(false);
+        setIsEdit(false);
+        refreshServices();
+        setIsSubmitting(false);
       }, 1500);
+      
     } catch (error) {
+      console.error("Error saving service:", error);
       toast.error(error.response?.data?.message || "Something went wrong");
+      setIsSubmitting(false);
     }
   };
-
-
+  
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200">
       <SideBar page="Services" />
       <div className="flex-1 p-4 md:ml-12 transition-all duration-300 sm:p-10">
-
-        {/* _____________modal start_________________ */}
-
+        {/* Modal for adding/editing services */}
         {isModalOpen && (
           <div
             className={`fixed inset-0 z-50 flex items-center justify-center bg-transparent backdrop-blur-sm transition-all duration-300 ${
@@ -102,23 +159,26 @@ const AdminServices = () => {
             }`}
           >
             <div className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-xl">
-              {/* Close Button (X) in the top-right corner */}
               <button
                 className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-lg cursor-pointer"
                 onClick={() => {
-                  SetIsModalOpen(false)
-                  setIsEdit(false)
+                  setIsModalOpen(false);
+                  setIsEdit(false);
+                  setFormData({ name: "", image: null, preview: null, id: null, currentIcon: null });
                 }}
+                disabled={isSubmitting}
               >
                 ✖
               </button>
 
               {/* Modal Title */}
-              <h2 className="text-xl font-semibold text-center">{isEdit?'Edit Service':'Add Service'}</h2>
+              <h2 className="text-xl font-semibold text-center">
+                {isEdit ? "Edit Service" : "Add Service"}
+              </h2>
 
-              <div className="flex justify-center items-center ">
+              <div className="flex justify-center items-center">
                 <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-4xl">
-                  <form className="space-y-6">
+                  <form className="space-y-6" onSubmit={handleSubmit}>
                     <div className="flex flex-col items-center gap-4 mb-8">
                       <label className="w-30 h-30 rounded-full bg-gray-200 flex items-center justify-center cursor-pointer relative">
                         <input
@@ -127,6 +187,7 @@ const AdminServices = () => {
                           accept="image/*"
                           name="image"
                           onChange={handleChange}
+                          disabled={isSubmitting}
                         />
                         {formData.preview ? (
                           <img
@@ -140,10 +201,11 @@ const AdminServices = () => {
                           </span>
                         )}
                       </label>
-                      <h2 className="text-xl  text-gray-800">Upload icon</h2>
+                      <h2 className="text-xl text-gray-800">Upload icon</h2>
+                      
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-1  gap-6">
+                    <div className="grid grid-cols-1 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Name
@@ -154,17 +216,19 @@ const AdminServices = () => {
                           value={formData.name}
                           onChange={handleChange}
                           className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
+                          required
+                          disabled={isSubmitting}
                         />
                       </div>
                     </div>
 
                     <div className="flex justify-center gap-3">
-                      
                       <Button
-                        text={isEdit ? 'Submit':'Add'}
-                        color="bg-indigo-400"
-                        hover="bg-indigo-500"
+                        text={isSubmitting ? "Processing..." : (isEdit ? "Update" : "Add")}
+                        color={isSubmitting ? "bg-gray-400" : "bg-indigo-400"}
+                        hover={isSubmitting ? "bg-gray-400" : "bg-indigo-500"}
                         function={handleSubmit}
+                        disabled={isSubmitting}
                       />
                     </div>
                   </form>
@@ -179,11 +243,9 @@ const AdminServices = () => {
           </div>
         )}
 
-        {/* _____________modal end_______________ */}
 
-        {/* Search Bar and Add Service Button */}
         <div className="flex items-center justify-between mb-8">
-          {/* Search Bar */}
+      
           <div className="relative w-full md:w-3/5 lg:w-4/5">
             <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
             <input
@@ -194,22 +256,25 @@ const AdminServices = () => {
               onChange={(e) => setSecondSearchTerm(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  setSearchTerm(e.target.value);
+                  setSearchTerm(secondSearchTerm);
                 }
               }}
             />
           </div>
 
-          {/* Add Service Button - Placed on the Right */}
+        
           <button
             className="ml-4 bg-indigo-500 hover:bg-indigo-600 px-5 py-3 text-white font-semibold rounded-lg shadow-md transition cursor-pointer"
-            onClick={() => SetIsModalOpen(true)}
+            onClick={() => {
+              setIsModalOpen(true);
+              setIsEdit(false);
+              setFormData({ name: "", image: null, preview: null, id: null, currentIcon: null });
+            }}
           >
             + Add Service
           </button>
         </div>
 
-        {/* Conditional Rendering for Loading, Error, and Data */}
         {loading ? (
           <div className="flex justify-center items-center h-screen">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
@@ -220,13 +285,16 @@ const AdminServices = () => {
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 mb-10">
             {data && data.length > 0 ? (
-              data?.map((service) => (
+              data.map((service) => (
                 <ServiceButtonRight
                   key={service.id}
                   image={service.icon}
                   name={service.name}
                   id={service.id}
-                  handleFunction={handleEdit}
+                  isDelete={service.isDelete}
+                  onEdit={() => handleEdit(service)}
+                  onDelete={() => handleDelete(service)}
+                  userType={"Admin"}
                 />
               ))
             ) : (
@@ -237,7 +305,7 @@ const AdminServices = () => {
           </div>
         )}
 
-        {/* Pagination */}
+ 
         <Pagination
           currentPage={page}
           totalPages={totalPages}

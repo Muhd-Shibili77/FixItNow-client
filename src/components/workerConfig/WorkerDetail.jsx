@@ -49,7 +49,7 @@ function Workerdetail({workerId}) {
         <div className="relative">
           <img
             className="w-36 h-36 mx-auto rounded-full border-4 border-white -mt-20 shadow-md"
-            src={`http://localhost:3000/uploads/${worker.profileImage}`}
+            src={worker.profileImage}
             alt="Profile"
           />
         </div>

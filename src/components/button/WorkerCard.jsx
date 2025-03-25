@@ -11,10 +11,10 @@ const WorkerCard = ({ name,image,experience,id,rating }) => {
     }
   return (
 
-    <div className={`p-4 rounded-xl shadow-md w-50 md:w-65 bg-indigo-200 cursor-pointer`} onClick={handleServicePage}>
+    <div className={`p-4 rounded-xl shadow-md w-43  md:w-65 bg-indigo-200 cursor-pointer`} onClick={handleServicePage}>
       {/* Worker Image */}
       <div className="w-full h-36 overflow-hidden rounded-lg">
-        <img src={`http://localhost:3000/uploads/${image}`} alt="sample" className="w-full h-full object-cover" />
+        <img src={image} alt="sample" className="w-full h-full object-cover" />
       </div>
 
       {/* Worker Details */}

@@ -1,5 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axiosInstance from "../services/AxiosInstance";
 
+export const logout = createAsyncThunk(
+    'auth/logout',
+    async()=>{
+        try {
+            const response = await axiosInstance.post('/auth/logout')
+            return
+        } catch (error) {
+            console.error('logout error:',error)
+        }
+    }
+)
 const authSlice =createSlice({
     name:"auth",
     initialState:{user:null,loginUser:null,loginWoker:null},
@@ -38,6 +50,14 @@ const authSlice =createSlice({
             localStorage.removeItem('token');
         },
 
+     },
+     extraReducers:(builder)=>{
+        builder
+        .addCase(logout.fulfilled,(state)=>{
+            state.loginUser = null
+            state.loginWoker = null
+            localStorage.removeItem('token');
+        })
      }
 
 })

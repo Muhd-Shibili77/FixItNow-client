@@ -147,7 +147,7 @@ const UserProfile = ({userId}) => {
           confirmPassword: ''
         });
       } else {
-        // If the request was successful but the operation failed
+       
         setPasswordError(response.data.message || "Failed to update password");
       }
 

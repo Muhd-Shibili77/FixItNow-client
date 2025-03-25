@@ -180,7 +180,7 @@ function Authentication() {
             <i className="bx bxs-lock-alt"></i>
           </div>
           <div className="forgot-link">
-            <a href="#">Forgot Password?</a>
+            <a  onClick={()=>navigate('/forgetPassword')}>Forgot Password?</a>
           </div>
           <button type="submit" className="btn">
             Login

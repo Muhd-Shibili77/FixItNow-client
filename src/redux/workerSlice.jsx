@@ -1,6 +1,23 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import axiosInstance from "../services/AxiosInstance";
+
+
+export const fetchFullService = createAsyncThunk(
+  'admin/fetchFullService',
+  async () => {
+    
+    try {
+      const response = await axiosInstance.get(`/service/fetchFullService`);
+      return {
+        services: response.data.response,
+      }
+    } catch (error) {
+      console.log(error.response.data)
+      return 
+    }
+  }
+);
+
 
 export const fetchWorkerDetails = createAsyncThunk(
   "worker/fetchWorkerDetails",
@@ -57,9 +74,7 @@ export const toggleWorkStatus = createAsyncThunk(
   'worker/toggleWorkStatus',
   async ({bookingId,workStatus})=>{
    
-    await axiosInstance.patch(`/worker/updateWork?bookingId=${bookingId}&workStatus=${workStatus}`,{},{
-      headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
-    })
+    await axiosInstance.patch(`/worker/updateWork?bookingId=${bookingId}&workStatus=${workStatus}`)
     return {bookingId,workStatus:workStatus}
   }
 )  
@@ -67,9 +82,7 @@ export const toggleReachStatus = createAsyncThunk(
   'worker/toggleReachStatus',
   async ({bookingId,reachStatus})=>{
     
-    await axiosInstance.patch(`/worker/updateReach?bookingId=${bookingId}&reachStatus=${reachStatus}`,{},{
-      headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
-    })
+    await axiosInstance.patch(`/worker/updateReach?bookingId=${bookingId}&reachStatus=${reachStatus}`)
     return {bookingId,reachingStatus:reachStatus}
   }
 )  
@@ -77,9 +90,7 @@ export const updateAmount = createAsyncThunk(
   'worker/updateAmount',
   async ({bookingId,amount})=>{
     
-    await axiosInstance.patch(`/worker/updateAmount?bookingId=${bookingId}&amount=${amount}`,{},{
-      headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
-    })
+    await axiosInstance.patch(`/worker/updateAmount?bookingId=${bookingId}&amount=${amount}`)
     return {bookingId,amount:amount}
   }
 )  
@@ -94,8 +105,7 @@ export const getWallet = createAsyncThunk(
 export const getReviews = createAsyncThunk(
   'worker/getReviews',
   async ({workerId})=>{
-    
- 
+
     const response = await axiosInstance.get(`/user/review?workerId=${workerId}`,{
       headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
     })
@@ -106,7 +116,7 @@ export const getReviews = createAsyncThunk(
 
 const workSlice = createSlice({
   name: "worker",
-  initialState: { data: null,wallet:null, job: [],reviews:[], loading: false, error: null },
+  initialState: { services:[],data: null,wallet:null, job: [],reviews:[], loading: false, error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -118,6 +128,17 @@ const workSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(fetchWorkerDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchFullService.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchFullService.fulfilled, (state, action) => {
+        state.loading = false;
+        state.services = action.payload.services;
+      })
+      .addCase(fetchFullService.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
@@ -155,10 +176,10 @@ const workSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
       .addCase(updateJobStatus.fulfilled, (state, action) => {
-       
+
         state.job = state.job.map((job) =>
           job.id === action.payload.jobId
-            ? { ...job, isAccepted: action.payload.isAccepted }
+            ? { ...job, isAccepted: action.payload.isAccepted,workStatus:'Pending' }
             : job
         );
       })

@@ -38,11 +38,12 @@
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
               <h2 className="text-3xl font-semibold italic text-start mb-8">{data?.[0]?.service}</h2>
               
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-9">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-9">
                 {data && data.length > 0 ?(
                       data?.map((worker)=>(
-                        
+                        <>
                           <WorkerCard key={worker.id} id={worker.id} name={worker.name} image={worker.profileImage} experience={worker.experience} rating={worker.averageRating}/>
+                        </>
                       ))
                 ):(
                     <h2 className="text-3xl font-bold text-center col-span-full text-red-500">No worker available</h2>

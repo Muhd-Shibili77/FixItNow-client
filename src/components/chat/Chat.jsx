@@ -29,8 +29,9 @@ const ChatApp = () => {
   const {chatlist} = useSelector((state) => state.message);
   const jwtToken = localStorage.getItem('token')
   const { workers } = useSelector((state) => state.admin);
-
+  const [incomingCall, setIncomingCall] = useState(null);
   
+
   let userId;
   let senderModel;
   let receiverModel;
@@ -80,14 +81,23 @@ const ChatApp = () => {
   }, [chats]);
 
 
-  useEffect(() => {
-    socket.on("receiveMessage", (message) => {
+ useEffect(() => {
+    const handleReceiveMessage = (message) => {
       console.log("Message received:", message);
       setMessages((prev) => [...prev, message]);
-    });
+    };
+
+    const handleIncomingCall = ({ from, callType }) => {
+      console.log("Incoming call received:", from, callType);
+      setIncomingCall({ from, callType });
+    };
+
+    socket.on("receiveMessage", handleReceiveMessage);
+    socket.on("incomingCall", handleIncomingCall);
 
     return () => {
-      socket.off("receiveMessage");
+      socket.off("receiveMessage", handleReceiveMessage);
+      socket.off("incomingCall", handleIncomingCall);
     };
   }, []);
 
@@ -209,9 +219,36 @@ const ChatApp = () => {
       );
     }
 
-    const initiateCall = (callType)=>{
-       
+    // Initiate call
+  const initiateCall = (callType) => {
+    const receiverId = activeChat?._id || activeChat?.id;
+
+    if (!receiverId) {
+      console.error("No receiver ID found");
+      return;
     }
+    
+    navigate('/call', {
+      state: { userId, receiverId, callType, isInitiator: true },
+    });
+  };
+
+  // Reject call
+  const rejectCall = () => {
+    socket.emit('rejectCall', { from: userId, to: incomingCall.from });
+    setIncomingCall(null);
+  };
+  
+  // Accept call
+  const acceptCall = () => {
+    if (incomingCall) {
+      socket.emit("callAccepted", { from: userId, to: incomingCall.from });
+      navigate('/call', {
+        state: { userId, receiverId: incomingCall.from, callType: incomingCall.callType, isInitiator: false },
+      });
+      setIncomingCall(null);
+    }
+  };
   
   return (
     <div className="flex h-[calc(100vh-4rem)] w-full max-w-7xl  p-3 mx-auto">
@@ -302,13 +339,13 @@ const ChatApp = () => {
                       onClick={() => setActiveChat(item)}
                     >
                       <img
-                        src={`http://localhost:3000/uploads/${item?.profileImage}`}
+                        src={item?.profileImage}
                         
                         alt="User"
                         className="w-10 h-10 rounded-full"
                       />
                       <div>
-                        <p className="font-semibold">{item.name}</p>
+                        <p className="font-semibold">{item.username}</p>
                         <p className="text-sm text-indigo-600">
                           I am a {item.service.name}
                         </p>
@@ -327,7 +364,7 @@ const ChatApp = () => {
 
       {/* Chat Section */}
       <div
-        className={`flex-1 bg-white rounded-lg shadow-lg flex flex-col ml-2 ${
+        className={`flex-1 bg-white rounded-lg shadow-lg flex flex-col ml-2 w-20 ${
           activeChat === null ? "hidden md:flex" : "flex"
         }`}
       >
@@ -543,7 +580,7 @@ const ChatApp = () => {
                   className="flex-1 border rounded-full px-4 py-2 focus:outline-none"
                 />
               <div className="flex items-center space-x-2">
-                <AiOutlineAudio size={28} className="text-gray-600" />
+                {/* <AiOutlineAudio size={28} className="text-gray-600" /> */}
                 <button
                   type="submit"
                   className="bg-indigo-400 text-white px-6 py-2 rounded-full hover:bg-indigo-600 transition duration-300"
@@ -562,6 +599,36 @@ const ChatApp = () => {
         )}
         
       </div>
+      {incomingCall && (
+          <div className="fixed inset-0 flex justify-center items-center z-50 bg-black/60 backdrop-blur-md p-4">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-100">
+        <h2 className="text-lg font-semibold text-center text-gray-800">Incoming Call</h2>
+        <p className="text-gray-600 mt-2">
+          {incomingCall.callType} call
+        </p>
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() => {
+              acceptCall();
+             
+            }}
+            className="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Accept
+          </button>
+          <button
+            onClick={() => {
+              rejectCall();
+          
+            }}
+            className="bg-red-500 text-white px-4 py-2 rounded"
+          >
+            Reject
+          </button>
+        </div>
+      </div>
+    </div>
+        )}
       <ToastContainer position="top-right" autoClose={2000} hideProgressBar />
     </div>
   );

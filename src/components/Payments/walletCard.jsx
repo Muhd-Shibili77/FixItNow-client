@@ -97,7 +97,7 @@ const WalletCard = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen  py-10">
-      <div className="bg-gradient-to-br from-gray-300 to-indigo-200 shadow-md rounded-2xl p-6 w-130 h-50 text-center">
+      <div className="bg-gradient-to-br from-gray-300 to-indigo-200 shadow-md rounded-2xl p-6 md:w-130 w-87 h-50 text-center">
         <p className="text-gray-600 text-lg">Your Wallet</p>
         <h1 className="text-4xl font-bold text-gray-800">₹{wallet?.balanceAmount?.toFixed(2)}</h1>
         {wallet?.worker?.stripeAccountId ?(
@@ -116,7 +116,7 @@ const WalletCard = () => {
         )}
       </div>
       <h2 className="text-xl font-semibold mt-10">Transaction History</h2>
-      <div className='bg-gray-200 shadow-md rounded-lg mt-4 w-120 p-4'>
+      <div className='bg-gray-200 shadow-md rounded-lg mt-4  md:w-120 w-87 p-4'>
 
       {wallet?.walletHistory.length > 0 ? (
           wallet?.walletHistory.map((tx,index) => (
