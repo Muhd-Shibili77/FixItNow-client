@@ -26,7 +26,7 @@ const WorkerCard = ({ name,image,experience,id,rating }) => {
           </span>
         </div>
         <p className="text-sm text-gray-700 mt-1">{experience} yrs exp</p>
-        <p className="text-sm text-gray-700">distance km away</p>
+        
       </div>
     </div>
   );

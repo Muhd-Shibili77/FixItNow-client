@@ -55,7 +55,7 @@ function Workerdetail({workerId}) {
         </div>
 
         {/* Worker Details */}
-        <h2 className="text-3xl font-semibold mt-6">{worker?.name}</h2>
+        <h2 className="text-3xl font-semibold mt-6">{worker?.username}</h2>
         <p className="text-gray-600">{worker?.service?.name}</p>
         <p className="text-gray-600">{worker?.experience} yrs experience</p>
         <p className="text-gray-800 font-semibold mt-2">{worker?.phone}</p>

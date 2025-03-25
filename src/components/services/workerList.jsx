@@ -42,7 +42,7 @@
                 {data && data.length > 0 ?(
                       data?.map((worker)=>(
                         <>
-                          <WorkerCard key={worker.id} id={worker.id} name={worker.name} image={worker.profileImage} experience={worker.experience} rating={worker.averageRating}/>
+                          <WorkerCard key={worker.id} id={worker.id} name={worker.username} image={worker.profileImage} experience={worker.experience} rating={worker.averageRating}/>
                         </>
                       ))
                 ):(

@@ -4,7 +4,7 @@ import { Elements } from '@stripe/react-stripe-js'
 import CheckOutForm from './CheckOutForm';
 
 
-const stripePromise = loadStripe("pk_test_51ImFjbSFHLvjgURKsXj8LqtUk10dTmdKr7dyEn3pBqItjhS6mG0cJ6cnLXkhS1dp7kzAoMJ6rooDYsnkoaAOv4qz00tfX0qgta");
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const StripePayment = ({ bookingId,bookingNO, amount,user,address, onSuccess }) => {
   return (
