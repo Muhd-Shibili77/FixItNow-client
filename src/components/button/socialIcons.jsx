@@ -1,10 +1,9 @@
 import React from "react";
 import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser, loginWoker } from "../../redux/authSlice";
-
+import axiosInstance from "../../services/AxiosInstance";
 
 
 const socialIcons = ({handleGoogleSuccess,handleGoogleError}) => {
@@ -16,7 +15,7 @@ const socialIcons = ({handleGoogleSuccess,handleGoogleError}) => {
        try {
         
         
-        const response = await axios.post('http://localhost:3000/auth/google',{
+        const response = await axiosInstance.post('/auth/google',{
             credential: tokenResponse,
         })
 
