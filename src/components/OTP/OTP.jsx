@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from 'react-redux';
 import axios from "axios";
 import { useNavigate } from "react-router";
+import c from '../../services/AxiosInstance'
 
 function OTP(props) {
     const navigate = useNavigate()
@@ -18,7 +19,7 @@ function OTP(props) {
         const enteredOTP = otp.join(""); 
         
         try {
-            const response = await axios.post("http://localhost:3000/auth/verify-otp", {
+            const response = await axiosInstance.post("/auth/verify-otp", {
                 email:user.Email,
                 otp: enteredOTP,
               });
@@ -83,12 +84,12 @@ function OTP(props) {
 
     try {
         const url = props.forgetPassword 
-            ? "http://localhost:3000/auth/resendOtp" 
-            : "http://localhost:3000/auth/resend-otp";
+            ? "/auth/resendOtp" 
+            : "/auth/resend-otp";
 
         
 
-        const response = await axios.post(url, { email: user.Email });
+        const response = await axiosInstance.post(url, { email: user.Email });
 
         if (response.data.success) {
             toast.success("New OTP sent successfully!");
