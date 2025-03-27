@@ -432,7 +432,11 @@ const ChatApp = () => {
                       {/* Show sender's avatar for received messages */}
                       {msg.sender !== userId && (
                         <img
-                          src={msg.senderImage || "https://randomuser.me/api/portraits/men/1.jpg"}
+                          src={
+                            activeChat?.profileImage
+                              ? activeChat?.profileImage.startsWith("http") ? `${activeChat?.profileImage}` : `http://localhost:3000/uploads/${activeChat?.profileImage}`
+                              : "https://randomuser.me/api/portraits/men/1.jpg"
+                          }
                           alt="User"
                           className="w-8 h-8 rounded-full"
                         />
