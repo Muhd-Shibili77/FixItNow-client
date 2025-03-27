@@ -20,7 +20,7 @@ const AdminWorkers = () => {
 
 
   const colums = [
-    { header: "Workername", key: "name" },
+    { header: "Workername", key: "username" },
     { header: "Service", key: "service" , render:(item)=>item.service?.name || "N/A" },
     { header: "Experience", key: "experience" },
     { header: "Phone", key: "phone" },

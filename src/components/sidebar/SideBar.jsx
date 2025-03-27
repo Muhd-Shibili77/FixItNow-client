@@ -7,7 +7,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import { useNavigate } from "react-router";
 import {
   FaUser, FaUsersCog, FaCalendarAlt, FaTools,
-  FaSignOutAlt, FaThLarge, FaBars, FaTimes
+  FaSignOutAlt, FaThLarge, FaBars, FaMoneyBillWave 
 } from "react-icons/fa";
 
 function SideBar(props) {
@@ -22,6 +22,7 @@ function SideBar(props) {
     { name: "Workers",route:'workers', icon: <FaUsersCog />, key: "Workers" },
     { name: "Booking", route:'bookings',icon: <FaCalendarAlt />, key: "Booking" },
     { name: "Services",route:'services', icon: <FaTools />, key: "Services" },
+    { name: "Earnings",route:'Earnings', icon: <FaMoneyBillWave />, key: "Earnings" },
     { name: "Logout", icon: <FaSignOutAlt />, key: "Logout" }
   ];
 

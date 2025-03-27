@@ -61,7 +61,7 @@ export const deleteService = createAsyncThunk(
       
       const url = page 
       ? `/admin/workers?search=${searchTerm}&page=${page}&limit=10`
-      : `/admin/workers`;  // No pagination when page is not provided
+      : `/admin/workers`; 
       
       const response = await AxiosInstance.get(url,{
         headers:{Authorization:`Bearer ${localStorage.getItem('token')}`}
