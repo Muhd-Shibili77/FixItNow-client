@@ -52,9 +52,10 @@ const Table = ({colums,data,actions,totalPages, searchTerm, setSearchTerm, page,
                     ))}
 
                     <td className="p-3 flex space-x-2">
-                      {actions(items).map((action,actionIndex)=>(
+                      { actions && typeof actions === "function" ?
+                      actions(items).map((action,actionIndex)=>(
                         <button key={actionIndex} className={`${action.bgColor} text-white px-3 sm:px-4 py-1 sm:py-2 rounded-lg cursor-pointer`} onClick={()=>action.onClick(items)}>{action.label}</button>
-                      ))}
+                      )):null}
                     </td>
                   </tr>
                 ))  
