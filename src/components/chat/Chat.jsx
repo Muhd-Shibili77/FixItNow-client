@@ -105,17 +105,19 @@ const ChatApp = () => {
           msg.id === messageId
             ? {
                 ...msg,
-                reactions: msg.reactions?.some((r) => r.user === userId)
-                  ? msg.reactions.map((r) =>
-                      r.user === userId ? { ...r, reaction } : r
-                    )
-                  : [...msg.reactions, { user: userId, reaction }],
+                reactions: msg.reactions
+                  ? (msg.reactions.some((r) => r.user === userId)
+                      ? msg.reactions.map((r) =>
+                          r.user === userId ? { ...r, reaction } : r
+                        )
+                      : [...msg.reactions, { user: userId, reaction }])
+                  : [{ user: userId, reaction }]
               }
             : msg
         )
       );
     });
-
+  
     return () => {
       socket.off("reactionUpdated");
     };
