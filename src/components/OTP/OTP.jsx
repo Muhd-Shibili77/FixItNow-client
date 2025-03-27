@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from 'react-redux';
 import axios from "axios";
 import { useNavigate } from "react-router";
-import axiosInstance from '../../services/AxiosInstance'
+import axiosInstance from '../../services/AxiosInstance';
 
 function OTP(props) {
     const navigate = useNavigate()
