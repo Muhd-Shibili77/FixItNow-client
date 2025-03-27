@@ -4,9 +4,8 @@ import { fetchWorkerDetails } from "../../redux/workerSlice";
 import { loginWoker } from "../../redux/authSlice";
 import { useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
-import { Lock } from "lucide-react";
+import { Lock } from 'lucide-react';
 import axiosInstance from "../../services/AxiosInstance";
-import { Eye, EyeOff } from "lucide-react"; 
 
 function workerProfile() {
   const navigate = useNavigate();
@@ -108,16 +107,6 @@ function workerProfile() {
     }
   }, [dispatch, workerId]);
 
-  const [showPassword, setShowPassword] = useState({
-    currentPassword: false,
-    newPassword: false,
-    confirmPassword: false,
-  });
-
-  const togglePasswordVisibility = (field) => {
-    setShowPassword((prev) => ({ ...prev, [field]: !prev[field] }));
-  };
-
   if (loading)
     return (
       <div className="flex justify-center items-center h-screen">
@@ -172,6 +161,7 @@ function workerProfile() {
         <p className="text-gray-500 text-s mt-4 break-words">{worker?.about}</p>
 
         <div className="bg-gray-50 p-4 rounded-xl">
+          
           <button
             onClick={() => setChangePassword(!changePassword)}
             className="text-indigo-600 hover:text-indigo-800 text-sm transition cursor-pointer"
@@ -182,78 +172,71 @@ function workerProfile() {
       </div>
 
       {changePassword && (
-        <div className="bg-white shadow-lg rounded-lg p-6 w-full md:max-w-2xl max-w-90  text-center relative">
-          <h2 className="text-xl font-semibold mb-6">change Password</h2>
-          {passwordError && (
-            <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
-              <div className="flex">
-                <div className="ml-3">
-                  <p className="text-sm">{passwordError}</p>
-                </div>
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full md:max-w-2xl max-w-90  text-center relative">
+        <h2 className="text-xl font-semibold mb-6">change Password</h2>
+        {passwordError && (
+          <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg mb-6">
+            <div className="flex">
+              <div className="ml-3">
+                <p className="text-sm">{passwordError}</p>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          {passwordSuccess && (
-            <div className="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6">
-              <div className="flex">
-                <div className="ml-3">
-                  <p className="text-sm">{passwordSuccess}</p>
-                </div>
+        {passwordSuccess && (
+          <div className="bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-lg mb-6">
+            <div className="flex">
+              <div className="ml-3">
+                <p className="text-sm">{passwordSuccess}</p>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
-          <form onSubmit={handlePasswordSubmit}>
-            <div className="mb-5 absolute">
-              <input
-                type={showPassword["currentPassword"] ? "text" : "password"}
-                name="currentPassword"
-                placeholder="current password"
-                value={passwordData.currentPassword}
-                onChange={handlePasswordChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
-              />
-
-              <button
-                type="button"
-                onClick={() => togglePasswordVisibility("currentPassword")}
-                className="absolute right-3 top-3 text-gray-600 hover:text-indigo-500"
-              >
-                {showPassword["currentPassword"] ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
-            </div>
-            <div className="mb-5">
-              <input
-                type="password"
-                name="newPassword"
-                placeholder="new password"
-                value={passwordData.newPassword}
-                onChange={handlePasswordChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
-              />
-            </div>
-            <div className="mb-5">
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="confirm password"
-                value={passwordData.confirmPassword}
-                onChange={handlePasswordChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
-              />
-            </div>
-            <div className="flex justify-end gap-3">
-              <button
-                type="submit"
-                className={`w-full max-w-50 bg-indigo-400 text-white py-3 px-4 rounded-lg hover:bg-indigo-500 transition-colors`}
-              >
-                submit
-              </button>
-            </div>
-          </form>
-        </div>
+        <form onSubmit={handlePasswordSubmit}>
+          <div className="mb-5">
+            <input
+              type="password"
+              name="currentPassword"
+              placeholder="current password"
+              value={passwordData.currentPassword}
+              onChange={handlePasswordChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
+            />
+          </div>
+          <div className="mb-5">
+            <input
+              type="password"
+              name="newPassword"
+              placeholder="new password"
+              value={passwordData.newPassword}
+              onChange={handlePasswordChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
+            />
+          </div>
+          <div className="mb-5">
+            <input
+              type="password"
+              name="confirmPassword"
+              placeholder="confirm password"
+              value={passwordData.confirmPassword}
+              onChange={handlePasswordChange}
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-indigo-100"
+            />
+          </div>
+          <div className="flex justify-end gap-3">
+            <button
+              type="submit"
+              className={`w-full max-w-50 bg-indigo-400 text-white py-3 px-4 rounded-lg hover:bg-indigo-500 transition-colors`}
+            >
+              submit
+            </button>
+          </div>
+        </form>
+      </div>
       )}
+
     </div>
   );
 }
