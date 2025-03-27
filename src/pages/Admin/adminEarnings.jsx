@@ -18,10 +18,10 @@ const adminEarnings = () => {
   }, [dispatch, page, searchTerm]);
 
   const colums = [
-    { header: "Date", key: "placedAt" },
+    { header: "Date", key: "placedAt",render: (item) => new Date(item.placedAt).toLocaleDateString("en-GB") || "N/A" },
     { header: "Booking No", key: "bookingNo" },
-    { header: "Amount", key: "amount" },
-    { header: "Commision", key: "commision" },
+    { header: "Amount", key: "amount",render: (item) => `INR ${item.amount}`|| "N/A" },
+    { header: "Commision", key: "commision",render: (item) => `INR ${item.commision}`|| "N/A" },
   ];
 
   return (
