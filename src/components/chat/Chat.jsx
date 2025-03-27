@@ -105,7 +105,7 @@ const ChatApp = () => {
           msg.id === messageId
             ? {
                 ...msg,
-                reactions: msg.reactions.some((r) => r.user === userId)
+                reactions: msg.reactions?.some((r) => r.user === userId)
                   ? msg.reactions.map((r) =>
                       r.user === userId ? { ...r, reaction } : r
                     )
