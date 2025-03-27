@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import { PaymentElement,CardElement,useStripe,useElements } from '@stripe/react-stripe-js'
 import axios from 'axios'
 import { FaCreditCard, FaLock, FaSpinner } from 'react-icons/fa'
-
+import axiosInstance from '../../services/AxiosInstance'
 
 const CheckOutForm = ({bookingId,bookingNO,amount,user,address,onSuccess}) => {
 
@@ -17,7 +17,7 @@ const CheckOutForm = ({bookingId,bookingNO,amount,user,address,onSuccess}) => {
 
       try {
 
-        const {data} = await axios.post('http://localhost:3000/user/stripe/create-payment',{
+        const {data} = await axiosInstance.post('/user/stripe/create-payment',{
           amount,
           bookingId,
           bookingNO,
