@@ -82,8 +82,8 @@ function workerConfig() {
       formDataToSend.append("username", name);
       formDataToSend.append("email", email);
       try {
-        const response = await axios.post(
-          "http://localhost:3000/auth/google/register-worker",formDataToSend,
+        const response = await axiosInstance.post(
+          "/auth/google/register-worker",formDataToSend,
           {
             headers: { "Content-Type": "multipart/form-data" },
           });
@@ -113,8 +113,8 @@ function workerConfig() {
     try {
      
 
-      const response = await axios.post(
-        "http://localhost:3000/auth/worker-register",formDataToSend,{
+      const response = await axiosInstance.post(
+        "/auth/worker-register",formDataToSend,{
           headers: { "Content-Type": "multipart/form-data" },
         });
 

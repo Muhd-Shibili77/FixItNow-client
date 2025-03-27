@@ -6,7 +6,7 @@ import { unSetUser,loginUser } from '../../redux/authSlice';
 import axios from "axios";
 import { useNavigate,useLocation  } from "react-router";
 import './SelectionBox.css'
-
+import axiosInstance from '../../services/AxiosInstance';
 
 function SelectionBox() {
   const navigate = useNavigate()
@@ -34,7 +34,7 @@ function SelectionBox() {
 
         if (selectedRole === 'user') {
           try {
-            const response = await axios.post("http://localhost:3000/auth/google/register-user", {
+            const response = await axiosInstance.post("/auth/google/register-user", {
               username: name,
               email: email,
             });
@@ -69,7 +69,7 @@ function SelectionBox() {
 
       if (selectedRole === 'user') {
         try {
-          const response = await axios.post("http://localhost:3000/auth/register", {
+          const response = await axiosInstance.post("/auth/register", {
             username: user.Username,
             email: user.Email,
             password: user.Password,

@@ -56,25 +56,14 @@ const socialIcons = ({handleGoogleSuccess,handleGoogleError}) => {
     flow: "auth-code",
 
   });
-  // const INSTAGRAM_CLIENT_ID = "your_instagram_client_id";
-  // const REDIRECT_URI = "http://localhost:3000/auth/instagram/callback";
-
-  // const handleInstagramLogin = () => {
-  //   const authURL = `https://api.instagram.com/oauth/authorize?client_id=${INSTAGRAM_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user_profile,user_media&response_type=code`;
-  //   window.location.href = authURL;
-  // };
+  
 
   return (
     <div className="social-icons">
       <a className="cursor-pointer" onClick={() => handleGoogleLogin()}>
         <i className="bx bxl-google"></i>
       </a>
-      {/* <a className="cursor-pointer" onClick={handleInstagramLogin}>
-        <i className="bx bxl-instagram"></i>
-      </a>
-      <a className="cursor-pointer">
-        <i className="bx bxl-facebook"></i>
-      </a> */}
+     
     </div>
   );
 };
