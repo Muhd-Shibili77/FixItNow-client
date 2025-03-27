@@ -178,23 +178,26 @@ const ChatApp = () => {
 
   const handleReaction = (messageId, reaction) => {
     const receiverId = activeChat?._id || activeChat?.id;
-
+  
     if (!receiverId) {
       console.error("No receiver ID found");
       return;
     }
-
+  
+    // Ensure the message has a reactions array before manipulating it
     socket.emit("addReaction", { messageId, userId, receiverId, reaction });
     setMessages((prev) =>
       prev.map((msg) =>
         msg.id === messageId
           ? {
               ...msg,
-              reactions: msg.reactions.some((r) => r.user === userId)
-                ? msg.reactions.map((r) =>
-                    r.user === userId ? { ...r, reaction } : r
-                  )
-                : [...msg.reactions, { user: userId, reaction }],
+              reactions: msg.reactions 
+                ? (msg.reactions.some((r) => r.user === userId)
+                    ? msg.reactions.map((r) =>
+                        r.user === userId ? { ...r, reaction } : r
+                      )
+                    : [...msg.reactions, { user: userId, reaction }])
+                : [{ user: userId, reaction }]
             }
           : msg
       )
