@@ -30,6 +30,7 @@ import UserInfo from './pages/Home/UserInfo.jsx'
 import NotFound from './pages/common page/404.jsx'
 import Track from './pages/worker/track.jsx'
 import Call from './pages/common page/Call.jsx'
+import AdminEarnings from './pages/Admin/adminEarnings.jsx'
 
 import { NotificationProvider } from './context/notificationContext.jsx'
 import ForgetPassword from './pages/Authentication/ForgetPassword.jsx'
@@ -80,6 +81,7 @@ function App() {
         <Route path='/admin/workers'  element={<ProtectedRoutes element={<AdminWorkers/>} requiredRole={['Admin']}/>}/>
         <Route path='/admin/bookings'  element={<ProtectedRoutes element={<AdminBookings/>} requiredRole={['Admin']}/>}/>
         <Route path='/admin/services'  element={<ProtectedRoutes element={<AdminServices/>} requiredRole={['Admin']}/>}/>
+        <Route path='/admin/earnings'  element={<ProtectedRoutes element={<AdminEarnings/>} requiredRole={['Admin']}/>}/>
 
       </Routes>
       </NotificationProvider>

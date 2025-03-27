@@ -2,18 +2,25 @@ import React, { useEffect, useState } from "react";
 import SideBar from "../../components/sidebar/SideBar";
 import Table from "../../components/table/Table";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchEarnings } from "../../redux/adminSlice";
 
 const adminEarnings = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
  const [searchTerm, setSearchTerm] = useState("");
 
+ const {earnings,error,loading,totalPages} = useSelector((state)=>state.admin);
+
+ useEffect(()=>{
+    dispatch(fetchEarnings({searchTerm,page}))
+ },[dispatch,page,searchTerm]);
+
 
   const colums = [
+    { header: "Date", key: "placedAt" },
     { header: "Booking No", key: "bookingNo" },
-    { header: "Email", key: "email" },
-    { header: "Phone", key: "phone" },
-    { header: "Amount", key: "phone" },
+    { header: "Amount", key: "amount" },
+    { header: "Commision", key: "amount" },
   ];
 
   return (
@@ -34,6 +41,7 @@ const adminEarnings = () => {
 
           <Table 
           colums={colums}
+          data={earnings}
           totalPages={totalPages} 
         searchTerm={searchTerm} 
         setSearchTerm={setSearchTerm}

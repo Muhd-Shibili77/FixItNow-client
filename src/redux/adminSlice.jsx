@@ -1,5 +1,4 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import AxiosInstance from '../services/AxiosInstance'
 
 
@@ -121,12 +120,25 @@ export const deleteService = createAsyncThunk(
     }
   )
 
+  export const fetchEarnings = createAsyncThunk(
+    'admin/fetchEarnings',
+    async ({searchTerm,page})=>{
+      
+      const response = await AxiosInstance.get(`/admin/earnings?search=${searchTerm}&page=${page}&limit=10`)
+      return {
+        earnings: response.data.response,
+        currentPage: response.data.currentPage,
+        totalPages: response.data.totalPages
+      };
+    }
+  )
+
 
   
 
 const adminSlice =createSlice({
     name:"admin",
-    initialState:{data: [],users:[],workers:[],bookings:[],dash:[],loading:false,error:null, totalPages:1, currentPage:1},
+    initialState:{data: [],users:[],earnings:[],workers:[],bookings:[],dash:[],loading:false,error:null, totalPages:1, currentPage:1},
     reducers: {},
     extraReducers:(builder)=>{
         builder
@@ -218,6 +230,20 @@ const adminSlice =createSlice({
               booking.id === action.payload.bookingId ? {...booking,workStatus:action.payload.workStatus}:booking 
             )
         })
+        .addCase(fetchEarnings.pending,(state)=>{
+          state.loading = true
+      })
+      .addCase(fetchEarnings.fulfilled,(state,action)=>{
+          state.loading = false
+          state.earnings = action.payload.earnings;
+          state.currentPage = action.payload.currentPage;
+          state.totalPages = action.payload.totalPages;
+        
+      })
+      .addCase(fetchEarnings.rejected,(state,action)=>{
+          state.loading = false
+          state.error = action.error.message;
+      })
     }
 })
 

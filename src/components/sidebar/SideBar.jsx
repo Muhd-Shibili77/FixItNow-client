@@ -22,7 +22,7 @@ function SideBar(props) {
     { name: "Workers",route:'workers', icon: <FaUsersCog />, key: "Workers" },
     { name: "Booking", route:'bookings',icon: <FaCalendarAlt />, key: "Booking" },
     { name: "Services",route:'services', icon: <FaTools />, key: "Services" },
-    { name: "Earnings",route:'Earnings', icon: <FaMoneyBillWave />, key: "Earnings" },
+    { name: "Earnings",route:'earnings', icon: <FaMoneyBillWave />, key: "Earnings" },
     { name: "Logout", icon: <FaSignOutAlt />, key: "Logout" }
   ];
 
