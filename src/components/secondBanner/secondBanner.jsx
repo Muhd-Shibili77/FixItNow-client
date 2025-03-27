@@ -3,7 +3,9 @@ import Electrician from '../../assets/electrician-kitchen.webp'
 import Repair from '../../assets/home-repairman.webp'
 import repairmen from '../../assets/repairmen-electricians.webp'
 import technician from '../../assets/technician.webp'
+import { useNavigate } from 'react-router'
 function secondBanner() {
+     const navigate = useNavigate()
   return (
 
     <div className="bg-transparent flex items-center justify-center min-h-screen">
