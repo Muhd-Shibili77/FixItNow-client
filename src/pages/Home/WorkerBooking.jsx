@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import { useParams } from 'react-router'
 import Navbar from '../../components/navbar/Navbar'
 import Footer from '../../components/Footer/Footer'
@@ -12,6 +12,7 @@ import ChatButton from '../../components/button/ChatButton'
 const WorkerBooking = () => {
     const {id} = useParams() 
     const dispatch = useDispatch();
+    const [userId, setUserId] = useState(null); 
     
 
     useEffect(() => {
@@ -19,6 +20,7 @@ const WorkerBooking = () => {
       if (token) {
         try {
           const decodedUser = jwtDecode(token);
+          setUserId(decodedUser.userId);
           dispatch(loginUser(decodedUser));
         } catch (error) {
           console.error("Invalid token:", error);
@@ -31,7 +33,7 @@ const WorkerBooking = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200">
-        <Navbar />
+        <Navbar userId={userId}/>
         <ServiceBooking workerId={id} />
        
         <Footer />

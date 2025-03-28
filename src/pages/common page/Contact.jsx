@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import WorkerBanner from '../../components/banner/WorkerBanner'
 import ContactForm from '../../components/about&contact/ContactForm'
@@ -12,12 +12,13 @@ import 'react-toastify/dist/ReactToastify.css';
 const Contact = () => {
 
     const dispatch = useDispatch();
+    const [userId, setUserId] = useState(null); 
         useEffect(() => {
           const token = localStorage.getItem("token");
           if (token) {
             try {
               const decodedUser = jwtDecode(token);
-              
+              setUserId(decodedUser.userId);
               if(decodedUser.role == 'User'){
                 dispatch(loginUser(decodedUser));  
               }else{
@@ -33,7 +34,7 @@ const Contact = () => {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
-    <Navbar/>
+    <Navbar userId={userId}/>
     <WorkerBanner name={'Contact Us'}/>
     <ContactForm/>
     <ToastContainer/>

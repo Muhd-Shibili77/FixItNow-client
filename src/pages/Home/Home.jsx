@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import { jwtDecode } from "jwt-decode";  // Use named import
 import Navbar from '../../components/navbar/Navbar'
 import Banner from '../../components/banner/Banner'
@@ -12,13 +12,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function Home() {
   const dispatch = useDispatch();
-  
+  const [userId, setUserId] = useState(null); 
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedUser = jwtDecode(token);
+        setUserId(decodedUser.userId);
         dispatch(loginUser(decodedUser));  
       } catch (error) {
         console.error("Invalid token:", error);
@@ -29,7 +30,7 @@ function Home() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
-         <Navbar/>
+         <Navbar userId={userId}/>
          <Banner/>
          <SecondBanner/>
          

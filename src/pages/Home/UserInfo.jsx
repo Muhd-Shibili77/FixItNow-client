@@ -11,6 +11,7 @@ const UserInfo = () => {
     const [userId,setUserId] = useState()
     const dispatch = useDispatch();
     
+    
 useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -31,7 +32,7 @@ useEffect(() => {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
-    <Navbar/>
+    <Navbar userId={userId}/>
     
     <UserProfile userId={userId}/>
     <Footer/>

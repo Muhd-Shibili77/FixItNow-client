@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function services() {
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [userId, setUserId] = useState(null); 
  const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,6 +20,7 @@ function services() {
     if (token) {
       try {
         const decodedUser = jwtDecode(token);
+        setUserId(decodedUser.userId);
         dispatch(loginUser(decodedUser));  
       } catch (error) {
         console.error("Invalid token:", error);
@@ -30,7 +31,7 @@ function services() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
-         <Navbar/>
+         <Navbar userId={userId}/>
          <HeadBanner onSearch={setSearchTerm} />
          <ServiceList searchTerm={searchTerm} />
          

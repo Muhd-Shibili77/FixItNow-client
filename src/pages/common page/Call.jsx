@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { loginUser, loginWoker } from '../../redux/authSlice';
 import Navbar from '../../components/navbar/Navbar';
@@ -8,13 +8,13 @@ import VideoAudioCall from '../../components/chat/VideoAudioCall';
 const Call = () => {
 
     const dispatch = useDispatch();
-
+    const [userId, setUserId] = useState(null); 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedUser = jwtDecode(token);
-       
+        setUserId(decodedUser.userId);
         if (decodedUser.role == "User") {
           dispatch(loginUser(decodedUser));
         } else {

@@ -15,12 +15,13 @@ const ServicePage = () => {
     const {id} = useParams();
     const [searchTerm, setSearchTerm] = useState("");
     const dispatch = useDispatch();
-
+    const [userId, setUserId] = useState(null); 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedUser = jwtDecode(token);
+        setUserId(decodedUser.userId);
         dispatch(loginUser(decodedUser));  
       } catch (error) {
         console.error("Invalid token:", error);
@@ -32,7 +33,7 @@ const ServicePage = () => {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>
-         <Navbar/>
+         <Navbar userId={userId}/>
          <HeadBanner onSearch={setSearchTerm} />
          <WorkerList serviceId={id} searchTerm={searchTerm}/>
          

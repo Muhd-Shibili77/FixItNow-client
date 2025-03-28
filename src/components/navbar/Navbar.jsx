@@ -32,13 +32,12 @@ const Navbar = ({userId}) => {
         socket.emit("joinRoom", userId);
       }
     }, [userId]);
-    
+
     console.log("notifications",notifications)
 
     useEffect(()=>{
       socket.emit("getNotifications", userId, (data) => {
         setNotifications(data);
-        console.log(data)
       });
       socket.on("notificationListUpdated", (newNotification) => {
         setNotifications((prev) => [newNotification, ...prev]);
