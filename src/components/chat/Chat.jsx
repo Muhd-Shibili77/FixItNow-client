@@ -55,11 +55,7 @@ const ChatApp = () => {
     }
   }
 
-  useEffect(() => {
-    if (userId) {
-      socket.emit("joinRoom", userId);
-    }
-  }, [userId]);
+ 
 
   useEffect(() => {
     if (userId) {

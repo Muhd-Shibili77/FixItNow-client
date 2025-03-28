@@ -27,6 +27,12 @@ const Navbar = ({userId}) => {
       { id: 3, message: "Profile updated", time: "3 hours ago" }
     ];
 
+    useEffect(() => {
+      if (userId) {
+        socket.emit("joinRoom", userId);
+      }
+    }, [userId]);
+    
     console.log("notifications",notifications)
 
     useEffect(()=>{
