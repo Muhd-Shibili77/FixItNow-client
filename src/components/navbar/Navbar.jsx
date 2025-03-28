@@ -102,13 +102,23 @@ const Navbar = ({ userId }) => {
   console.log("notifications", notifications);
 
   useEffect(() => {
+    if (!userId) return;
+  
     socket.emit("getNotifications", userId, (data) => {
       setNotifications(data);
     });
-    socket.on("notificationListUpdated", (newNotification) => {
+  
+    const handleNotificationUpdate = (newNotification) => {
       setNotifications((prev) => [newNotification, ...prev]);
-    });
+    };
+  
+    socket.on("notificationListUpdated", handleNotificationUpdate);
+  
+    return () => {
+      socket.off("notificationListUpdated", handleNotificationUpdate);
+    };
   }, [userId]);
+  
 
   const isActiveDesktop = (path) =>
     location.pathname === path
@@ -322,7 +332,7 @@ const Navbar = ({ userId }) => {
               )}
             </div>
           )}
-          ;
+          
         </div>
       ) : worker ? (
         <div className="hidden lg:flex space-x-4">
