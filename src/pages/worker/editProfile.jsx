@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react'
+import React,{useEffect, useState} from 'react'
 import { jwtDecode } from "jwt-decode"; 
 import Navbar from '../../components/navbar/Navbar'
 import WorkerConfig from '../../components/workerConfig/workerConfig'
