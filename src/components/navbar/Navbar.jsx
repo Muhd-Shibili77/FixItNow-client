@@ -20,10 +20,77 @@ const Navbar = ({ userId }) => {
   const [notifications, setNotifications] = useState([]);
 
   // Mock notifications (replace with actual notification logic)
-  const notification = [
-    { id: 1, message: "New service booking received", time: "2 mins ago" },
-    { id: 2, message: "Payment processed successfully", time: "1 hour ago" },
-    { id: 3, message: "Profile updated", time: "3 hours ago" },
+  const testNotifications = [
+    {
+      id: 1,
+      senderName: "John Doe",
+      senderProfilePic: "https://randomuser.me/api/portraits/men/1.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T13:45:00.342Z",
+    },
+    {
+      id: 2,
+      senderName: "Alice Smith",
+      senderProfilePic: "https://randomuser.me/api/portraits/women/2.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T14:20:00.342Z",
+    },
+    {
+      id: 3,
+      senderName: "David Johnson",
+      senderProfilePic: "https://randomuser.me/api/portraits/men/3.jpg",
+      message: "Reacted to message with 😂",
+      timestamp: "2025-03-28T16:10:00.342Z",
+    },
+    {
+      id: 4,
+      senderName: "Emma Wilson",
+      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T18:30:00.342Z",
+    },
+    {
+      id: 4,
+      senderName: "Emma Wilson",
+      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T18:30:00.342Z",
+    },
+    {
+      id: 4,
+      senderName: "Emma Wilson",
+      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T18:30:00.342Z",
+    },
+    {
+      id: 4,
+      senderName: "Emma Wilson",
+      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T18:30:00.342Z",
+    },
+    {
+      id: 4,
+      senderName: "Emma Wilson",
+      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T18:30:00.342Z",
+    },
+    {
+      id: 4,
+      senderName: "Emma Wilson",
+      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T18:30:00.342Z",
+    },
+    {
+      id: 4,
+      senderName: "Emma Wilson",
+      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
+      message: "new message",
+      timestamp: "2025-03-28T18:30:00.342Z",
+    },
   ];
 
   useEffect(() => {
@@ -171,67 +238,91 @@ const Navbar = ({ userId }) => {
             Contact Us
           </a>
           {notifications.length > 0 && (
-          <div className="relative">
-            <button
-              onClick={toggleNotifications}
-              className="relative p-2 rounded-full hover:bg-indigo-100 transition"
-            >
-              <Bell className="w-6 h-6 text-gray-600" />
-              {notifications.length > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                  {notifications.length}
-                </span>
-              )}
-            </button>
+            <div className="relative">
+              <button
+                onClick={toggleNotifications}
+                className="relative p-2 rounded-full hover:bg-indigo-100 transition"
+              >
+                <Bell className="w-6 h-6 text-gray-600" />
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                    {notifications.length}
+                  </span>
+                )}
+              </button>
 
-            {isNotificationOpen && (
-              <div className="absolute top-full right-0 mt-4 w-100 bg-indigo-100 rounded-lg shadow-lg border-0 z-10">
-                <div className="p-4 border-b flex justify-between items-center">
-                  <h3 className="text-lg font-semibold">Notifications</h3>
-                  <button
-                    onClick={toggleNotifications}
-                    className="text-gray-500 hover:text-gray-700"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {notifications.length === 0 ? (
-                  <div className="p-4 text-center text-gray-500">
-                    No notifications
+              {isNotificationOpen && (
+                <div className="absolute top-full right-0 mt-4 w-100 bg-white rounded-lg shadow-xl border z-10">
+                  <div className="p-4 border-b flex justify-between items-center bg-indigo-50 rounded-t-lg">
+                    <h3 className="text-lg font-semibold">Notifications</h3>
+                    <button
+                      onClick={toggleNotifications}
+                      className="text-gray-600 hover:text-gray-800"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
                   </div>
-                ) : (
-                  <div className="max-h-64 overflow-y-auto">
-                    {notifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        className="p-4 border-b hover:bg-indigo-200 transition"
-                      >
-                        <div className="flex justify-between">
-                          <p className="text-sm">{notification.message}</p>
+
+                  {notifications.length === 0 ? (
+                    <div className="p-4 text-center text-gray-500">
+                      No notifications
+                    </div>
+                  ) : (
+                    <div className="max-h-80 overflow-y-auto bg-indigo-50">
+                      {notifications.map((notification) => (
+                        <div
+                          key={notification._id}
+                          className="p-4 border-b flex items-center gap-3 hover:bg-indigo-100 transition"
+                        >
+                          {/* Profile Picture */}
+                          <img
+                            src={
+                              notification.senderDetails?.profileImage ||
+                              "/default-avatar.png"
+                            }
+                            alt="User Profile"
+                            className="w-10 h-10 rounded-full"
+                          />
+
+                          <div className="flex-1">
+                            {/* Sender's Name */}
+                            <p className="text-sm font-semibold">
+                              {notification.senderDetails?.username}
+                            </p>
+                            {/* Message Preview */}
+                            <p className="text-sm text-gray-600 truncate">
+                              {notification.message}
+                            </p>
+                          </div>
+
+                          {/* Timestamp */}
                           <span className="text-xs text-gray-500">
-                            {notification.time}
+                            {new Date(
+                              notification.timestamp
+                            ).toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })}
                           </span>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="p-4 border-t text-center bg-indigo-50">
+                    <button
+                      className="text-sm text-indigo-600 hover:text-indigo-800 cursor-pointer"
+                      onClick={toggleNotifications}
+                    >
+                      Clear All
+                    </button>
                   </div>
-                )}
-                <div className="p-4 border-t text-center">
-                  <button
-                    className="text-sm text-indigo-600 hover:text-indigo-800"
-                    onClick={() => {
-                      // Handle clear all notifications
-                      toggleNotifications();
-                    }}
-                  >
-                    Clear All
-                  </button>
                 </div>
-              </div>
-            )}
-          </div>
-          )};
+              )}
+            </div>
+          )}
+          ;
         </div>
       ) : worker ? (
         <div className="hidden lg:flex space-x-4">
@@ -276,19 +367,19 @@ const Navbar = ({ userId }) => {
               >
                 <Bell className="w-6 h-6 text-gray-600" />
                 {notifications.length > 0 && (
-                  <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                     {notifications.length}
                   </span>
                 )}
               </button>
 
               {isNotificationOpen && (
-                <div className="absolute top-full right-0 mt-4 w-100 bg-indigo-100 rounded-lg shadow-lg border-0 z-10">
-                  <div className="p-4 border-b flex justify-between items-center">
+                <div className="absolute top-full right-0 mt-4 w-100 bg-white rounded-lg shadow-xl border z-10">
+                  <div className="p-4 border-b flex justify-between items-center bg-indigo-50 rounded-t-lg">
                     <h3 className="text-lg font-semibold">Notifications</h3>
                     <button
                       onClick={toggleNotifications}
-                      className="text-gray-500 hover:text-gray-700"
+                      className="text-gray-600 hover:text-gray-800"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -299,35 +390,52 @@ const Navbar = ({ userId }) => {
                       No notifications
                     </div>
                   ) : (
-                    <div className="max-h-64 overflow-y-auto">
+                    <div className="max-h-80 overflow-y-auto bg-indigo-50">
                       {notifications.map((notification) => (
                         <div
-                          key={notification.id}
-                          className="p-4 border-b hover:bg-indigo-200 transition"
+                          key={notification._id}
+                          className="p-4 border-b flex items-center gap-3 hover:bg-indigo-100 transition"
                         >
-                          <div className="flex justify-between">
-                            <p className="text-sm">{notification.message}</p>
-                            <span className="text-xs text-gray-500">
-                              {new Date(
-                                notification.timestamp
-                              ).toLocaleTimeString("en-US", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: true, // Ensures 12-hour format
-                              })}
-                            </span>
+                          {/* Profile Picture */}
+                          <img
+                            src={
+                              notification.senderDetails?.profileImage ||
+                              "/default-avatar.png"
+                            }
+                            alt="User Profile"
+                            className="w-10 h-10 rounded-full"
+                          />
+
+                          <div className="flex-1">
+                            {/* Sender's Name */}
+                            <p className="text-sm font-semibold">
+                              {notification.senderDetails?.username}
+                            </p>
+                            {/* Message Preview */}
+                            <p className="text-sm text-gray-600 truncate">
+                              {notification.message}
+                            </p>
                           </div>
+
+                          {/* Timestamp */}
+                          <span className="text-xs text-gray-500">
+                            {new Date(
+                              notification.timestamp
+                            ).toLocaleTimeString("en-US", {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            })}
+                          </span>
                         </div>
                       ))}
                     </div>
                   )}
-                  <div className="p-4 border-t text-center">
+
+                  <div className="p-4 border-t text-center bg-indigo-50">
                     <button
-                      className="text-sm text-indigo-600 hover:text-indigo-800"
-                      onClick={() => {
-                        // Handle clear all notifications
-                        toggleNotifications();
-                      }}
+                      className="text-sm text-indigo-600 hover:text-indigo-800 cursor-pointer"
+                      onClick={toggleNotifications}
                     >
                       Clear All
                     </button>
@@ -376,59 +484,77 @@ const Navbar = ({ userId }) => {
               className="relative p-2 rounded-full hover:bg-indigo-100 transition"
             >
               <Bell className="w-6 h-6 text-gray-600" />
-              {notification.length > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                  {notification.length}
+              {testNotifications.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                  {testNotifications.length}
                 </span>
               )}
             </button>
 
             {isNotificationOpen && (
-              <div className="absolute top-full right-0 mt-4 w-100 bg-indigo-100 rounded-lg shadow-lg border-0 z-10">
-                <div className="p-4 border-b flex justify-between items-center">
+              <div className="absolute top-full right-0 mt-4 w-100 bg-white rounded-lg shadow-xl border z-10">
+                <div className="p-4 border-b flex justify-between items-center bg-indigo-50 rounded-t-lg">
                   <h3 className="text-lg font-semibold">Notifications</h3>
                   <button
                     onClick={toggleNotifications}
-                    className="text-gray-500 hover:text-gray-700"
+                    className="text-gray-600 hover:text-gray-800"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
-                {notification.length === 0 ? (
+                {testNotifications.length === 0 ? (
                   <div className="p-4 text-center text-gray-500">
                     No notifications
                   </div>
                 ) : (
-                  <div className="max-h-64 overflow-y-auto">
-                    {notification.map((notification) => (
+                  <div className="max-h-80 overflow-y-auto bg-indigo-50">
+                    {testNotifications.map((notification) => (
                       <div
                         key={notification.id}
-                        className="p-4 border-b hover:bg-indigo-200 transition"
+                        className="p-4 border-b flex items-center gap-3 hover:bg-indigo-100 transition"
                       >
-                        <div className="flex justify-between">
-                          <p className="text-sm">{notification.message}</p>
-                          <span className="text-xs text-gray-500">
-                          {new Date(
-                                notification.timestamp
-                              ).toLocaleTimeString("en-US", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: true, // Ensures 12-hour format
-                              })}
-                            </span>
+                        {/* Profile Picture */}
+                        <img
+                          src={
+                            notification.senderProfilePic ||
+                            "/default-avatar.png"
+                          }
+                          alt="User Profile"
+                          className="w-10 h-10 rounded-full"
+                        />
+
+                        <div className="flex-1">
+                          {/* Sender's Name */}
+                          <p className="text-sm font-semibold">
+                            {notification.senderName}
+                          </p>
+                          {/* Message Preview */}
+                          <p className="text-sm text-gray-600 truncate">
+                            {notification.message}
+                          </p>
                         </div>
+
+                        {/* Timestamp */}
+                        <span className="text-xs text-gray-500">
+                          {new Date(notification.timestamp).toLocaleTimeString(
+                            "en-US",
+                            {
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              hour12: true,
+                            }
+                          )}
+                        </span>
                       </div>
                     ))}
                   </div>
                 )}
-                <div className="p-4 border-t text-center">
+
+                <div className="p-4 border-t text-center bg-indigo-50">
                   <button
-                    className="text-sm text-indigo-600 hover:text-indigo-800"
-                    onClick={() => {
-                      // Handle clear all notifications
-                      toggleNotifications();
-                    }}
+                    className="text-sm text-indigo-600 hover:text-indigo-800 cursor-pointer"
+                    onClick={toggleNotifications}
                   >
                     Clear All
                   </button>
