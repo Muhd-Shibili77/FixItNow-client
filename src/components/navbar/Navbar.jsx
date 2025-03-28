@@ -135,10 +135,13 @@ const Navbar = ({ userId }) => {
   };
 
   const toggleNotifications = () => {
+    setIsNotificationOpen(!isNotificationOpen);
+  };
+  const clearNotification = ()=>{
     socket.emit("markNotificationsRead", userId);
     setNotifications([])
     setIsNotificationOpen(!isNotificationOpen);
-  };
+  }
 
   const handleLogout = () => {
     confirmAlert({
