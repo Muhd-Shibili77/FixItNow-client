@@ -10,20 +10,21 @@ import { useDispatch } from 'react-redux';
 function EditProfile() {
 
   const dispatch = useDispatch();
-  let userId;
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      try {
-        const decodedUser = jwtDecode(token)
-        userId = decodedUser.userId;
-        dispatch(loginWoker(decodedUser));  
-      } catch (error) {
-        console.error("Invalid token:", error);
-        localStorage.removeItem("token");  
+    const [userId, setUserId] = useState(null); 
+  
+    useEffect(() => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const decodedUser = jwtDecode(token);
+          setUserId(decodedUser.userId);
+          dispatch(loginWoker(decodedUser));
+        } catch (error) {
+          console.error("Invalid token:", error);
+          localStorage.removeItem("token");
+        }
       }
-    }
-  }, [dispatch]);
+    }, [dispatch]);
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>    
