@@ -19,79 +19,7 @@ const Navbar = ({ userId }) => {
   const worker = useSelector((state) => state.auth.loginWoker);
   const [notifications, setNotifications] = useState([]);
 
-  // Mock notifications (replace with actual notification logic)
-  const testNotifications = [
-    {
-      id: 1,
-      senderName: "John Doe",
-      senderProfilePic: "https://randomuser.me/api/portraits/men/1.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T13:45:00.342Z",
-    },
-    {
-      id: 2,
-      senderName: "Alice Smith",
-      senderProfilePic: "https://randomuser.me/api/portraits/women/2.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T14:20:00.342Z",
-    },
-    {
-      id: 3,
-      senderName: "David Johnson",
-      senderProfilePic: "https://randomuser.me/api/portraits/men/3.jpg",
-      message: "Reacted to message with 😂",
-      timestamp: "2025-03-28T16:10:00.342Z",
-    },
-    {
-      id: 4,
-      senderName: "Emma Wilson",
-      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T18:30:00.342Z",
-    },
-    {
-      id: 4,
-      senderName: "Emma Wilson",
-      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T18:30:00.342Z",
-    },
-    {
-      id: 4,
-      senderName: "Emma Wilson",
-      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T18:30:00.342Z",
-    },
-    {
-      id: 4,
-      senderName: "Emma Wilson",
-      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T18:30:00.342Z",
-    },
-    {
-      id: 4,
-      senderName: "Emma Wilson",
-      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T18:30:00.342Z",
-    },
-    {
-      id: 4,
-      senderName: "Emma Wilson",
-      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T18:30:00.342Z",
-    },
-    {
-      id: 4,
-      senderName: "Emma Wilson",
-      senderProfilePic: "https://randomuser.me/api/portraits/women/4.jpg",
-      message: "new message",
-      timestamp: "2025-03-28T18:30:00.342Z",
-    },
-  ];
+
 
   useEffect(() => {
     if (userId) {
@@ -328,7 +256,7 @@ const Navbar = ({ userId }) => {
                   <div className="p-4 border-t text-center bg-indigo-50">
                     <button
                       className="text-sm text-indigo-600 hover:text-indigo-800 cursor-pointer"
-                      onClick={toggleNotifications}
+                      onClick={clearNotification}
                     >
                       Clear All
                     </button>
@@ -450,7 +378,7 @@ const Navbar = ({ userId }) => {
                   <div className="p-4 border-t text-center bg-indigo-50">
                     <button
                       className="text-sm text-indigo-600 hover:text-indigo-800 cursor-pointer"
-                      onClick={toggleNotifications}
+                      onClick={clearNotification}
                     >
                       Clear All
                     </button>
@@ -493,90 +421,6 @@ const Navbar = ({ userId }) => {
             Contact Us
           </a>
 
-          <div className="relative">
-            <button
-              onClick={toggleNotifications}
-              className="relative p-2 rounded-full hover:bg-indigo-100 transition"
-            >
-              <Bell className="w-6 h-6 text-gray-600" />
-              {testNotifications.length > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                  {testNotifications.length}
-                </span>
-              )}
-            </button>
-
-            {isNotificationOpen && (
-              <div className="absolute top-full right-0 mt-4 w-100 bg-white rounded-lg shadow-xl border z-10">
-                <div className="p-4 border-b flex justify-between items-center bg-indigo-50 rounded-t-lg">
-                  <h3 className="text-lg font-semibold">Notifications</h3>
-                  <button
-                    onClick={toggleNotifications}
-                    className="text-gray-600 hover:text-gray-800"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {testNotifications.length === 0 ? (
-                  <div className="p-4 text-center text-gray-500">
-                    No notifications
-                  </div>
-                ) : (
-                  <div className="max-h-80 overflow-y-auto bg-indigo-50">
-                    {testNotifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        className="p-4 border-b flex items-center gap-3 hover:bg-indigo-100 transition"
-                      >
-                        {/* Profile Picture */}
-                        <img
-                          src={
-                            notification.senderProfilePic ||
-                            "/default-avatar.png"
-                          }
-                          alt="User Profile"
-                          className="w-10 h-10 rounded-full"
-                        />
-
-                        <div className="flex-1">
-                          {/* Sender's Name */}
-                          <p className="text-sm font-semibold">
-                            {notification.senderName}
-                          </p>
-                          {/* Message Preview */}
-                          <p className="text-sm text-gray-600 truncate">
-                            {notification.message}
-                          </p>
-                        </div>
-
-                        {/* Timestamp */}
-                        <span className="text-xs text-gray-500">
-                          {new Date(notification.timestamp).toLocaleTimeString(
-                            "en-US",
-                            {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              hour12: true,
-                            }
-                          )}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="p-4 border-t text-center bg-indigo-50">
-                  <button
-                    className="text-sm text-indigo-600 hover:text-indigo-800 cursor-pointer"
-                    onClick={toggleNotifications}
-                  >
-                    Clear All
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       )}
 
