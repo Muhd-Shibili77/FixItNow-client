@@ -135,6 +135,8 @@ const Navbar = ({ userId }) => {
   };
 
   const toggleNotifications = () => {
+    socket.emit("markNotificationsRead", userId);
+    setNotifications([])
     setIsNotificationOpen(!isNotificationOpen);
   };
 
