@@ -170,7 +170,7 @@ const Navbar = ({ userId }) => {
           >
             Contact Us
           </a>
-
+          {notifications.length > 0 && (
           <div className="relative">
             <button
               onClick={toggleNotifications}
@@ -231,6 +231,7 @@ const Navbar = ({ userId }) => {
               </div>
             )}
           </div>
+          )};
         </div>
       ) : worker ? (
         <div className="hidden lg:flex space-x-4">
@@ -267,16 +268,16 @@ const Navbar = ({ userId }) => {
           >
             Contact Us
           </a>
-          {notification.length > 0 && (
+          {notifications.length > 0 && (
             <div className="relative">
               <button
                 onClick={toggleNotifications}
                 className="relative p-2 rounded-full hover:bg-indigo-100 transition"
               >
                 <Bell className="w-6 h-6 text-gray-600" />
-                {notification.length > 0 && (
+                {notifications.length > 0 && (
                   <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
-                    {notification.length}
+                    {notifications.length}
                   </span>
                 )}
               </button>
@@ -293,13 +294,13 @@ const Navbar = ({ userId }) => {
                     </button>
                   </div>
 
-                  {notification.length === 0 ? (
+                  {notifications.length === 0 ? (
                     <div className="p-4 text-center text-gray-500">
                       No notifications
                     </div>
                   ) : (
                     <div className="max-h-64 overflow-y-auto">
-                      {notification.map((notification) => (
+                      {notifications.map((notification) => (
                         <div
                           key={notification.id}
                           className="p-4 border-b hover:bg-indigo-200 transition"
