@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import logo from "../../assets/maintenance.png";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router";
-import { loginWoker } from "../../redux/authSlice";
+
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { logout } from "../../redux/authSlice";
 import { Bell, X } from "lucide-react";
 import { socket } from "../../services/socket";
-import { jwtDecode } from "jwt-decode";
 
-const Navbar = () => {
+
+const Navbar = ({userId}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,13 +27,14 @@ const Navbar = () => {
       { id: 3, message: "Profile updated", time: "3 hours ago" }
     ];
 
+    console.log("notifications",notifications)
 
     useEffect(()=>{
       socket.emit("getNotifications", userId, (data) => {
         setNotifications(data);
       });
 
-    },[])
+    },[userId])
 
 
   const isActiveDesktop = (path) =>
