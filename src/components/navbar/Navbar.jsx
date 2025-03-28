@@ -34,6 +34,9 @@ const Navbar = ({userId}) => {
         setNotifications(data);
         console.log(data)
       });
+      socket.on("notificationListUpdated", (newNotification) => {
+        setNotifications((prev) => [newNotification, ...prev]);
+      });
 
     },[userId])
 
