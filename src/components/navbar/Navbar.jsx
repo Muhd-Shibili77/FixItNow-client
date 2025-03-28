@@ -32,6 +32,7 @@ const Navbar = ({userId}) => {
     useEffect(()=>{
       socket.emit("getNotifications", userId, (data) => {
         setNotifications(data);
+        console.log(data)
       });
 
     },[userId])
