@@ -10,12 +10,13 @@ import { useDispatch } from 'react-redux';
 function EditProfile() {
 
   const dispatch = useDispatch();
-
+  let userId;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const decodedUser = jwtDecode(token);
+        const decodedUser = jwtDecode(token)
+        userId = decodedUser.userId;
         dispatch(loginWoker(decodedUser));  
       } catch (error) {
         console.error("Invalid token:", error);
@@ -26,7 +27,7 @@ function EditProfile() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>    
-         <Navbar/>
+         <Navbar userId={userId}/>
          <EditWorkerProfile/>
          <Footer/>
     </div>

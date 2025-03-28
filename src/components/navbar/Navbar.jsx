@@ -1,18 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/maintenance.png";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router";
-import { logoutUser, logoutWoker } from "../../redux/authSlice";
+import { loginWoker } from "../../redux/authSlice";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { logout } from "../../redux/authSlice";
+import { Bell, X } from "lucide-react";
+import { socket } from "../../services/socket";
+import { jwtDecode } from "jwt-decode";
+
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const user = useSelector((state) => state.auth.loginUser);
   const worker = useSelector((state) => state.auth.loginWoker);
+  const [notifications, setNotifications] = useState([]);
+  
+    // Mock notifications (replace with actual notification logic)
+    const notification = [
+      { id: 1, message: "New service booking received", time: "2 mins ago" },
+      { id: 2, message: "Payment processed successfully", time: "1 hour ago" },
+      { id: 3, message: "Profile updated", time: "3 hours ago" }
+    ];
+
+
+    useEffect(()=>{
+      socket.emit("getNotifications", userId, (data) => {
+        setNotifications(data);
+      });
+
+    },[])
+
 
   const isActiveDesktop = (path) =>
     location.pathname === path
@@ -26,6 +48,10 @@ const Navbar = () => {
   };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleNotifications = () => {
+    setIsNotificationOpen(!isNotificationOpen);
   };
 
   const handleLogout = () => {
@@ -206,6 +232,69 @@ const Navbar = () => {
           >
             Contact Us
           </a>
+
+          <div className="relative">
+          <button 
+            onClick={toggleNotifications}
+            className="relative p-2 rounded-full hover:bg-indigo-100 transition"
+          >
+            <Bell className="w-6 h-6 text-gray-600" />
+            {notification.length > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                {notification.length}
+              </span>
+            )}
+          </button>
+
+          {isNotificationOpen && (
+
+            <div className="absolute top-full right-0 mt-4 w-100 bg-indigo-100 rounded-lg shadow-lg border-0 z-10">
+              <div className="p-4 border-b flex justify-between items-center">
+                <h3 className="text-lg font-semibold">Notifications</h3>
+                <button 
+                  onClick={toggleNotifications}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {notification.length === 0 ? (
+                <div className="p-4 text-center text-gray-500">
+                No notifications
+                </div>
+              ):(
+                <div className="max-h-64 overflow-y-auto">
+                  {notification.map((notification) => (
+                    <div 
+                      key={notification.id} 
+                      className="p-4 border-b hover:bg-indigo-200 transition"
+                    >
+                      <div className="flex justify-between">
+                        <p className="text-sm">{notification.message}</p>
+                        <span className="text-xs text-gray-500">
+                          {notification.time}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+               <div className="p-4 border-t text-center">
+               <button 
+                  className="text-sm text-indigo-600 hover:text-indigo-800"
+                  onClick={() => {
+                    // Handle clear all notifications
+                    toggleNotifications();
+                  }}
+                >
+                  Clear All
+                </button>
+              </div>
+            </div>
+          )}
+          
+          </div>
         </div>
       )}
 
@@ -392,6 +481,19 @@ const Navbar = () => {
             >
               Contact Us
             </a>
+            <div className="relative">
+            <button 
+            onClick={toggleNotifications}
+            className="relative p-2 rounded-full hover:bg-indigo-100 transition"
+          >
+            <Bell className="w-6 h-6 text-gray-600" />
+            {notifications.length > 0 && (
+              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
+                {notifications.length}
+              </span>
+            )}
+          </button>
+            </div>
           </>
         )}
 

@@ -12,13 +12,14 @@ import 'react-toastify/dist/ReactToastify.css';
 function dashboard() {
 
   const dispatch = useDispatch();
-
+  let userId;
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
        
         const decodedUser = jwtDecode(token);
+        userId = decodedUser.userId
         dispatch(loginWoker(decodedUser));  
       } catch (error) {
         console.error("Invalid token:", error);
@@ -29,8 +30,7 @@ function dashboard() {
 
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200'>    
-        <Navbar/>
-
+        <Navbar userId={userId}/>
         <JobList/>
         <ToastContainer/>
         <Footer/>

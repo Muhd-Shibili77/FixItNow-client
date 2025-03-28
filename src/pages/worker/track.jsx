@@ -9,13 +9,14 @@ const Track = () => {
     
     const dispatch = useDispatch();
     const {id} = useParams()
-    
+    let userId;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedUser = jwtDecode(token);
+        userId = decodedUser.userId
         dispatch(loginWoker(decodedUser));  
       } catch (error) {
         console.error("Invalid token:", error);
