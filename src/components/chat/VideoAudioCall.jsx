@@ -45,7 +45,7 @@ const VideoAudioCall = () => {
     try {
       const pc = new RTCPeerConnection(iceServers);
 
-      // Add local stream tracks
+     
       if (localStream.current) {
         localStream.current.getTracks().forEach((track) => {
           pc.addTrack(track, localStream.current);
@@ -62,7 +62,7 @@ const VideoAudioCall = () => {
         }
       };
 
-      // Connection state changes
+   
       pc.onconnectionstatechange = () => {
         console.log('Connection state changed to:', pc.connectionState);
         setConnectionState(pc.connectionState);

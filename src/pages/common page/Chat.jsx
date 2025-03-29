@@ -30,7 +30,7 @@ const Chat = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-200 to-indigo-200">
-      <Navbar/>
+      <Navbar userId={userId}/>
       <ChatApp />
 
       <Footer />
