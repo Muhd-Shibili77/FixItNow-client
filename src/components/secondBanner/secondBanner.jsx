@@ -12,7 +12,7 @@ function secondBanner() {
 
   const handleBtnclick = (id) => {
     if (user) {
-      navigate(`/services/${id}`);
+      navigate(`/service/${id}`);
     }
   };
 
@@ -69,7 +69,7 @@ function secondBanner() {
                 Driver
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-300 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={()=>handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>navigate('/services')}
               >
                 More..
               </button>
