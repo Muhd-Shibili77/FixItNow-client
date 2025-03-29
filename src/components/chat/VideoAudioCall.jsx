@@ -326,7 +326,7 @@ const VideoAudioCall = () => {
     if (localStream.current) {
       const audioTracks = localStream.current.getAudioTracks();
       if (audioTracks.length > 0) {
-        audioTracks[0].enabled = !isMuted;
+        audioTracks[0].enabled = isMuted;
         setIsMuted(!isMuted);
       }
     }
@@ -337,7 +337,7 @@ const VideoAudioCall = () => {
     if (localStream.current) {
       const videoTracks = localStream.current.getVideoTracks();
       if (videoTracks.length > 0) {
-        videoTracks[0].enabled = !isVideoOff;
+        videoTracks[0].enabled = isVideoOff;
         setIsVideoOff(!isVideoOff);
       }
     }
