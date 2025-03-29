@@ -29,47 +29,47 @@ function secondBanner() {
             </p>
             <div className="grid grid-cols-3 gap-3">
               <button className="flex items-center justify-center p-3 bg-indigo-200 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67de75ef19483b16a6b5419f')}
               >
                 Electrician
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-200 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67de729afe5fc7bcfa1375f5')}
               >
-                Electrician
+                Painter
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-200 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67de760919483b16a6b541a4')}
               >
-                Electrician
+                Plumber
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-200 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67e772289c44bbfd9bbecfb2')}
               >
-                Electrician
+                Mechanic
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-200 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67de762419483b16a6b541a9')}
               >
-                Electrician
+                Barber
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-200 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67e772429c44bbfd9bbecfb7')}
               >
-                Electrician
+                Gardener
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-200 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67e772629c44bbfd9bbecfbc')}
               >
-                Electrician
+                Gromer
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-200 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67e7727a9c44bbfd9bbecfc1')}
               >
-                Electrician
+                Driver
               </button>
               <button className="flex items-center justify-center p-3 bg-indigo-300 rounded-lg text-gray-800 font-medium cursor-pointer"
-              onClick={handleBtnclick('67de75ef19483b16a6b5419f')}
+              onClick={()=>handleBtnclick('67de75ef19483b16a6b5419f')}
               >
                 More..
               </button>
