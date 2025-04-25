@@ -156,12 +156,13 @@ const serviceBooking = ({ workerId }) => {
     }
   };
 
-  const getCurrentLocation = ()=>{
+  const getCurrentLocation =  ()=>{
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(
-        (position)=>{
+        async (position)=>{
           setUserLocation({latitude:position.coords.latitude,longitude:position.coords.longitude})
-          setLocation(`Location retrieved`);
+          const locationName = await reverseGeocode(position.coords.latitude,position.coords.longitude) 
+          setLocation(locationName);
         },
         (error)=>{
           console.error("Error getting location:", error);
@@ -172,6 +173,21 @@ const serviceBooking = ({ workerId }) => {
       setLocation('geolocation is not supporting')
     }
   }
+  const reverseGeocode = async (latitude, longitude) => {
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`
+      );
+      
+      if (response.data && response.data.display_name) {
+        return response.data.display_name;
+      }
+      return "Location found, but address unknown";
+    } catch (error) {
+      console.error("Error reverse geocoding:", error);
+      return "Could not determine address";
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-6 p-6 min-h-screen">
