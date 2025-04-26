@@ -86,7 +86,7 @@ function workerConfig() {
           "/auth/google/register-worker",formDataToSend,
           {
             headers: { "Content-Type": "multipart/form-data" },
-          });
+          },{withCredentials:true});
 
         const Token = response?.data?.Token;
 
@@ -116,7 +116,7 @@ function workerConfig() {
       const response = await axiosInstance.post(
         "/auth/worker-register",formDataToSend,{
           headers: { "Content-Type": "multipart/form-data" },
-        });
+        },{withCredentials:true});
 
       const Token = response?.data?.Token;
 

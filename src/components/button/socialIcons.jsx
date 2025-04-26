@@ -17,7 +17,7 @@ const socialIcons = ({handleGoogleSuccess,handleGoogleError}) => {
         
         const response = await axiosInstance.post('/auth/google',{
             credential: tokenResponse,
-        })
+        },{withCredentials:true})
 
         if(response.data.needsUserSelection){
            navigate('/role',{

@@ -37,7 +37,7 @@ function SelectionBox() {
             const response = await axiosInstance.post("/auth/google/register-user", {
               username: name,
               email: email,
-            });
+            },{withCredentials:true});
     
             const Token = response?.data?.Token;
             localStorage.setItem("token", Token);
@@ -74,7 +74,7 @@ function SelectionBox() {
             email: user.Email,
             password: user.Password,
             conformpassword: user.ConformPassword,
-          });
+          },{withCredentials:true});
     
           const Token = response?.data?.Token;
           localStorage.setItem("token", Token);

@@ -38,7 +38,7 @@ import { useNavigate } from 'react-router';
       const response = await axiosInstance.post('/admin/login',{
         email:LoginFormData.Email,
         password: LoginFormData.Password
-      })
+      },{withCredentials:true})
 
       const {email,Token } = response.data.response;
       
